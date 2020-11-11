@@ -8,7 +8,7 @@
         "cwd": "${workspaceRoot}",
         "runtimeExecutable": "npm",
         "windows": { "runtimeExecutable": "npm.cmd" },
-        "runtimeArgs": [ "run", "debug" ],
+        "runtimeArgs": [ "run", "debug",],
         "console": "integratedTerminal",
         "protocol": "auto",
         "restart": true,

@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "Password1",
+    "database": "my_trade_dev",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "Password1",
+    "database": "my_trade",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}

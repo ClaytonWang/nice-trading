@@ -16,11 +16,22 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_1604915011593_4632';
 
   // add your middleware config here
-  config.middleware = [];
+  config.middleware = [ 'errorHandler' ];
 
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
+    sequelize: {
+      dialect: 'mysql', // support: mysql, mariadb, postgres, mssql
+      database: 'my_trade_dev',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'Password1',
+      define: {
+        timestamps: false,
+      },
+    },
   };
 
   return {
