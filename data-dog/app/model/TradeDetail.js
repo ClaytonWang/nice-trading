@@ -18,5 +18,13 @@ module.exports = app => {
     updated_at: { type: DATE, defaultValue: moment().utc().format(), allowNull: false },
   });
 
+  TradeDetail.prototype.associate = function() {
+    app.model.TradeDetail.hasMany(app.model.Comment);
+  };
+
+  TradeDetail.associate = function() {
+    app.model.TradeDetail.belongsTo(app.model.Trade, { as: 'trade', foreignKey: 'trade_id' });
+  };
+
   return TradeDetail;
 };

@@ -15,5 +15,9 @@ module.exports = app => {
     updated_at: { type: DATE, defaultValue: moment().utc().format(), allowNull: false },
   });
 
+  Trade.prototype.associate = function() {
+    app.model.Trade.hasMany(app.model.TradeDetail, { as: 'tradeDetails' });
+  };
+
   return Trade;
 };

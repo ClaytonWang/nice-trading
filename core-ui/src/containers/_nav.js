@@ -14,6 +14,22 @@ export default [
       },
       {
         _name: 'CSidebarNavTitle',
+        _children: ['MyTrades']
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'TradePlan',
+        to: '/my-trades/trade-plan',
+        icon: 'cil-pencil'
+      },
+      // {
+      //   _name: 'CSidebarNavItem',
+      //   name: 'AddTradePlan',
+      //   to: '/my-trades/add-trade-plan',
+      //   icon: 'cil-pencil'
+      // },
+      {
+        _name: 'CSidebarNavTitle',
         _children: ['Theme']
       },
       {
@@ -49,7 +65,7 @@ export default [
           {
             name: 'Carousels',
             to: '/base/carousels'
-          }, 
+          },
           {
             name: 'Collapses',
             to: '/base/collapses'

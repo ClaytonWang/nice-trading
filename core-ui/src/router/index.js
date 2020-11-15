@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+// My Trades
+const TradePlan = () => import('@/views/my-trades/TradePlan');
+//const AddTradePlan = () => import('@/views/my-trades/AddTradePlan');
+
 // Containers
 const TheContainer = () => import('@/containers/TheContainer')
 
@@ -78,6 +82,26 @@ function configRoutes () {
           path: 'dashboard',
           name: 'Dashboard',
           component: Dashboard
+        },
+        {
+          path: 'my-trades',
+          redirect: '/my-trades/trade-plan',
+          name: 'MyTrades',
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: 'trade-plan',
+              name: 'Trade Plan',
+              component: TradePlan
+            },
+            // {
+            //   path: 'add-trade-plan',
+            //   name: 'Add Trade Plan',
+            //   component:AddTradePlan
+            // }
+          ]
         },
         {
           path: 'theme',
