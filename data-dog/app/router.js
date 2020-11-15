@@ -6,7 +6,7 @@
 module.exports = app => {
   const { router, controller } = app;
   // home
-  router.get('/', controller.home.index);
+  router.get('/', controller.homeController.index);
   // router.get('/list', controller.home.list);
   // router.get('/detail', controller.home.detail);
 
@@ -22,6 +22,8 @@ module.exports = app => {
   // router.get('/trades/:id', controller.trades.get);
 
   // restfull api
-  router.resources('trades', '/api/trades', controller.trades);
+  router.resources('trades', '/api/trade', controller.tradeController);
+  router.resources('trade-detail', '/api/trade-detail', controller.tradeDetailController);
+  router.resources('comment', '/api/comment', controller.commentController);
 
 };

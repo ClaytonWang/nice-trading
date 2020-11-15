@@ -3,7 +3,7 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const { INTEGER, DATE, DECIMAL } = Sequelize;
-    await queryInterface.createTable('trade_detail', {
+    await queryInterface.createTable('trade_details', {
       id: { type: INTEGER, primaryKey: true, autoIncrement: true },
       trade_id: { type: INTEGER, allowNull: false },
       buying_rate: { type: DECIMAL, allowNull: true },
@@ -15,8 +15,8 @@ module.exports = {
       commission: { type: DECIMAL, allowNull: true },
       stamp_tax: { type: DECIMAL, allowNull: true },
       trade_type: { type: INTEGER, allowNull: false },
-      created_at: { type: DATE, allowNull: true },
-      updated_at: { type: DATE, allowNull: true },
+      created_at: { type: DATE, defaultValue: Sequelize.NOW, allowNull: false },
+      updated_at: { type: DATE, defaultValue: Sequelize.NOW, allowNull: false },
     });
   },
 

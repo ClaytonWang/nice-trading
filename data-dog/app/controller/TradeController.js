@@ -13,10 +13,8 @@ class TradeController extends Controller {
   async create() {
     const ctx = this.ctx;
     // ctx.validate(createRule, ctx.request.body);
-    const id = await ctx.service.trades.create(ctx.request.body);
-    ctx.body = {
-      topic_id: id,
-    };
+    const tade = await ctx.service.tradeService.create(ctx.request.body);
+    ctx.body = tade;
     ctx.status = 201;
   }
 

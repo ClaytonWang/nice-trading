@@ -1,5 +1,5 @@
 'use strict';
-
+const moment = require('moment');
 module.exports = app => {
   const { INTEGER, DATE, DECIMAL } = app.Sequelize;
   const TradeDetail = app.model.define('trade_detail', {
@@ -14,8 +14,8 @@ module.exports = app => {
     commission: { type: DECIMAL, allowNull: true },
     stamp_tax: { type: DECIMAL, allowNull: true },
     trade_type: { type: INTEGER, allowNull: false },
-    created_at: { type: DATE, allowNull: true },
-    updated_at: { type: DATE, allowNull: true },
+    created_at: { type: DATE, defaultValue: moment().utc().format(), allowNull: false },
+    updated_at: { type: DATE, defaultValue: moment().utc().format(), allowNull: false },
   });
 
   return TradeDetail;
