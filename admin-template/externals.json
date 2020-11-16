@@ -1,0 +1,71 @@
+{
+  "common": [
+    {
+      "id": "normalize.css",
+      "assets": "//cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css",
+      "global": null
+    },
+    {
+      "id": "vue",
+      "assets": "//cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js",
+      "global": "Vue"
+    },
+    {
+      "id": "vue-router",
+      "assets": "//cdn.jsdelivr.net/npm/vue-router@3.3.4/dist/vue-router.min.js",
+      "global": "VueRouter"
+    },
+    {
+      "id": "vuex",
+      "assets": "//cdn.jsdelivr.net/npm/vuex@3.5.1/dist/vuex.min.js",
+      "global": "Vuex"
+    },
+    {
+      "id": "axios",
+      "assets": "//cdn.jsdelivr.net/npm/axios@0.19.2/dist/axios.min.js",
+      "global": "axios"
+    },
+    {
+      "id": "js-cookie",
+      "assets": "//cdn.jsdelivr.net/npm/js-cookie@2.2.1/src/js.cookie.min.js",
+      "global": "Cookies"
+    },
+    {
+      "id": "dayjs",
+      "assets": "//cdn.jsdelivr.net/npm/dayjs@1.8.29/dayjs.min.js",
+      "global": "dayjs"
+    },
+    {
+      "id": "lodash-es",
+      "assets": "//cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js",
+      "global": "_"
+    },
+    {
+      "id": "nprogress",
+      "assets": [
+        "//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js",
+        "//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css"
+      ],
+      "global": "NProgress"
+    },
+    {
+      "id": "fuse.js",
+      "assets": "//cdn.jsdelivr.net/npm/fuse.js@3.4.6/dist/fuse.min.js",
+      "global": "Fuse"
+    },
+    {
+      "id": "screenfull",
+      "assets": "//cdn.jsdelivr.net/npm/screenfull@5.0.2/dist/screenfull.min.js",
+      "global": "screenfull"
+    },
+    {
+      "id": "element-ui",
+      "assets": [
+        "//cdn.jsdelivr.net/npm/element-ui@2.13.2/lib/index.js",
+        "//cdn.jsdelivr.net/npm/element-ui@2.13.2/lib/theme-chalk/reset.css",
+        "//cdn.jsdelivr.net/npm/element-ui@2.13.2/lib/theme-chalk/index.css"
+      ],
+      "global": "ELEMENT"
+    }
+  ]
+}

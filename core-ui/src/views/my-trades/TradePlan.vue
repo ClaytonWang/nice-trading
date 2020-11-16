@@ -7,9 +7,9 @@
           <CForm validated novalidate>
             <CInput label="代码：" v-model="trade.code" placeholder="代码" required invalid-feedback="Input is not required." />
             <CInput label="名称：" v-model="trade.name" placeholder="名称" required invalid-feedback="Please provide a required input." />
-            <CInput label="止损价：" v-model="trade.stop_loss" placeholder="止损价" valid-feedback="Input is not required." />
-            <CInput label="止赢价：" v-model="trade.take_profit" placeholder="止赢价" valid-feedback="Input is not required." />
-            <CInput label="买入数量：" v-model="trade.plan_amount" placeholder="买入数量" valid-feedback="Input is not required." />
+            <CInput label="止损价：" v-model="trade.stop_loss" placeholder="0" valid-feedback="Input is not required." />
+            <CInput label="止赢价：" v-model="trade.take_profit" placeholder="0" valid-feedback="Input is not required." />
+            <CInput label="买入数量：" v-model="trade.plan_amount" placeholder="0" valid-feedback="Input is not required." />
             <CInput label="执行日期：" v-model="trade.exec_date" type="date" />
             <CTextarea label="理由：" v-model="trade.comment" placeholder="理由..." rows="9" />
           </CForm>
@@ -33,9 +33,9 @@ export default {
       trade:{
         code:'',
         name:'',
-        stop_loss:0.00,
-        take_profit:0.00,
-        plan_amount:100,
+        stop_loss:'',
+        take_profit:'',
+        plan_amount:'',
         exec_date:'',
         comment:''
       }

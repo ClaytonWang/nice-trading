@@ -1,0 +1,11 @@
+{
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "stylelint.enable": true,
+  "path-autocomplete.pathMappings": {
+    "@": "${folder}/src",
+    "~@": "${folder}/src"
+  },
+  "liveServer.settings.root": "/dist"
+}

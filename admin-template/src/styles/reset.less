@@ -1,0 +1,59 @@
+/* 重写 ElementUI 样式 */
+.el-dialog {
+  &__body {
+    padding: 10px 20px !important;
+  }
+}
+
+.el-table {
+  th {
+    padding: 6px 0 !important;
+    font-size: 12px;
+  }
+
+  td {
+    padding: 3px 0 !important;
+    font-size: 12px;
+
+    .el-radio__label {
+      font-size: 12px;
+    }
+
+    .el-button--text {
+      padding: 0;
+    }
+
+    .el-input--mini {
+      .el-input__inner {
+        height: 22px;
+        line-height: 22px;
+      }
+
+      .el-input__icon {
+        line-height: 22px;
+      }
+    }
+
+    .el-switch__label {
+      line-height: 1.3;
+    }
+
+    .el-switch__label * {
+      font-size: 12px;
+    }
+
+    .el-switch.is-checked .el-switch__core::after {
+      margin-left: -11px;
+    }
+
+    .el-switch__core {
+      width: 35px !important;
+      height: 15px;
+
+      &::after {
+        width: 11px;
+        height: 11px;
+      }
+    }
+  }
+}
