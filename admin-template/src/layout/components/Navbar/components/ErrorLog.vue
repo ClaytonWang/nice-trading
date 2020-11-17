@@ -3,7 +3,7 @@
     <el-badge
       :is-dot="logs.length > 0"
       @click.native="show = true"
-      style="font-size: 20px; line-height: 1; cursor: pointer;"
+      style="font-size: 20px; line-height: 1; cursor: pointer"
     >
       <svg-icon icon-class="bug"></svg-icon>
     </el-badge>
@@ -18,12 +18,12 @@
       <el-table :data="logs" border>
         <el-table-column label="信息">
           <template v-slot="scope">
-            <div style="margin-bottom: 5px;">
-              <span class="message-title" style="padding-right: 5px;">Msg:</span>
+            <div style="margin-bottom: 5px">
+              <span class="message-title" style="padding-right: 5px">Msg:</span>
               <el-tag type="danger">{{ scope.row.err.message }}</el-tag>
             </div>
-            <div style="margin-bottom: 5px;">
-              <span class="message-title" style="padding-right: 8px;"
+            <div style="margin-bottom: 5px">
+              <span class="message-title" style="padding-right: 8px"
                 >Info:</span
               >
               <el-tag type="warning"
@@ -32,7 +32,7 @@
               >
             </div>
             <div>
-              <span class="message-title" style="padding-right: 12px;"
+              <span class="message-title" style="padding-right: 12px"
                 >Url:</span
               >
               <el-tag type="success">{{ scope.row.url }}</el-tag>
