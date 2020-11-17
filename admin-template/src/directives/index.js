@@ -1,6 +1,6 @@
-import requireAll from '@/utils/requireAll'
+import requireAll from '@/utils/requireAll';
 
-const requireDirectives = require.context('.', false, /^((?!index).)*.js$/)
-const directives = requireAll(requireDirectives)
+const requireDirectives = require.context('.', false, /^((?!index).)*.js$/);
+const directives = requireAll(requireDirectives);
 
-export default directives
+export default directives;

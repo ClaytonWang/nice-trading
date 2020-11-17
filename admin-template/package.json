@@ -1,6 +1,6 @@
 {
   "name": "admin-template",
-  "author": "WangRuiJin <1361572192@qq.com>",
+  "author": "Clay Wang",
   "repository": "git@gitee.com:jh_shot/admin-template.git",
   "license": "MulanPSL2",
   "scripts": {
@@ -8,7 +8,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml",
-    "postinstall": "node update-externals"
+    "postinstall": "node update-externals",
+    "lint:style": "stylelint src/**/*.{css,scss} --syntax scss --fix"
   },
   "dependencies": {
     "axios": "0.19.2",
@@ -26,14 +27,14 @@
     "vuex": "3.5.1"
   },
   "devDependencies": {
-    "@ascendancyy/vue-cli-plugin-stylelint": "^1.1.2",
     "@vue/cli-plugin-babel": "^4.4.6",
     "@vue/cli-plugin-eslint": "^4.4.6",
     "@vue/cli-plugin-router": "^4.4.6",
     "@vue/cli-plugin-vuex": "^4.4.6",
     "@vue/cli-service": "^4.4.6",
-    "@vue/eslint-config-standard": "^5.1.2",
+    "@vue/eslint-config-prettier": "^6.0.0",
     "babel-eslint": "^10.1.0",
+    "compression-webpack-plugin": "^6.1.1",
     "eslint": "^7.5.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",
@@ -43,12 +44,17 @@
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^6.1.2",
     "husky": "^4.2.5",
-    "less": "^3.12.2",
-    "less-loader": "^6.2.0",
     "lint-staged": "^10.2.11",
+    "node-sass": "^4.14.1",
     "path-to-regexp": "^3.1.0",
     "prettier": "^2.0.5",
+    "sass-loader": "^8.0.2",
+    "stylelint": "^13.7.2",
+    "stylelint-config-rational-order": "^0.1.2",
     "stylelint-config-standard": "^20.0.0",
+    "stylelint-order": "^4.1.0",
+    "stylelint-scss": "^3.18.0",
+    "stylelint-webpack-plugin": "^2.1.1",
     "svg-sprite-loader": "^4.3.0",
     "svgo": "^1.2.0",
     "svgo-loader": "^2.2.0",

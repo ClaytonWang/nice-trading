@@ -19,9 +19,7 @@
         <el-table-column label="信息">
           <template v-slot="scope">
             <div style="margin-bottom: 5px;">
-              <span class="message-title" style="padding-right: 5px;"
-                >Msg:</span
-              >
+              <span class="message-title" style="padding-right: 5px;">Msg:</span>
               <el-tag type="danger">{{ scope.row.err.message }}</el-tag>
             </div>
             <div style="margin-bottom: 5px;">
@@ -64,23 +62,23 @@ export default {
   name: 'ErrorLog',
   data() {
     return {
-      show: false
-    }
+      show: false,
+    };
   },
   computed: {
     logs() {
-      return this.$store.state.errorLog.logs
-    }
+      return this.$store.state.errorLog.logs;
+    },
   },
   methods: {
     handleClear() {
-      this.$store.dispatch('errorLog/clearErrorLog')
-    }
-  }
-}
+      this.$store.dispatch('errorLog/clearErrorLog');
+    },
+  },
+};
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .error-log {
   display: inline-block;
 }

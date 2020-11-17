@@ -12,20 +12,20 @@ export default {
   name: 'SidebarLogo',
   computed: {
     title() {
-      return this.$store.state.settings.title
-    }
-  }
-}
+      return this.$store.state.settings.title;
+    },
+  },
+};
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .sidebar-logo {
   background-color: #002140 !important;
 
   span {
     color: #fff;
-    font-size: 22px;
     font-weight: bold;
+    font-size: 22px;
   }
 }
 </style>

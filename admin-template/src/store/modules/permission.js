@@ -1,4 +1,4 @@
-import { constantRouterMap, asyncRouterMap } from '@/router'
+import { constantRouterMap, asyncRouterMap } from '@/router';
 
 /**
  * 判断用户是否拥有访问该路由的权限
@@ -8,10 +8,12 @@ import { constantRouterMap, asyncRouterMap } from '@/router'
  */
 const hasPermission = (permissions, route) => {
   if (route.meta && route.meta.permission) {
-    return permissions.some(permission => route.meta.permission === permission)
+    return permissions.some(
+      (permission) => route.meta.permission === permission,
+    );
   }
-  return true
-}
+  return true;
+};
 
 /**
  * 返回符合用户角色的路由表
@@ -20,39 +22,39 @@ const hasPermission = (permissions, route) => {
  * @returns {boolean}
  */
 const filterAsyncRouter = (asyncRouterMap, permissions) => {
-  const accessedRouters = asyncRouterMap.filter(route => {
+  const accessedRouters = asyncRouterMap.filter((route) => {
     if (hasPermission(permissions, route)) {
       if (route.children && route.children.length) {
-        route.children = filterAsyncRouter(route.children, permissions)
+        route.children = filterAsyncRouter(route.children, permissions);
       }
-      return true
+      return true;
     }
-    return false
-  })
+    return false;
+  });
 
-  return accessedRouters
-}
+  return accessedRouters;
+};
 
 export default {
   namespaced: true,
   state: {
     routers: constantRouterMap,
-    addRouters: []
+    addRouters: [],
   },
   mutations: {
     SET_ROUTERS(state, routers) {
-      state.addRouters = routers
-      state.routers = constantRouterMap.concat(routers)
-    }
+      state.addRouters = routers;
+      state.routers = constantRouterMap.concat(routers);
+    },
   },
   actions: {
     generateRoutes({ commit }, data) {
-      return new Promise((resolve, reject) => {
-        const { permissions } = data
-        const accessedRouters = filterAsyncRouter(asyncRouterMap, permissions)
-        commit('SET_ROUTERS', accessedRouters)
-        resolve()
-      })
-    }
-  }
-}
+      return new Promise((resolve) => {
+        const { permissions } = data;
+        const accessedRouters = filterAsyncRouter(asyncRouterMap, permissions);
+        commit('SET_ROUTERS', accessedRouters);
+        resolve();
+      });
+    },
+  },
+};

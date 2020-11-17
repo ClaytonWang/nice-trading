@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import path from 'path'
+import path from 'path';
 
 export default {
   name: 'TagsView',
@@ -72,106 +72,106 @@ export default {
       tagBodyLeft: 0,
       outerPadding: 4,
       selectedTag: {},
-      affixTags: []
-    }
+      affixTags: [],
+    };
   },
   computed: {
     visitedViews() {
-      return this.$store.state.tagsView.visitedViews
+      return this.$store.state.tagsView.visitedViews;
     },
     routers() {
-      return this.$store.state.permission.routers
-    }
+      return this.$store.state.permission.routers;
+    },
   },
   watch: {
     $route: {
       handler: function () {
-        this.addTags()
-        this.moveToCurrentTag()
-      }
+        this.addTags();
+        this.moveToCurrentTag();
+      },
     },
     visible: {
       handler: function (val) {
         val
           ? document.body.addEventListener('click', this.closeContext)
-          : document.body.removeEventListener('click', this.closeContext)
-      }
-    }
+          : document.body.removeEventListener('click', this.closeContext);
+      },
+    },
   },
   mounted() {
-    this.initTags()
-    this.addTags()
+    this.initTags();
+    this.addTags();
   },
   methods: {
     isActive(route) {
-      return route.path === this.$route.path
+      return route.path === this.$route.path;
     },
     isAffix(tag) {
-      return tag.meta && tag.meta.affix
+      return tag.meta && tag.meta.affix;
     },
     filterAffixTags(routes, basePath = '/') {
-      let tags = []
-      routes.forEach(route => {
+      let tags = [];
+      routes.forEach((route) => {
         if (route.meta && route.meta.affix) {
-          const tagPath = path.resolve(basePath, route.path)
+          const tagPath = path.resolve(basePath, route.path);
           tags.push({
             fullPath: tagPath,
             path: tagPath,
             name: route.name,
-            meta: { ...route.meta }
-          })
+            meta: { ...route.meta },
+          });
         }
         if (route.children) {
-          const tempTags = this.filterAffixTags(route.children, route.path)
+          const tempTags = this.filterAffixTags(route.children, route.path);
           if (tempTags.length >= 1) {
-            tags = [...tags, ...tempTags]
+            tags = [...tags, ...tempTags];
           }
         }
-      })
-      return tags
+      });
+      return tags;
     },
     initTags() {
-      this.affixTags = this.filterAffixTags(this.routers)
+      this.affixTags = this.filterAffixTags(this.routers);
       for (const tag of this.affixTags) {
         // Must have tag name
         if (tag.name) {
-          this.$store.dispatch('tagsView/addVisitedView', tag)
+          this.$store.dispatch('tagsView/addVisitedView', tag);
         }
       }
     },
     addTags() {
-      const { name } = this.$route
+      const { name } = this.$route;
       if (name) {
-        this.$store.dispatch('tagsView/addView', this.$route)
+        this.$store.dispatch('tagsView/addView', this.$route);
       }
-      return false
+      return false;
     },
     moveToCurrentTag() {
-      const tags = this.$refs.tag
+      const tags = this.$refs.tag;
 
       this.$nextTick(() => {
         for (const tag of tags) {
           if (tag.to.path === this.$route.path) {
-            this.moveToTarget(tag.$el)
+            this.moveToTarget(tag.$el);
 
             // when query is different then update
             if (tag.to.fullPath !== this.$route.fullPath) {
-              this.$store.dispatch('tagsView/updateVisitedView', this.$route)
+              this.$store.dispatch('tagsView/updateVisitedView', this.$route);
             }
-            break
+            break;
           }
         }
-      })
+      });
     },
     moveToTarget(tag) {
-      const outerWidth = this.$refs.scrollOuter.offsetWidth
-      const bodyWidth = this.$refs.scrollBody.offsetWidth
+      const outerWidth = this.$refs.scrollOuter.offsetWidth;
+      const bodyWidth = this.$refs.scrollBody.offsetWidth;
 
       if (bodyWidth < outerWidth) {
-        this.tagBodyLeft = 0
+        this.tagBodyLeft = 0;
       } else if (tag.offsetLeft < -this.tagBodyLeft) {
         // 标签在可视区域左侧
-        this.tagBodyLeft = -tag.offsetLeft + this.outerPadding
+        this.tagBodyLeft = -tag.offsetLeft + this.outerPadding;
       } else if (
         tag.offsetLeft > -this.tagBodyLeft &&
         tag.offsetLeft + tag.offsetWidth < -this.tagBodyLeft + outerWidth
@@ -179,100 +179,100 @@ export default {
         // 标签在可视区域
         this.tagBodyLeft = Math.min(
           0,
-          outerWidth - tag.offsetWidth - tag.offsetLeft - this.outerPadding
-        )
+          outerWidth - tag.offsetWidth - tag.offsetLeft - this.outerPadding,
+        );
       } else {
         // 标签在可视区域右侧
         this.tagBodyLeft = -(
           tag.offsetLeft -
           (outerWidth - this.outerPadding - tag.offsetWidth)
-        )
+        );
       }
     },
     refreshSelectedTag(view) {
       this.$store.dispatch('tagsView/delCachedView', view).then(() => {
-        const { fullPath } = view
+        const { fullPath } = view;
 
         this.$nextTick(() => {
           this.$router.replace({
-            path: '/redirect' + fullPath
-          })
-        })
-      })
+            path: '/redirect' + fullPath,
+          });
+        });
+      });
     },
     closeSelectedTag(view) {
       this.$store
         .dispatch('tagsView/delView', view)
         .then(({ visitedViews }) => {
           if (this.isActive(view)) {
-            this.toLastView(visitedViews, view)
+            this.toLastView(visitedViews, view);
           }
-        })
+        });
     },
     closeOthersTags(view) {
-      this.$router.push(view)
+      this.$router.push(view);
       this.$store.dispatch('tagsView/delOthersViews', view).then(() => {
-        this.moveToCurrentTag()
-      })
+        this.moveToCurrentTag();
+      });
     },
     closeAllTags(view) {
       this.$store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {
-        if (this.affixTags.some(tag => tag.path === view.path)) {
-          return
+        if (this.affixTags.some((tag) => tag.path === view.path)) {
+          return;
         }
-        this.toLastView(visitedViews, view)
-      })
+        this.toLastView(visitedViews, view);
+      });
     },
     toLastView(visitedViews, view) {
-      const latestView = visitedViews.slice(-1)[0]
+      const latestView = visitedViews.slice(-1)[0];
 
       if (latestView) {
-        this.$router.push(latestView.fullPath)
+        this.$router.push(latestView.fullPath);
       } else {
         // now the default is to redirect to the home page if there is no tags-view,
         // you can adjust it according to your needs.
         if (view.name === 'Dashboard') {
           // to reload home page
-          this.$router.replace({ path: '/redirect' + view.fullPath })
+          this.$router.replace({ path: '/redirect' + view.fullPath });
         } else {
-          this.$router.push('/')
+          this.$router.push('/');
         }
       }
     },
     openContext(tag, e) {
-      const menuMinWidth = 105
-      const offsetLeft = this.$el.getBoundingClientRect().left
-      const offsetWidth = this.$el.offsetWidth
-      const maxLeft = offsetWidth - menuMinWidth
-      const left = e.clientX - offsetLeft + 10
+      const menuMinWidth = 105;
+      const offsetLeft = this.$el.getBoundingClientRect().left;
+      const offsetWidth = this.$el.offsetWidth;
+      const maxLeft = offsetWidth - menuMinWidth;
+      const left = e.clientX - offsetLeft + 10;
 
       if (left > maxLeft) {
-        this.contextLeft = maxLeft
+        this.contextLeft = maxLeft;
       } else {
-        this.contextLeft = left
+        this.contextLeft = left;
       }
 
-      this.contextTop = e.clientY - 50
-      this.visible = true
-      this.selectedTag = tag
+      this.contextTop = e.clientY - 50;
+      this.visible = true;
+      this.selectedTag = tag;
     },
     closeContext() {
-      this.visible = false
+      this.visible = false;
     },
     handlescroll(e) {
-      var type = e.type
-      let delta = 0
+      var type = e.type;
+      let delta = 0;
       if (type === 'DOMMouseScroll' || type === 'mousewheel') {
-        delta = e.wheelDelta ? e.wheelDelta : -(e.detail || 0) * 40
+        delta = e.wheelDelta ? e.wheelDelta : -(e.detail || 0) * 40;
       }
-      this.closeContext()
-      this.handleScroll(delta)
+      this.closeContext();
+      this.handleScroll(delta);
     },
     handleScroll(offset) {
-      const outerWidth = this.$refs.scrollOuter.offsetWidth
-      const bodyWidth = this.$refs.scrollBody.offsetWidth
+      const outerWidth = this.$refs.scrollOuter.offsetWidth;
+      const bodyWidth = this.$refs.scrollBody.offsetWidth;
       if (offset > 0) {
-        this.tagBodyLeft = Math.min(0, this.tagBodyLeft + offset)
+        this.tagBodyLeft = Math.min(0, this.tagBodyLeft + offset);
       } else {
         if (outerWidth < bodyWidth) {
           if (this.tagBodyLeft < -(bodyWidth - outerWidth)) {
@@ -280,19 +280,19 @@ export default {
           } else {
             this.tagBodyLeft = Math.max(
               this.tagBodyLeft + offset,
-              outerWidth - bodyWidth
-            )
+              outerWidth - bodyWidth,
+            );
           }
         } else {
-          this.tagBodyLeft = 0
+          this.tagBodyLeft = 0;
         }
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
-<style lang="less">
+<style lang="scss">
 .tags-view-container {
   position: relative;
   height: 38px;
@@ -302,16 +302,16 @@ export default {
   .btn {
     position: absolute;
     top: 0;
-    height: 100%;
-    background: #fff;
-    padding-top: 6px;
     z-index: 10;
+    height: 100%;
+    padding-top: 6px;
+    background: #fff;
 
     button {
       padding: 6px 4px;
+      color: #97a8be;
       line-height: 14px;
       text-align: center;
-      color: #97a8be;
     }
 
     &.left-btn {
@@ -326,48 +326,48 @@ export default {
 
   .scroll-outer {
     position: absolute;
-    left: 23px;
-    right: 23px;
     top: 0;
+    right: 23px;
     bottom: 0;
+    left: 23px;
     box-shadow: 0 0 3px 2px rgba(100, 100, 100, 0.1) inset;
 
     .scroll-body {
-      height: ~'calc(100% - 1px)';
-      display: inline-block;
-      padding: 1px 4px 0;
       position: absolute;
+      display: inline-block;
+      height: calc(100% - 1px);
+      padding: 1px 4px 0;
       overflow: visible;
       white-space: nowrap;
       transition: left 0.3s ease;
 
       .tags-view-item {
-        display: inline-block;
         position: relative;
+        display: inline-block;
         height: 30px;
-        line-height: 30px;
-        color: #495060;
-        background: #fff;
-        padding: 0 10px;
-        font-size: 12px;
         margin-top: 2px;
-        user-select: none;
+        padding: 0 10px;
+        color: #495060;
+        font-size: 12px;
+        line-height: 30px;
+        background: #fff;
         border-radius: 2px;
+        user-select: none;
 
         &:not(:last-child) {
           margin-right: 5px;
         }
 
         &::before {
-          content: '';
-          background-color: #e8eaec;
+          position: relative;
           display: inline-block;
           width: 8px;
           height: 8px;
-          border-radius: 50%;
-          position: relative;
           margin-right: 2px;
+          background-color: #e8eaec;
+          border-radius: 50%;
           transition: background-color 0.2s ease;
+          content: '';
         }
 
         &:hover {
@@ -389,17 +389,17 @@ export default {
   }
 
   .contextmenu {
-    margin: 0;
-    background: #fff;
     position: absolute;
-    list-style-type: none;
-    padding: 5px 0;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 400;
-    color: #333;
-    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
     z-index: 100;
+    margin: 0;
+    padding: 5px 0;
+    color: #333;
+    font-weight: 400;
+    font-size: 12px;
+    list-style-type: none;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
 
     li {
       margin: 0;

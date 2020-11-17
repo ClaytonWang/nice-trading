@@ -57,51 +57,51 @@ export default {
       redirect: undefined,
       form: {
         username: '',
-        password: ''
+        password: '',
       },
       rules: {
         username: [
-          { required: true, message: '请输入用户名', trigger: 'blur' }
+          { required: true, message: '请输入用户名', trigger: 'blur' },
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 5, message: '密码不能小于5位', trigger: 'blur' }
-        ]
-      }
-    }
+          { min: 5, message: '密码不能小于5位', trigger: 'blur' },
+        ],
+      },
+    };
   },
   computed: {
     title() {
-      return this.$store.state.settings.title
-    }
+      return this.$store.state.settings.title;
+    },
   },
   watch: {
     $route: {
       handler: function (val) {
-        this.redirect = val.query.redirect
-      }
-    }
+        this.redirect = val.query.redirect;
+      },
+    },
   },
   methods: {
     handleLogin() {
-      this.$refs.form.validate(async valid => {
+      this.$refs.form.validate(async (valid) => {
         if (valid) {
-          this.loading = true
+          this.loading = true;
 
           try {
-            await this.$store.dispatch('user/doLogin', this.form)
-            this.loading = false
-            await this.$router.replace({ path: this.redirect || '/' })
+            await this.$store.dispatch('user/doLogin', this.form);
+            this.loading = false;
+            await this.$router.replace({ path: this.redirect || '/' });
           } catch (error) {
-            this.loading = false
+            this.loading = false;
           }
         }
-      })
-    }
-  }
-}
+      });
+    },
+  },
+};
 </script>
 
-<style lang="less">
-@import './index.less';
+<style lang="scss">
+@import './index.scss';
 </style>

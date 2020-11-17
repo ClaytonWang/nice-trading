@@ -37,12 +37,12 @@
 </template>
 
 <script>
-import Breadcrumb from './components/Breadcrumb.vue'
-import Hamburger from './components/Hamburger.vue'
-import PageSearch from './components/PageSearch.vue'
-import Screenfull from './components/Screenfull.vue'
-import ErrorLog from './components/ErrorLog.vue'
-import Setting from './components/Setting.vue'
+import Breadcrumb from './components/Breadcrumb.vue';
+import Hamburger from './components/Hamburger.vue';
+import PageSearch from './components/PageSearch.vue';
+import Screenfull from './components/Screenfull.vue';
+import ErrorLog from './components/ErrorLog.vue';
+import Setting from './components/Setting.vue';
 
 export default {
   name: 'Navbar',
@@ -52,49 +52,49 @@ export default {
     PageSearch,
     Screenfull,
     ErrorLog,
-    Setting
+    Setting,
   },
   computed: {
     sidebar() {
-      return this.$store.state.app.sidebar
+      return this.$store.state.app.sidebar;
     },
     isMobile() {
-      return this.$store.getters.isMobile
+      return this.$store.getters.isMobile;
     },
     avatarSrc() {
-      return require('./avatar.png')
-    }
+      return require('./avatar.png');
+    },
   },
   methods: {
     toggleSidebar() {
-      this.$store.dispatch('app/toggleSidebar', !this.sidebar)
+      this.$store.dispatch('app/toggleSidebar', !this.sidebar);
     },
     async handleLogout() {
-      const loading = this.$loading()
+      const loading = this.$loading();
 
       try {
-        await this.$store.dispatch('user/doLogout')
-        loading.close()
-        this.$router.replace({ name: 'Login' })
+        await this.$store.dispatch('user/doLogout');
+        loading.close();
+        this.$router.replace({ name: 'Login' });
       } catch (error) {
-        loading.close()
+        loading.close();
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
-<style lang="less">
-@height: 50px;
+<style lang="scss">
+$height: 50px;
 
 .navbar {
-  height: @height;
-  line-height: @height;
+  height: $height;
+  line-height: $height;
   border-radius: 0 !important;
 
   .hamburger-container {
     float: left;
-    height: @height;
+    height: $height;
     padding: 0 10px;
     line-height: 60px;
   }
@@ -106,7 +106,7 @@ export default {
     bottom: 0;
 
     & > div {
-      height: @height;
+      height: $height;
       margin-right: 15px;
       color: #2c2c2c;
     }

@@ -1,6 +1,6 @@
-import requireAll from '@/utils/requireAll'
+import requireAll from '@/utils/requireAll';
 
-const requireFilters = require.context('.', false, /^((?!index).)*.js$/)
-const filters = requireAll(requireFilters)
+const requireFilters = require.context('.', false, /^((?!index).)*.js$/);
+const filters = requireAll(requireFilters);
 
-export default filters
+export default filters;

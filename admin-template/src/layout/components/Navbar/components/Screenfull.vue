@@ -8,42 +8,42 @@
 </template>
 
 <script>
-import screenfull from 'screenfull'
+import screenfull from 'screenfull';
 
 export default {
   name: 'Screenfull',
   data() {
     return {
-      isFullscreen: false
-    }
+      isFullscreen: false,
+    };
   },
   mounted() {
-    this.init()
+    this.init();
   },
   methods: {
     init() {
       if (screenfull.isEnabled) {
         screenfull.on('change', () => {
-          this.isFullscreen = screenfull.isFullscreen
-        })
+          this.isFullscreen = screenfull.isFullscreen;
+        });
       }
     },
     handleClick() {
       if (!screenfull.isEnabled) {
-        this.$message({ type: 'warning', message: '该浏览器不支持全屏功能' })
-        return false
+        this.$message({ type: 'warning', message: '该浏览器不支持全屏功能' });
+        return false;
       }
-      screenfull.toggle()
-    }
-  }
-}
+      screenfull.toggle();
+    },
+  },
+};
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .screenfull {
   display: inline-block;
   font-size: 20px;
-  cursor: pointer;
   vertical-align: middle;
+  cursor: pointer;
 }
 </style>

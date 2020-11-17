@@ -1,6 +1,6 @@
-import requireAll from '@/utils/requireAll'
+import requireAll from '@/utils/requireAll';
 
-const requireApi = require.context('.', false, /^((?!index).)*.js$/)
-const api = requireAll(requireApi)
+const requireApi = require.context('.', false, /^((?!index).)*.js$/);
+const api = requireAll(requireApi);
 
-export default api
+export default api;

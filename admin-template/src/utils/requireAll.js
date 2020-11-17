@@ -1,19 +1,19 @@
-import { camelCase } from 'lodash-es'
+import { camelCase } from 'lodash-es';
 
 export default (requireFiles, handler) => {
   const files = requireFiles.keys().reduce((total, path) => {
-    const file = requireFiles(path)
+    const file = requireFiles(path);
 
     if (typeof handler === 'function') {
-      handler(total, file)
+      handler(total, file);
     } else {
-      const name = camelCase(path.replace(/(\.\/|\.js)/g, ''))
+      const name = camelCase(path.replace(/(\.\/|\.js)/g, ''));
 
-      total[name] = file.default || file
+      total[name] = file.default || file;
     }
 
-    return total
-  }, {})
+    return total;
+  }, {});
 
-  return files
-}
+  return files;
+};

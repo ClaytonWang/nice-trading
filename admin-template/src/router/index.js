@@ -1,12 +1,12 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import requireAll from '@/utils/requireAll'
-import Layout from '@/layout/index.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import requireAll from '@/utils/requireAll';
+import Layout from '@/layout/index.vue';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
-const requireRoutes = require.context('./routes', false, /\.js$/)
-const routes = requireAll(requireRoutes)
+const requireRoutes = require.context('./routes', false, /\.js$/);
+const routes = requireAll(requireRoutes);
 
 /**
  * @example hidden: true           设为 true 则该路由不会显示在侧边栏，默认为 false
@@ -31,23 +31,23 @@ export const constantRouterMap = [
     children: [
       {
         path: '/redirect/:path(.*)',
-        component: () => import('@/views/redirect/index.vue')
-      }
-    ]
+        component: () => import('@/views/redirect/index.vue'),
+      },
+    ],
   },
   {
     path: '/404',
     name: '404',
     component: () =>
       import(/* webpackChunkName: 'group-error' */ '@/views/error/404.vue'),
-    hidden: true
+    hidden: true,
   },
   {
     path: '/login',
     name: 'Login',
     component: () =>
       import(/* webpackChunkName: 'group-login' */ '@/views/login/index.vue'),
-    hidden: true
+    hidden: true,
   },
   {
     path: '',
@@ -61,32 +61,32 @@ export const constantRouterMap = [
           import(
             /* webpackChunkName: 'group-dashboard' */ '@/views/dashboard/index.vue'
           ),
-        meta: { title: '首页', icon: 'dashboard', noCache: true }
-      }
-    ]
-  }
-]
+        meta: { title: '首页', icon: 'dashboard', noCache: true },
+      },
+    ],
+  },
+];
 
 export const asyncRouterMap = [
   ...Object.values(routes),
   {
     path: '*',
     redirect: '/404',
-    hidden: true
-  }
-]
+    hidden: true,
+  },
+];
 
 const createRouter = () =>
   new VueRouter({
     mode: 'history',
     scrollBehavior: () => ({ y: 0 }),
-    routes: constantRouterMap
-  })
-const router = createRouter()
+    routes: constantRouterMap,
+  });
+const router = createRouter();
 
 export const resetRouter = () => {
-  const newRouter = createRouter()
-  router.matcher = newRouter.matcher
-}
+  const newRouter = createRouter();
+  router.matcher = newRouter.matcher;
+};
 
-export default router
+export default router;

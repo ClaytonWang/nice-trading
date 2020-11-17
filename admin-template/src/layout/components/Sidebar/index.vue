@@ -22,36 +22,36 @@
 </template>
 
 <script>
-import SidebarItem from './components/SidebarItem.vue'
-import SidebarLogo from './components/SidebarLogo.vue'
+import SidebarItem from './components/SidebarItem.vue';
+import SidebarLogo from './components/SidebarLogo.vue';
 
 export default {
   name: 'Sidebar',
   components: {
     SidebarItem,
-    SidebarLogo
+    SidebarLogo,
   },
   computed: {
     sidebar() {
-      return this.$store.state.app.sidebar
+      return this.$store.state.app.sidebar;
     },
     routers() {
-      return this.$store.state.permission.routers
+      return this.$store.state.permission.routers;
     },
     showSidebarLogo() {
-      return this.$store.state.settings.showSidebarLogo
+      return this.$store.state.settings.showSidebarLogo;
     },
     activeMenu() {
-      const { meta, path } = this.$route
+      const { meta, path } = this.$route;
 
       if (meta.activeMenu) {
-        return meta.activeMenu
+        return meta.activeMenu;
       }
-      return path
+      return path;
     },
     isCollapse() {
-      return !this.sidebar
-    }
-  }
-}
+      return !this.sidebar;
+    },
+  },
+};
 </script>

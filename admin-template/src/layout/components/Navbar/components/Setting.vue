@@ -11,18 +11,18 @@ export default {
     handleClick() {
       this.$store.dispatch('settings/changeSetting', {
         key: 'showSettings',
-        value: true
-      })
-    }
-  }
-}
+        value: true,
+      });
+    },
+  },
+};
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .setting {
   display: inline-block;
   font-size: 20px;
-  cursor: pointer;
   vertical-align: middle;
+  cursor: pointer;
 }
 </style>

@@ -1,28 +1,28 @@
-import axios from 'axios'
-import { Message } from 'element-ui'
-import router from '@/router'
-import { getToken, removeToken } from './auth'
+import axios from 'axios';
+import { Message } from 'element-ui';
+import router from '@/router';
+import { getToken, removeToken } from './auth';
 
 const ajax = axios.create({
   baseURL: '/',
   withCredentials: true,
-  timeout: 5000
-})
+  timeout: 5000,
+});
 
-ajax.interceptors.request.use(config => {
+ajax.interceptors.request.use((config) => {
   // 非鉴权接口不携带 token
   if (config.headers.auth !== false) {
-    config.headers.Authorization = `Bearer ${getToken()}`
+    config.headers.Authorization = `Bearer ${getToken()}`;
   }
 
-  return config
-})
+  return config;
+});
 
 ajax.interceptors.response.use(
-  resp => {
-    return resp.data
+  (resp) => {
+    return resp.data;
   },
-  err => {
+  (err) => {
     Message({
       type: 'error',
       message: err.message,
@@ -31,17 +31,17 @@ ajax.interceptors.response.use(
         switch (err.response.status) {
           case 401:
           case 403:
-            removeToken()
-            router.replace({ name: 'Login' })
-            break
+            removeToken();
+            router.replace({ name: 'Login' });
+            break;
           default:
-            break
+            break;
         }
-      }
-    })
+      },
+    });
 
-    return Promise.reject(err)
-  }
-)
+    return Promise.reject(err);
+  },
+);
 
-export default ajax
+export default ajax;

@@ -1,2 +1,2 @@
-const requireIcons = require.context('./svg', false, /\.svg$/)
-requireIcons.keys().map(requireIcons)
+const requireIcons = require.context('./svg', false, /\.svg$/);
+requireIcons.keys().map(requireIcons);

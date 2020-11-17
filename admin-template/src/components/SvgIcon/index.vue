@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { isExternal } from '@/utils'
+import { isExternal } from '@/utils';
 
 export default {
   name: 'SvgIcon',
@@ -18,44 +18,44 @@ export default {
   props: {
     iconClass: {
       type: String,
-      required: true
+      required: true,
     },
     className: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   computed: {
     isExternalIcon() {
-      return isExternal(this.iconClass)
+      return isExternal(this.iconClass);
     },
     iconName() {
-      return `#icon-${this.iconClass}`
+      return `#icon-${this.iconClass}`;
     },
     svgClass() {
       if (this.className) {
-        return `svg-icon ${this.className}`
+        return `svg-icon ${this.className}`;
       } else {
-        return 'svg-icon'
+        return 'svg-icon';
       }
     },
     externalIconStyle() {
       return {
         mask: `url(${this.iconClass}) no-repeat 50% 50%`,
-        '-webkit-mask': `url(${this.iconClass}) no-repeat 50% 50%`
-      }
-    }
-  }
-}
+        '-webkit-mask': `url(${this.iconClass}) no-repeat 50% 50%`,
+      };
+    },
+  },
+};
 </script>
 
 <style scoped>
 .svg-icon {
   width: 1em;
   height: 1em;
+  overflow: hidden;
   vertical-align: -0.15em;
   fill: currentColor;
-  overflow: hidden;
 }
 
 .svg-external-icon {

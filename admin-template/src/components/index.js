@@ -1,13 +1,13 @@
-import requireAll from '@/utils/requireAll'
+import requireAll from '@/utils/requireAll';
 
-const requireComponents = require.context('.', true, /\.vue$/)
+const requireComponents = require.context('.', true, /\.vue$/);
 const components = requireAll(requireComponents, (total, file) => {
-  const component = file.default || file
-  const { name, global } = component
+  const component = file.default || file;
+  const { name, global } = component;
 
   if (global) {
-    total[name] = component
+    total[name] = component;
   }
-})
+});
 
-export default components
+export default components;

@@ -5,20 +5,16 @@
     "node": true
   },
   "extends": [
-    "prettier",
-    "prettier/vue",
-    "plugin:prettier/recommended",
     "plugin:vue/essential",
-    "@vue/standard"
+    "eslint:recommended",
+    "@vue/prettier"
   ],
-  "plugins": ["prettier"],
   "parserOptions": {
     "parser": "babel-eslint"
   },
   "rules": {
-    "indent": "off",
-    "no-return-await": "off",
-    "no-prototype-builtins": "off",
-    "space-before-function-paren": "off"
+    "no-template-curly-in-string": "off",
+    "no-console": "off",
+    "no-debugger": "off"
   }
 }

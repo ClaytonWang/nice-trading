@@ -30,57 +30,57 @@ export default {
   name: 'SettingPanel',
   computed: {
     size() {
-      return this.$store.getters.isMobile ? '50%' : '400px'
+      return this.$store.getters.isMobile ? '50%' : '400px';
     },
     showSettings: {
       get() {
-        return this.$store.state.settings.showSettings
+        return this.$store.state.settings.showSettings;
       },
       set(val) {
         this.$store.dispatch('settings/changeSetting', {
           key: 'showSettings',
-          value: val
-        })
-      }
+          value: val,
+        });
+      },
     },
     showTagsView: {
       get() {
-        return this.$store.state.settings.showTagsView
+        return this.$store.state.settings.showTagsView;
       },
       set(val) {
         this.$store.dispatch('settings/changeSetting', {
           key: 'showTagsView',
-          value: val
-        })
-      }
+          value: val,
+        });
+      },
     },
     fixedHeader: {
       get() {
-        return this.$store.state.settings.fixedHeader
+        return this.$store.state.settings.fixedHeader;
       },
       set(val) {
         this.$store.dispatch('settings/changeSetting', {
           key: 'fixedHeader',
-          value: val
-        })
-      }
+          value: val,
+        });
+      },
     },
     showSidebarLogo: {
       get() {
-        return this.$store.state.settings.showSidebarLogo
+        return this.$store.state.settings.showSidebarLogo;
       },
       set(val) {
         this.$store.dispatch('settings/changeSetting', {
           key: 'showSidebarLogo',
-          value: val
-        })
-      }
-    }
-  }
-}
+          value: val,
+        });
+      },
+    },
+  },
+};
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .setting-panel-items {
   padding: 24px;
   font-size: 14px;
@@ -95,9 +95,9 @@ export default {
   }
 
   .panel-item {
+    padding: 12px 0;
     color: rgba(0, 0, 0, 0.65);
     font-size: 14px;
-    padding: 12px 0;
   }
 
   .panel-switch {

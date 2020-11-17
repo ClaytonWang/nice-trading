@@ -23,5 +23,5 @@ export default {
    * @type {boolean}
    * @description 是否显示侧边栏标志
    */
-  showSidebarLogo: true
-}
+  showSidebarLogo: true,
+};

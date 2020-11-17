@@ -19,13 +19,13 @@
 </template>
 
 <script>
-import resize from './mixins/resize'
-import Sidebar from './components/Sidebar/index.vue'
-import Navbar from './components/Navbar/index.vue'
-import AppMain from './components/AppMain.vue'
-import TagsView from './components/TagsView.vue'
-import SettingPanel from './components/SettingPanel.vue'
-import BackTop from './components/BackTop.vue'
+import resize from './mixins/resize';
+import Sidebar from './components/Sidebar/index.vue';
+import Navbar from './components/Navbar/index.vue';
+import AppMain from './components/AppMain.vue';
+import TagsView from './components/TagsView.vue';
+import SettingPanel from './components/SettingPanel.vue';
+import BackTop from './components/BackTop.vue';
 
 export default {
   name: 'Layout',
@@ -36,43 +36,43 @@ export default {
     AppMain,
     TagsView,
     SettingPanel,
-    BackTop
+    BackTop,
   },
   computed: {
     showTagsView() {
-      return this.$store.state.settings.showTagsView
+      return this.$store.state.settings.showTagsView;
     },
     fixedHeader() {
-      return this.$store.state.settings.fixedHeader
+      return this.$store.state.settings.fixedHeader;
     },
     sidebar() {
-      return this.$store.state.app.sidebar
+      return this.$store.state.app.sidebar;
     },
     isMobile() {
-      return this.$store.getters.isMobile
+      return this.$store.getters.isMobile;
     },
     classObj() {
       return {
         hideSidebar: !this.sidebar,
         hideTagsView: !this.showTagsView,
-        mobile: this.isMobile
-      }
-    }
+        mobile: this.isMobile,
+      };
+    },
   },
   methods: {
     handleClickBg() {
-      this.$store.dispatch('app/toggleSidebar', false)
-    }
-  }
-}
+      this.$store.dispatch('app/toggleSidebar', false);
+    },
+  },
+};
 </script>
 
-<style lang="less">
-@headerHeight: 85px;
-@siderMaxWidth: 250px;
-@siderMinWidth: 62px;
-@menuItemHeight: 50px;
-@siderBgColor: #001529;
+<style lang="scss">
+$headerHeight: 85px;
+$siderMaxWidth: 250px;
+$siderMinWidth: 62px;
+$menuItemHeight: 50px;
+$siderBgColor: #001529;
 
 /* 页面过渡动画 */
 .fade-transform-leave-active,
@@ -81,38 +81,38 @@ export default {
 }
 
 .fade-transform-enter {
-  opacity: 0;
   transform: translateX(-30px);
+  opacity: 0;
 }
 
 .fade-transform-leave-to {
-  opacity: 0;
   transform: translateX(30px);
+  opacity: 0;
 }
 
 .app-wrapper {
   .drawer-bg {
+    position: absolute;
+    top: 0;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
     background: #000;
     opacity: 0.3;
-    width: 100%;
-    top: 0;
-    height: 100%;
-    position: absolute;
-    z-index: 999;
   }
 
   .main-container {
     position: relative;
-    margin-left: @siderMaxWidth;
-    transition: margin-left 0.28s;
+    margin-left: $siderMaxWidth;
     overflow-x: hidden;
+    transition: margin-left 0.28s;
 
     .fixed-header {
       position: fixed;
       top: 0;
       right: 0;
-      width: calc(100% - @siderMaxWidth);
       z-index: 100;
+      width: calc(100% - #{$siderMaxWidth});
       transition: width 0.28s;
     }
 
@@ -131,13 +131,13 @@ export default {
     top: 0;
     bottom: 0;
     left: 0;
-    width: @siderMaxWidth !important;
-    height: 100%;
-    font-size: 0;
     z-index: 1001;
+    width: $siderMaxWidth !important;
+    height: 100%;
     overflow: hidden;
-    transition: width 0.28s;
+    font-size: 0;
     box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+    transition: width 0.28s;
 
     .horizontal-collapse-transition {
       /* prettier-ignore */
@@ -149,7 +149,7 @@ export default {
 
     .scrollbar-wrapper {
       overflow-x: hidden !important;
-      background-color: @siderBgColor;
+      background-color: $siderBgColor;
     }
 
     .el-scrollbar__bar.is-vertical {
@@ -161,8 +161,8 @@ export default {
     }
 
     .el-menu {
-      height: 100%;
       width: 100% !important;
+      height: 100%;
       border: none;
 
       a {
@@ -172,8 +172,8 @@ export default {
       }
 
       .svg-icon {
-        font-size: 22px;
         margin-right: 16px;
+        font-size: 22px;
         vertical-align: middle;
       }
 
@@ -183,8 +183,8 @@ export default {
 
       .el-submenu__title,
       .el-menu-item {
-        height: @menuItemHeight !important;
-        line-height: @menuItemHeight !important;
+        height: $menuItemHeight !important;
+        line-height: $menuItemHeight !important;
       }
 
       .is-active > .el-submenu__title {
@@ -200,14 +200,14 @@ export default {
 
   &.hideSidebar {
     .sidebar-container {
-      width: @siderMinWidth !important;
+      width: $siderMinWidth !important;
     }
 
     .main-container {
-      margin-left: @siderMinWidth;
+      margin-left: $siderMinWidth;
 
       .fixed-header {
-        width: calc(100% - @siderMinWidth);
+        width: calc(100% - #{$siderMinWidth});
       }
     }
 
@@ -235,11 +235,11 @@ export default {
       .el-submenu {
         & > .el-submenu__title {
           & > span {
-            height: 0;
+            display: inline-block;
             width: 0;
+            height: 0;
             overflow: hidden;
             visibility: hidden;
-            display: inline-block;
           }
         }
       }
@@ -258,8 +258,8 @@ export default {
 
   &.mobile {
     .sidebar-container {
+      width: $siderMaxWidth !important;
       transition: transform 0.28s;
-      width: @siderMaxWidth !important;
     }
 
     .main-container {
@@ -280,10 +280,10 @@ export default {
 
     &.hideSidebar {
       .sidebar-container {
-        pointer-events: none;
-        transition-duration: 0.3s;
-        transform: translate3d(-@siderMaxWidth, 0, 0);
         box-shadow: none;
+        transform: translate3d(-#{$siderMaxWidth}, 0, 0);
+        transition-duration: 0.3s;
+        pointer-events: none;
       }
     }
   }

@@ -1,4 +1,4 @@
-import Layout from '@/layout/index.vue'
+import Layout from '@/layout/index.vue';
 
 export default {
   path: '/nested',
@@ -14,7 +14,7 @@ export default {
         import(
           /* webpackChunkName: 'group-nested' */ '@/views/nested/example-1.vue'
         ),
-      meta: { title: '嵌套页面一' }
+      meta: { title: '嵌套页面一' },
     },
     {
       path: 'example2',
@@ -23,7 +23,7 @@ export default {
         import(
           /* webpackChunkName: 'group-nested' */ '@/views/nested/example-2.vue'
         ),
-      meta: { title: '嵌套页面二' }
-    }
-  ]
-}
+      meta: { title: '嵌套页面二' },
+    },
+  ],
+};

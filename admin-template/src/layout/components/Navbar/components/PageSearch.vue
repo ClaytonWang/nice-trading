@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import Fuse from 'fuse.js'
-import path from 'path'
+import Fuse from 'fuse.js';
+import path from 'path';
 
 export default {
   name: 'PageSearch',
@@ -37,30 +37,30 @@ export default {
       search: '',
       searchPool: [],
       options: [],
-      fuse: undefined
-    }
+      fuse: undefined,
+    };
   },
   computed: {
     routers() {
-      return this.$store.state.permission.routers
-    }
+      return this.$store.state.permission.routers;
+    },
   },
   watch: {
     show: {
       handler: function (val) {
         val
           ? document.body.addEventListener('click', this.handleClose)
-          : document.body.removeEventListener('click', this.handleClose)
-      }
+          : document.body.removeEventListener('click', this.handleClose);
+      },
     },
     searchPool: {
       handler: function (val) {
-        this.initFuse(val)
-      }
-    }
+        this.initFuse(val);
+      },
+    },
   },
   mounted() {
-    this.searchPool = this.generateRoutes(this.routers)
+    this.searchPool = this.generateRoutes(this.routers);
   },
   methods: {
     initFuse(list) {
@@ -74,56 +74,56 @@ export default {
         keys: [
           {
             name: 'title',
-            weight: 0.7
+            weight: 0.7,
           },
           {
             name: 'path',
-            weight: 0.3
-          }
-        ]
-      })
+            weight: 0.3,
+          },
+        ],
+      });
     },
     handleClick() {
-      this.show = !this.show
+      this.show = !this.show;
 
       if (!this.show) {
-        this.$refs.select && this.$refs.select.focus()
+        this.$refs.select && this.$refs.select.focus();
       }
     },
     handleClose() {
-      this.$refs.select && this.$refs.select.blur()
-      this.options = []
-      this.show = false
+      this.$refs.select && this.$refs.select.blur();
+      this.options = [];
+      this.show = false;
     },
     handleChange(val) {
-      this.$router.push(val.path)
-      this.search = ''
-      this.options = []
+      this.$router.push(val.path);
+      this.search = '';
+      this.options = [];
       this.$nextTick(() => {
-        this.show = false
-      })
+        this.show = false;
+      });
     },
     querySearch(query) {
-      this.options = query !== '' ? this.fuse.search(query) : []
+      this.options = query !== '' ? this.fuse.search(query) : [];
     },
     generateRoutes(routers, basePath = '/', prefixTitle = []) {
-      let res = []
+      let res = [];
 
       for (const router of routers) {
         if (router.hidden) {
-          continue
+          continue;
         }
 
         const data = {
           path: path.resolve(basePath, router.path),
-          title: [...prefixTitle]
-        }
+          title: [...prefixTitle],
+        };
 
         if (router.meta && router.meta.title) {
-          data.title = [...data.title, router.meta.title]
+          data.title = [...data.title, router.meta.title];
 
           if (router.redirect !== 'noredirect') {
-            res.push(data)
+            res.push(data);
           }
         }
 
@@ -131,49 +131,49 @@ export default {
           const temp = this.generateRoutes(
             router.children,
             data.path,
-            data.title
-          )
+            data.title,
+          );
 
           if (temp.length >= 1) {
-            res = [...res, ...temp]
+            res = [...res, ...temp];
           }
         }
       }
 
-      return res
-    }
-  }
-}
+      return res;
+    },
+  },
+};
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .page-search {
   display: inline-block;
 
   .search {
-    cursor: pointer;
     font-size: 22px;
     vertical-align: middle;
+    cursor: pointer;
   }
 
   .search-select {
     display: inline-block;
     width: 0;
     overflow: hidden;
-    background: transparent;
-    border-radius: 0;
     font-size: 18px;
     vertical-align: middle;
+    background: transparent;
+    border-radius: 0;
     transition: width 0.2s;
 
     /deep/ .el-input__inner {
-      border-radius: 0;
-      border: 0;
-      padding-left: 0;
       padding-right: 0;
-      box-shadow: none !important;
-      border-bottom: 1px solid #d9d9d9;
+      padding-left: 0;
       vertical-align: middle;
+      border: 0;
+      border-bottom: 1px solid #d9d9d9;
+      border-radius: 0;
+      box-shadow: none !important;
     }
   }
 

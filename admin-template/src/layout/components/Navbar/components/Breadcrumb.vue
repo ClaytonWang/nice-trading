@@ -16,62 +16,63 @@
 </template>
 
 <script>
-import pathToRegexp from 'path-to-regexp'
+import pathToRegexp from 'path-to-regexp';
 
 export default {
   name: 'Breadcrumb',
   data() {
     return {
-      levelList: []
-    }
+      levelList: [],
+    };
   },
   watch: {
     $route: {
       handler: function (val) {
         // 重定向页面不更新面包屑
         if (val.path.startsWith('/redirect/')) {
-          return
+          return;
         }
-        this.getBreadcrumb()
-      }
-    }
+        this.getBreadcrumb();
+      },
+    },
   },
   created() {
-    this.getBreadcrumb()
+    this.getBreadcrumb();
   },
   methods: {
     getBreadcrumb() {
-      let matched = this.$route.matched.filter(item => item.name)
-      const first = matched[0]
+      let matched = this.$route.matched.filter((item) => item.name);
+      const first = matched[0];
 
       if (first && first.name !== 'Dashboard') {
         matched = [{ path: '/dashboard', meta: { title: '首页' } }].concat(
-          matched
-        )
+          matched,
+        );
       }
 
       this.levelList = matched.filter(
-        item => item.meta && item.meta.title && item.meta.breadcrumb !== false
-      )
+        (item) =>
+          item.meta && item.meta.title && item.meta.breadcrumb !== false,
+      );
     },
     pathCompile(path) {
-      const { params } = this.$route
-      const toPath = pathToRegexp.compile(path)
-      return toPath(params)
+      const { params } = this.$route;
+      const toPath = pathToRegexp.compile(path);
+      return toPath(params);
     },
     handleLink(item) {
-      const { redirect, path } = item
+      const { redirect, path } = item;
       if (redirect) {
-        this.$router.push(redirect)
-        return
+        this.$router.push(redirect);
+        return;
       }
-      this.$router.push(this.pathCompile(path))
-    }
-  }
-}
+      this.$router.push(this.pathCompile(path));
+    },
+  },
+};
 </script>
 
-<style lang="less">
+<style lang="scss">
 .breadcrumb-enter-active,
 .breadcrumb-leave-active {
   transition: all 0.5s;
@@ -79,8 +80,8 @@ export default {
 
 .breadcrumb-enter,
 .breadcrumb-leave-active {
-  opacity: 0;
   transform: translateX(20px);
+  opacity: 0;
 }
 
 .breadcrumb-move {
@@ -92,7 +93,7 @@ export default {
 }
 </style>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .app-breadcrumb.el-breadcrumb {
   display: inline-block;
   margin-left: 10px;

@@ -1,5 +1,5 @@
-import dayjs from 'dayjs'
-import { isSafari } from '@/utils'
+import dayjs from 'dayjs';
+import { isSafari } from '@/utils';
 
 /**
  * 日期格式化
@@ -10,12 +10,12 @@ import { isSafari } from '@/utils'
 export default (val, fmt) => {
   if (val) {
     if (isSafari()) {
-      const dateStr = val.replace(/\+(\d{2})(\d{2})/, '+$1:$2')
-      return dayjs(dateStr).format(fmt.replace(/-/g, '/'))
+      const dateStr = val.replace(/\+(\d{2})(\d{2})/, '+$1:$2');
+      return dayjs(dateStr).format(fmt.replace(/-/g, '/'));
     } else {
-      return dayjs(val).format(fmt)
+      return dayjs(val).format(fmt);
     }
   }
 
-  return '-'
-}
+  return '-';
+};

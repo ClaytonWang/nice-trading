@@ -6,15 +6,15 @@
 </template>
 
 <script>
-import { isExternal } from '@/utils'
+import { isExternal } from '@/utils';
 
 export default {
   name: 'Link',
   props: {
     to: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
     linkProps(url) {
@@ -23,15 +23,15 @@ export default {
           is: 'a',
           href: url,
           target: '_blank',
-          rel: 'noopener'
-        }
+          rel: 'noopener',
+        };
       }
 
       return {
         is: 'router-link',
-        to: url
-      }
-    }
-  }
-}
+        to: url,
+      };
+    },
+  },
+};
 </script>

@@ -14,16 +14,16 @@ export default {
   name: 'Error404',
   methods: {
     handleBackPrev() {
-      this.$router.replace('/')
+      this.$router.replace('/');
     },
     handleBackHome() {
-      this.$router.go(-1)
-    }
-  }
-}
+      this.$router.go(-1);
+    },
+  },
+};
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .app-container {
   display: flex;
   flex-flow: column nowrap;
@@ -35,9 +35,9 @@ export default {
   }
 
   .desc {
+    margin: 20px 0;
     color: rgba(0, 0, 0, 0.45);
     font-size: 20px;
-    margin: 20px 0;
   }
 }
 </style>
