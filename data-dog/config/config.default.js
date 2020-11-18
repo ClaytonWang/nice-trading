@@ -30,6 +30,7 @@ module.exports = appInfo => {
       password: 'Password1',
       define: {
         timestamps: false,
+        freezeTableName: true,
       },
     },
     security: {

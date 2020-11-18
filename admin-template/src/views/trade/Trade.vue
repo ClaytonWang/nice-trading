@@ -9,7 +9,7 @@
         </div>
       </div>
       <div>
-        <el-table :data="tableData" border>
+        <el-table :data="trades" border>
           <el-table-column
             type="index"
             label="序号"
@@ -57,8 +57,9 @@
 </template>
 
 <script>
-import { getTrades } from '@/api/trade';
 import AddTrade from './AddTrade';
+import { createNamespacedHelpers } from 'vuex';
+const { mapState, mapActions } = createNamespacedHelpers('trade');
 
 export default {
   name: 'Trade',
@@ -66,40 +67,24 @@ export default {
     AddTrade,
   },
   data() {
-    return {
-      tableData: [
-        {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄',
-        },
-        {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄',
-        },
-        {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄',
-        },
-        {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄',
-        },
-      ],
-    };
+    return {};
   },
-  async mounted() {
-    const data = await getTrades();
-    console.log(data);
-    this.tableData = data;
+  computed: {
+    ...mapState({
+      trades(state) {
+        return state.trades;
+      },
+    }),
+  },
+  mounted() {
+    this.getTrades();
   },
   methods: {
+    ...mapActions(['getTrades']),
     viewDetail(row) {
       this.$router.push({
         name: 'TradeDetail',
+        query: { id: row.id },
       });
       console.log(row);
     },

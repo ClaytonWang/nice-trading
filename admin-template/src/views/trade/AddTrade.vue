@@ -22,6 +22,16 @@
           :trigger-on-focus="false"
           @select="handleSelect"
         ></el-autocomplete> -->
+        <el-input
+          v-model="trade.code"
+          size="small"
+          placeholder="代码"
+        ></el-input>
+        <el-input
+          v-model="trade.name"
+          size="small"
+          placeholder="名称"
+        ></el-input>
       </el-form-item>
 
       <el-form-item label="止损价：">
@@ -81,7 +91,8 @@
 </template>
 
 <script>
-import { addTrade } from '@/api/trade';
+import { createNamespacedHelpers } from 'vuex';
+const { mapActions } = createNamespacedHelpers('trade');
 
 export default {
   name: 'AddTrade',
@@ -101,12 +112,14 @@ export default {
   },
   mounted() {},
   methods: {
+    ...mapActions(['addTrades']),
     close() {
       this.dialogVisible = false;
     },
     async save() {
       console.log(this.trade);
-      const res = await addTrade(this.trade);
+      await this.addTrades(this.trade);
+      this.dialogVisible = false;
     },
   },
 };

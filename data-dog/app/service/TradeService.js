@@ -19,12 +19,7 @@ class TradeService extends Service {
   }
 
   async find(id) {
-    const trade = await this.ctx.model.Trade.findByPk(id, {
-      include: [{
-        model: this.ctx.model.TradeDetail,
-        as: 'tradeDetails',
-      }],
-    });
+    const trade = await this.ctx.model.Trade.findByPk(id);
     if (!trade) {
       this.ctx.throw(404, 'trade not found');
     }
