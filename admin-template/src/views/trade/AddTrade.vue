@@ -7,11 +7,12 @@
     :append-to-body="true"
     :close-on-click-modal="false"
     :modal="true"
+    center
   >
     <div slot="title" class="title">
       <span>交易计划</span>
     </div>
-    <el-form :model="trade">
+    <el-form :model="trade" :label-position="'right'">
       <el-form-item label="代码/名称：">
         <!-- <el-autocomplete
           class="inline-input"
@@ -73,17 +74,15 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button size="small" @click="dialogFormVisible = false">
-        取 消
-      </el-button>
-      <el-button size="small" type="primary" @click="dialogFormVisible = false">
-        确 定
-      </el-button>
+      <el-button size="small" @click="close">取消</el-button>
+      <el-button size="small" type="primary" @click="save">确定</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
+import { addTrade } from '@/api/trade';
+
 export default {
   name: 'AddTrade',
   components: {},
@@ -101,7 +100,15 @@ export default {
     });
   },
   mounted() {},
-  methods: {},
+  methods: {
+    close() {
+      this.dialogVisible = false;
+    },
+    async save() {
+      console.log(this.trade);
+      const res = await addTrade(this.trade);
+    },
+  },
 };
 </script>
 <style lang="scss">
