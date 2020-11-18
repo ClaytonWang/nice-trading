@@ -7,10 +7,12 @@
     :append-to-body="true"
     :close-on-click-modal="false"
     :modal="true"
-    center
   >
     <div slot="title" class="title">
-      <span>买入详情</span>
+      <el-radio-group v-model="tradeDetail.trade_type" fill="red">
+        <el-radio-button label="1" type="danger"> 买入 </el-radio-button>
+        <el-radio-button label="0">卖出</el-radio-button>
+      </el-radio-group>
     </div>
     <el-form :model="tradeDetail" :label-position="'right'">
       <el-form-item label="买入日期">
@@ -39,15 +41,6 @@
           v-model="tradeDetail.buying_amount"
           :precision="0"
           :step="100"
-        ></el-input-number>
-      </el-form-item>
-
-      <el-form-item label="佣金">
-        <el-input-number
-          size="small"
-          v-model="tradeDetail.commission"
-          :precision="2"
-          :step="1"
         ></el-input-number>
       </el-form-item>
 
@@ -82,6 +75,7 @@ export default {
       tradeDetail: {},
     };
   },
+  computed: {},
   created() {
     this.$on('open', () => {
       this.dialogVisible = true;
@@ -95,7 +89,21 @@ export default {
     close() {
       this.dialogVisible = false;
     },
+    commission() {
+      if (this.tradeDetail.buying_rate && this.tradeDetail.buying_amount) {
+        let cm =
+          this.tradeDetail.buying_rate *
+          this.tradeDetail.buying_amount *
+          0.00025;
+
+        return cm < 5 ? 5 : cm;
+      } else {
+        return 0;
+      }
+    },
     async save() {
+      this.tradeDetail.trade_id = this.$route.query.trade_id;
+      this.tradeDetail.commission = this.commission();
       console.log(this.tradeDetail);
       await this.addTradeDetail(this.tradeDetail);
       this.dialogVisible = false;
