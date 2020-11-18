@@ -27,7 +27,7 @@ export default {
       commit('SET_TRADES', data.rows);
     },
 
-    async addTrades({ commit }, trade) {
+    async addTrade({ commit }, trade) {
       try {
         const data = await apiTrade.addTrade(trade);
         if (data.id) {

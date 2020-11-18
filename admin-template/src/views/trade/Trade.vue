@@ -25,7 +25,7 @@
           <el-table-column prop="take_profit" label="止赢价"> </el-table-column>
           <el-table-column
             prop="plan_amount"
-            label="买入数量"
+            label="计划数量"
           ></el-table-column>
           <el-table-column prop="exec_date" label="执行日期"> </el-table-column>
           <el-table-column

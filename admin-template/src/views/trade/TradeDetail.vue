@@ -61,16 +61,18 @@
         </el-table>
       </div>
     </el-card>
+    <AddTradeDetail ref="addTradeDetail" />
   </div>
 </template>
 
 <script>
+import AddTradeDetail from './AddTradeDetail';
 import { createNamespacedHelpers } from 'vuex';
 const { mapState, mapActions } = createNamespacedHelpers('tradeDetail');
 
 export default {
   name: 'TradeDetail',
-  components: {},
+  components: { AddTradeDetail },
   data() {
     return {};
   },
@@ -88,7 +90,9 @@ export default {
   },
   methods: {
     ...mapActions(['getTradeDetails', 'delTradeDetail']),
-    add() {},
+    add() {
+      this.$refs.addTradeDetail.$emit('open');
+    },
     del(row) {
       this.delTradeDetail(row.id);
     },
