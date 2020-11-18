@@ -13,8 +13,9 @@ class TradeDetailController extends Controller {
   async index() {
     const ctx = this.ctx;
     const query = {
-      limit: ctx.helper.parseInt(ctx.query.limit),
-      offset: ctx.helper.parseInt(ctx.query.offset),
+      limit: ctx.helper.parseInt(ctx.params.limit),
+      offset: ctx.helper.parseInt(ctx.params.offset),
+      trade_id: ctx.helper.parseInt(ctx.query.trade_id),
     };
     ctx.body = await ctx.service.tradeDetailService.list(query);
   }

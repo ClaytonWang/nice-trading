@@ -1,19 +1,24 @@
 import * as apiTrade from '@/api/trade';
-import CreateLogger from 'vuex/dist/logger';
-const debug = process.env.NODE_ENV !== 'production';
+
 export default {
   namespaced: true,
-  strict: debug,
-  plugins: debug ? [CreateLogger()] : [],
   state: {
     trades: [],
+    trade_details: [],
   },
   mutations: {
     SET_TRADES(state, trades) {
       state.trades = trades;
     },
-    ADD_TRADES(state, trade) {
+    ADD_TRADE(state, trade) {
       state.trades.unshift(trade);
+    },
+
+    DEL_TRADE(state, trade_id) {
+      const index = state.trades.findIndex((item) => {
+        return item.id === trade_id;
+      });
+      state.trades.splice(index, 1);
     },
   },
   actions: {
@@ -26,7 +31,20 @@ export default {
       try {
         const data = await apiTrade.addTrade(trade);
         if (data.id) {
-          commit('ADD_TRADES', data);
+          commit('ADD_TRADE', data);
+        } else {
+          console.log(data);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    async delTrade({ commit }, id) {
+      try {
+        const data = await apiTrade.delTrade(id);
+        if (data) {
+          commit('DEL_TRADE', id);
         } else {
           console.log(data);
         }

@@ -13,7 +13,7 @@ module.exports = {
     (config.devtool = 'source-map'),
       config.plugins.push(
         new StyleLintPlugin({
-          files: ['src/**/*.{vue,html,css,scss,sass,less}'],
+          files: ['src/**/*.{html,css,scss,sass,less}'],
           failOnError: false,
           cache: true,
           fix: true,

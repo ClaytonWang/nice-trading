@@ -8,7 +8,7 @@ class TradeDetailService extends Service {
     const options = {
       offset,
       limit,
-      attributes: [ 'id', 'trade_id', 'created_at', 'updated_at' ],
+      // attributes: [ 'id', 'trade_id', 'created_at', 'updated_at' ],
       order: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]],
     };
     if (trade_id) {

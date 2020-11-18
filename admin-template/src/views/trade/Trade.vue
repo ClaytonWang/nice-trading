@@ -47,6 +47,14 @@
               <el-button type="text" size="small" icon="el-icon-edit">
                 编辑
               </el-button>
+              <el-button
+                @click="del(scope.row)"
+                type="text"
+                size="small"
+                icon="el-icon-delete"
+              >
+                删除
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -80,13 +88,16 @@ export default {
     this.getTrades();
   },
   methods: {
-    ...mapActions(['getTrades']),
+    ...mapActions(['getTrades', 'delTrade']),
     viewDetail(row) {
       this.$router.push({
         name: 'TradeDetail',
-        query: { id: row.id },
+        query: { trade_id: row.id },
       });
       console.log(row);
+    },
+    async del(row) {
+      await this.delTrade(row.id);
     },
     addTradePlan() {
       this.$refs.addTrade.$emit('open');
