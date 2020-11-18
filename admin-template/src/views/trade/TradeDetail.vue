@@ -1,11 +1,13 @@
 <template>
-  <div class="app-container"></div>
+  <div class="trade-detail"></div>
 </template>
 
 <script>
 import { getTrades } from '@/api/trade';
+
 export default {
-  name: 'Dashboard',
+  name: 'Trade',
+  components: {},
   data() {
     return {};
   },
@@ -15,25 +17,19 @@ export default {
     this.tableData = data;
   },
   methods: {
-    handleClick(row) {
+    viewDetail(row) {
+      this.$router.push({
+        name: 'TradeDetail',
+      });
       console.log(row);
+    },
+    addTradePlan() {
+      this.$refs.addTrade.$emit('open');
     },
   },
 };
 </script>
-<style lang="scss">
-.demo-table-expand {
-  font-size: 0;
-}
-
-.demo-table-expand label {
-  width: 90px;
-  color: #99a9bf;
-}
-
-.demo-table-expand .el-form-item {
-  width: 50%;
-  margin-right: 0;
-  margin-bottom: 0;
+<style lang="scss" scope>
+.trade-detail {
 }
 </style>

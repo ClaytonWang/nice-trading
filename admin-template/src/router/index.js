@@ -65,6 +65,32 @@ export const constantRouterMap = [
       },
     ],
   },
+  {
+    path: '/my-trade',
+    component: Layout,
+    redirect: 'trade',
+    children: [
+      {
+        path: 'trade',
+        name: 'Trade',
+        component: () =>
+          import(
+            /* webpackChunkName: 'group-dashboard' */ '@/views/trade/Trade.vue'
+          ),
+        meta: { title: '交易', icon: 'insights', noCache: true },
+      },
+      {
+        path: 'trade-detail',
+        name: 'TradeDetail',
+        hidden: true,
+        component: () =>
+          import(
+            /* webpackChunkName: 'group-dashboard' */ '@/views/trade/TradeDetail.vue'
+          ),
+        meta: { title: '交易详情' },
+      },
+    ],
+  },
 ];
 
 export const asyncRouterMap = [
