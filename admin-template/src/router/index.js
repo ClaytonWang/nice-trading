@@ -77,7 +77,7 @@ export const constantRouterMap = [
           import(
             /* webpackChunkName: 'group-dashboard' */ '@/views/trade/Trade.vue'
           ),
-        meta: { title: '交易', icon: 'insights', noCache: true },
+        meta: { title: '交易计划', icon: 'insights', noCache: true },
       },
       {
         path: 'trade-detail',
