@@ -50,25 +50,10 @@ export const constantRouterMap = [
     hidden: true,
   },
   {
-    path: '',
-    component: Layout,
-    redirect: 'dashboard',
-    children: [
-      {
-        path: 'dashboard',
-        name: 'Dashboard',
-        component: () =>
-          import(
-            /* webpackChunkName: 'group-dashboard' */ '@/views/dashboard/index.vue'
-          ),
-        meta: { title: '首页', icon: 'dashboard', noCache: true },
-      },
-    ],
-  },
-  {
     path: '/my-trade',
     component: Layout,
     redirect: 'trade',
+    affix: true,
     children: [
       {
         path: 'trade',
@@ -88,6 +73,22 @@ export const constantRouterMap = [
             /* webpackChunkName: 'group-dashboard' */ '@/views/trade/TradeDetail.vue'
           ),
         meta: { title: '交易详情' },
+      },
+    ],
+  },
+  {
+    path: '',
+    component: Layout,
+    redirect: 'dashboard',
+    children: [
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () =>
+          import(
+            /* webpackChunkName: 'group-dashboard' */ '@/views/dashboard/index.vue'
+          ),
+        meta: { title: '首页', icon: 'dashboard', noCache: true },
       },
     ],
   },

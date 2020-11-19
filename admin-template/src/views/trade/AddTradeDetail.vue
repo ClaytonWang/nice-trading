@@ -9,8 +9,11 @@
     :modal="true"
   >
     <div slot="title" class="title">
-      <el-radio-group v-model="tradeDetail.trade_type" fill="red">
-        <el-radio-button label="1" type="danger"> 买入 </el-radio-button>
+      <el-radio-group
+        v-model="tradeDetail.trade_type"
+        :fill="tradeDetail.trade_type == 1 ? 'red' : 'green'"
+      >
+        <el-radio-button label="1"> 买入 </el-radio-button>
         <el-radio-button label="0">卖出</el-radio-button>
       </el-radio-group>
     </div>
