@@ -4,8 +4,8 @@
 
 ----
 
-### core-ui
-前端：Core UI是第三方样式组件库，直接拿来做前端架子。
+### admin-template
+前端：是第三方样式组件库，直接拿来做PC前端架子。
 
 ### trading-dog
 前端：uni-app框架做的mobile端
