@@ -2,12 +2,12 @@
 	<view class="order-item little-line">
 		<view class="row user-info">
 			<view class="name">
-				<view class="profile">南极人/600010</view>
+				<view class="profile">南极人(600010)</view>
 			</view>
-			<view class="nomarl">1091 | 99%</view>
+			<view class="nomarl">止损 100.12(-6.12%) | 止赢 110.28(12.11%)</view>
 		</view>
 		<view class="row">
-			<view class="nomarl">数量 {{(data.volume - data.dealVolume) | fixed(2)}} {{data.coin}}</view>
+			<view class="nomarl">数量 1000</view>
 			<view class="nomarl">单价</view>
 		</view>
 		<view class="row">
