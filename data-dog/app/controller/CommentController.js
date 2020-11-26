@@ -10,29 +10,34 @@ const createRule = {
 };
 
 class CommentController extends Controller {
+  // eg: get api/trade/1
+  async show() {
+    const ctx = this.ctx;
+    ctx.body = await ctx.service.commentService.find(ctx.helper.parseInt(ctx.params.id));
+  }
+
+  // eg: post api/trade
   async create() {
     const ctx = this.ctx;
     // ctx.validate(createRule, ctx.request.body);
-    const tade = await ctx.service.commentService.create(ctx.request.body);
-    ctx.body = tade;
+    const commment = await ctx.service.commentService.create(ctx.request.body);
+    ctx.body = commment;
     ctx.status = 201;
   }
 
-  async new(id) {
+  // eg: put api/trade/1
+  async update() {
     const ctx = this.ctx;
-    ctx.body = 'hi';
-    ctx.status = 200;
+    const id = ctx.helper.parseInt(ctx.params.id);
+    const body = ctx.request.body;
+    ctx.body = await ctx.service.commentService.update({ id, updates: body });
   }
 
-  async index() {
+  // eg: delete api/trade/1
+  async destroy() {
     const ctx = this.ctx;
-    ctx.body = 'hi111';
-    ctx.status = 200;
-  }
-
-  async show(id) {
-    const ctx = this.ctx;
-    ctx.body = { name: 'aaa' };
+    const id = ctx.helper.parseInt(ctx.params.id);
+    await ctx.service.commentService.del(id);
     ctx.status = 200;
   }
 }

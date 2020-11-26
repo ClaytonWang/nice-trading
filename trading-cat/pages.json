@@ -49,7 +49,16 @@
 			}
 		}
 		// #endif
-	],
+	    ,{
+            "path" : "pages/plan/plan",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"tabBar": {
 		"color": "#7a7e83",
 		"selectedColor": "#0faeff",

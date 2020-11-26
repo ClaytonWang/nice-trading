@@ -22,8 +22,8 @@ module.exports = app => {
   // router.get('/trades/:id', controller.trades.get);s
 
   // restfull api
-  router.resources('trades', '/api/trade', controller.tradeController);
-  router.resources('trade-detail', '/api/trade-detail', controller.tradeDetailController);
+  router.resources('trading-plan', '/api/trading-plan', controller.tradingPlanController);
+  router.resources('trading-detail', '/api/trading-detail', controller.tradingDetailController);
   router.resources('comment', '/api/comment', controller.commentController);
   router.resources('setting', '/api/setting', controller.settingController);
 

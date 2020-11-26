@@ -14,7 +14,7 @@ class SettingService extends Service {
   async find(id) {
     const model = await this.ctx.model.Setting.findByPk(id);
     if (!model) {
-      this.ctx.throw(404, 'trade not found');
+      this.ctx.throw(404, 'setting not found');
     }
     return model;
   }
@@ -22,7 +22,7 @@ class SettingService extends Service {
   async update({ id, updates }) {
     const model = await this.ctx.model.Setting.findByPk(id);
     if (!model) {
-      this.ctx.throw(404, 'trade not found');
+      this.ctx.throw(404, 'setting not found');
     }
     return model.update(updates);
   }
@@ -30,7 +30,7 @@ class SettingService extends Service {
   async del(id) {
     const model = await this.ctx.model.Setting.findByPk(id);
     if (!model) {
-      this.ctx.throw(404, 'trade not found');
+      this.ctx.throw(404, 'setting not found');
     }
     return model.destroy();
   }

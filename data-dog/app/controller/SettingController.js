@@ -21,8 +21,8 @@ class SettingController extends Controller {
   async create() {
     const ctx = this.ctx;
     // ctx.validate(createRule, ctx.request.body);
-    const tade = await ctx.service.settingService.create(ctx.request.body);
-    ctx.body = tade;
+    const setting = await ctx.service.settingService.create(ctx.request.body);
+    ctx.body = setting;
     ctx.status = 201;
   }
 
