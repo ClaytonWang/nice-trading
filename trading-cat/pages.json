@@ -50,14 +50,65 @@
 		}
 		// #endif
 	    ,{
-            "path" : "pages/plan/plan",
+			"path": "pages/trading-plan/plan",
+			"style": {
+				"navigationBarTitleText": "交易计划",
+				"app-plus": {
+					"bounce": "none",
+					"titleNView": {
+						"buttons": [{
+								"fontSrc": "/static/font/font_1078604_w4kpxh0rafi.ttf",
+								"text": "\ue60a",
+								"fontSize": "24",
+								"color": "#303133",
+								"width": "40px",
+								"background": "rgba(0,0,0,0)"
+							}
+						]
+					}
+				}
+			}
+		}
+        ,{
+            "path" : "pages/trading-plan/add-plan",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "添加交易计划",
                 "enablePullDownRefresh": false
             }
             
         }
+        ,{
+            "path" : "pages/trading-detail/detail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "交易详情",
+                "app-plus": {
+                	"bounce": "none",
+                	"titleNView": {
+                		"buttons": [{
+                				"fontSrc": "/static/font/font_1078604_w4kpxh0rafi.ttf",
+                				"text": "\ue60a",
+                				"fontSize": "24",
+                				"color": "#303133",
+                				"width": "40px",
+                				"background": "rgba(0,0,0,0)"
+                			}
+                		]
+                	}
+                }
+            }
+            
+        }
+		,{
+		    "path" : "pages/trading-detail/add-detail",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "添加交易详情",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
     ],
 	"tabBar": {
 		"color": "#7a7e83",
@@ -68,7 +119,13 @@
 			"text": "首页",
 			"iconPath": "static/img/home.png",
 			"selectedIconPath": "static/img/homeHL.png"
-		}, {
+		},
+		{
+			"pagePath": "pages/trading-plan/plan",
+			"text": "交易计划",
+			"iconPath": "static/tabbar/tab-wallet.png",
+			"selectedIconPath": "static/tabbar/tab-wallet-active.png"
+		},{
 			"pagePath": "pages/user/user",
 			"text": "我的",
 			"iconPath": "static/img/user.png",

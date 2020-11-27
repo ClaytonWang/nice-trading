@@ -68,7 +68,7 @@
 					}
 				})
 			} else {
-				this.guideToLogin()
+				//this.guideToLogin()
 			}
 		},
 		methods: {

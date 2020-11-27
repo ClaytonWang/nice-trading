@@ -1,0 +1,14 @@
+{
+  "name": "trading-cat",
+  "version": "1.0.0",
+  "description": "基于 uni-app & uniCloud 的前后一体登录模板",
+  "devDependencies": {
+    "@dcloudio/uni-ui": "^1.2.8",
+    "pako": "^2.0.2",
+    "uview-ui": "^1.8.2",
+    "vue-moment": "^4.1.0"
+  },
+  "scripts": {},
+  "author": "Clay Wang",
+  "license": "ISC"
+}

@@ -33,3 +33,5 @@ npx sequelize db:migrate
 // 可以通过 `db:migrate:undo:all` 回退到初始状态
 // npx sequelize db:migrate:undo:all
 ```
+
+https://www.bookstack.cn/read/sequelize-orm-v6-zh/f66d0923bcbe34a1.md?wd=%E9%AB%98%E7%BA%A7

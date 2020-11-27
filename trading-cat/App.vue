@@ -24,52 +24,60 @@
 	}
 </script>
 
-<style>
+<style lang='scss'>
+	@import "uview-ui/index.scss";
+	@font-face {
+		font-family: yticon;
+		font-weight: normal;
+		font-style: normal;
+		src: url('./static/font/font_1078604_w4kpxh0rafi.ttf') format('truetype');
+	}
 	/* 头条小程序需要把 iconfont 样式放到组件外 */
 	@import "components/m-icon/m-icon.css";
-
+	
+	
 	/*每个页面公共css */
 	page {
 		min-height: 100%;
 		display: flex;
 		font-size: 14px;
 	}
-
+	
 	input,
 	textarea,
 	button {
 		font-size: 14px;
 	}
-
+	
 	/* #ifdef MP-BAIDU */
 	page {
 		width: 100%;
 		height: 100%;
 		display: block;
 	}
-
+	
 	swan-template {
 		width: 100%;
 		min-height: 100%;
 		display: flex;
 	}
-
+	
 	/* 原生组件模式下需要注意组件外部样式 */
 	custom-component {
 		width: 100%;
 		min-height: 100%;
 		display: flex;
 	}
-
+	
 	/* #endif */
-
+	
 	/* #ifdef MP-ALIPAY */
 	page {
 		min-height: 100vh;
 	}
-
+	
 	/* #endif */
-
+	
 	/* 原生组件模式下需要注意组件外部样式 */
 	m-input {
 		width: 100%;
@@ -77,7 +85,7 @@
 		display: flex;
 		flex: 1;
 	}
-
+	
 	.content {
 		display: flex;
 		flex: 1;
@@ -85,13 +93,13 @@
 		background-color: #efeff4;
 		padding: 10px;
 	}
-
+	
 	.input-group {
 		background-color: #ffffff;
 		margin-top: 20px;
 		position: relative;
 	}
-
+	
 	.input-group::before {
 		position: absolute;
 		right: 0;
@@ -103,7 +111,7 @@
 		transform: scaleY(.5);
 		background-color: #c8c7cc;
 	}
-
+	
 	.input-group::after {
 		position: absolute;
 		right: 0;
@@ -115,7 +123,7 @@
 		transform: scaleY(.5);
 		background-color: #c8c7cc;
 	}
-
+	
 	.input-row {
 		display: flex;
 		flex-direction: row;
@@ -123,12 +131,12 @@
 		/* font-size: 18px; */
 		line-height: 40px;
 	}
-
+	
 	.input-row .title {
 		width: 70px;
 		padding-left: 15px;
 	}
-
+	
 	.input-row.border::after {
 		position: absolute;
 		right: 0;
@@ -140,12 +148,12 @@
 		transform: scaleY(.5);
 		background-color: #c8c7cc;
 	}
-
+	
 	.btn-row {
 		margin-top: 25px;
 		padding: 10px;
 	}
-
+	
 	button.primary {
 		background-color: #0faeff;
 	}
