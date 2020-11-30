@@ -5,8 +5,8 @@
 			<text class="cell-more" @click="selectStock">请选择</text>
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
-			<text class="cell-tit">单价</text>
-			<input v-model="form.plan_price" type="number" class="cell-input" placeholder="请输入单价"/>
+			<text class="cell-tit">入场价</text>
+			<input v-model="form.plan_price" type="number" class="cell-input" placeholder="请输价格"/>
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">数量</text>
@@ -14,11 +14,11 @@
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">止损</text>
-			<input v-model="form.stop_loss" type="number" class="cell-input" placeholder="请输入数量"/>
+			<input v-model="form.stop_loss" type="number" class="cell-input" placeholder="请输入单价"/>
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">止赢</text>
-			<input v-model="form.take_profit" type="number" class="cell-input" placeholder="请输入数量"/>
+			<input v-model="form.take_profit" type="number" class="cell-input" placeholder="请输入单价"/>
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">执行时间</text>
@@ -33,7 +33,7 @@
 			<text @click="selectPriority" class="cell-more">请选择</text>
 		</view>
 		<view class="list-cell" hover-class="cell-hover" :hover-stay-time="50">
-			<textarea placeholder="请输入留言" style="width: 100%; font-size: 28upx;"></textarea>
+			<textarea placeholder="理由" style="width: 100%; font-size: 28upx;"></textarea>
 		</view>
 		<button class="submit" @click="submit">确认</button>
 		
@@ -43,7 +43,7 @@
 					<uni-search-bar placeholder="搜索" @input="search"></uni-search-bar>
 				</view>
 				<view class="item-wrapper">
-					<u-empty text="暂无数据" mode="data" :show="coinEmpty" img-width="140"></u-empty>
+					<u-empty text="暂无数据" mode="data" img-width="140"></u-empty>
 					<view class="coin-item little-line" @click="select">
 						<view class="col">
 							<text>南极人</text>
@@ -105,6 +105,9 @@
 </script>
 
 <style lang='scss' scoped>
+	.container{
+		width: 100%;
+	}
 	page{
 		background: $page-color-base;
 	}

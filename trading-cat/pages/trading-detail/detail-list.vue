@@ -7,52 +7,71 @@
 				<view class="s-row">
 					<view class="col">
 						<text class="coin buy" >买入</text>
-						<text class="coin">南极人(600010)</text>
+						<text class="coin buy">南极人(600010)</text>
 					</view>
-					<view class="col r light">
-					</view>
+					<view class="col r light"></view>
 				</view>
 				<view class="s-row">
-					<view class="col subtitle row-title">成交时间</view>
 					<view class="col subtitle row-title">成交价</view>
 					<view class="col subtitle row-title">成交量</view>
-					<view class="col r subtitle row-title">成交额</view>
-					<view class="col r subtitle row-title">佣金</view>
-					<view class="col r subtitle row-title">税费</view>
+					<view class="col subtitle row-title">成交额</view>
 				</view>
 				<view class="s-row">
-					<view class="col subtitle row-amount">2020-10-11</view>
 					<view class="col subtitle row-amount">20.12</view>
-					<view class="col r subtitle row-amount">1000</view>
-					<view class="col r subtitle row-amount">20120</view>
-					<view class="col r subtitle row-amount">5</view>
-					<view class="col r subtitle row-amount">6</view>
+					<view class="col subtitle row-amount">1000</view>
+					<view class="col subtitle row-amount">20120</view>
+				</view>
+				<view class="s-row">
+					<view class="col subtitle row-title">时间</view>
+					<view class="col subtitle row-title">佣金</view>
+					<view class="col subtitle row-title">税费</view>
+				</view>
+				<view class="s-row">
+					<view class="col subtitle row-amount">2020/10/11</view>
+					<view class="col subtitle row-amount">5</view>
+					<view class="col subtitle row-amount">6</view>
+				</view>
+				<view class="s-row">
+					<view class="col subtitle row-title">操作备忘</view>
+				</view>
+				<view class="s-row">
+					<view class="col subtitle row-amount">悄民顶级sdffsfd霜奇才大规模另</view>
 				</view>
 			</view>
 			<view class="block little-line">
 				<view class="s-row">
 					<view class="col">
 						<text class="coin sell" >卖出</text>
-						<text class="coin">南极人(600010)</text>
+						<text class="coin sell">南极人(600010)</text>
 					</view>
 					<view class="col r light">
 					</view>
 				</view>
 				<view class="s-row">
-					<view class="col subtitle row-title">成交时间</view>
 					<view class="col subtitle row-title">成交价</view>
 					<view class="col subtitle row-title">成交量</view>
-					<view class="col r subtitle row-title">成交额</view>
-					<view class="col r subtitle row-title">佣金</view>
-					<view class="col r subtitle row-title">税费</view>
+					<view class="col subtitle row-title">成交额</view>
 				</view>
 				<view class="s-row">
-					<view class="col subtitle row-amount">2020-10-11</view>
 					<view class="col subtitle row-amount">20.12</view>
-					<view class="col r subtitle row-amount">1000</view>
-					<view class="col r subtitle row-amount">20120</view>
-					<view class="col r subtitle row-amount">5</view>
-					<view class="col r subtitle row-amount">6</view>
+					<view class="col subtitle row-amount">1000</view>
+					<view class="col subtitle row-amount">20120</view>
+				</view>
+				<view class="s-row">
+					<view class="col subtitle row-title">时间</view>
+					<view class="col subtitle row-title">佣金</view>
+					<view class="col subtitle row-title">税费</view>
+				</view>
+				<view class="s-row">
+					<view class="col subtitle row-amount">2020/10/11</view>
+					<view class="col subtitle row-amount">5</view>
+					<view class="col subtitle row-amount">6</view>
+				</view>
+				<view class="s-row">
+					<view class="col subtitle row-title">操作备忘</view>
+				</view>
+				<view class="s-row">
+					<view class="col subtitle row-amount">悄民顶级sdffsfd霜奇才大规模另</view>
 				</view>
 			</view>
 		</view>
@@ -62,8 +81,8 @@
 				<view class="filter">
 					<view class="filter-title">交易类型</view>
 					<view class="filter-pay">
-						<text @click="filter('BUY', undefined)" class="filter-pay-item" :class="{'filter-active': query.side == 'BUY'}">买入</text>
-						<text @click="filter('SELL', undefined)" class="filter-pay-item" :class="{'filter-active': query.side == 'SELL'}">卖出</text>
+						<text @click="filter('BUY', undefined)" class="filter-pay-item">买入</text>
+						<text @click="filter('SELL', undefined)" class="filter-pay-item">卖出</text>
 						<text class="placeholder"></text>
 					</view>
 				</view>
@@ -110,7 +129,18 @@
 			}
 		},
 		onNavigationBarButtonTap(e) {
-			this.$refs.popup.open()
+			let $this = this;
+			uni.showActionSheet({
+			    itemList: ['添加操作详情'],
+			    success: function (res) {
+			        let i = res.tapIndex
+					uni.navigateTo({
+						url: "/pages/trading-detail/add-detail"
+					})
+			    },
+			    fail: function (res) {
+			    }
+			});
 		},
 		methods: {
 			filter(side, status){
@@ -126,7 +156,14 @@
 
 <style lang='scss' scoped>
 	.container{
+		width: 100%;
 		padding: 0upx 0upx;
+	}
+	.buy{
+		color: $font-color-red;
+	}
+	.sell{
+		color: $font-color-blue;
 	}
 	.filter-wrapper{
 		background-color: #ffffff;
@@ -207,12 +244,6 @@
 					.coin{
 						font-weight: bold;
 						padding-right: 10upx;
-					}
-					.buy{
-						color: $font-color-blue;
-					}
-					.sell{
-						color: $font-color-red;
 					}
 					.status{
 						font-size: $font-base;

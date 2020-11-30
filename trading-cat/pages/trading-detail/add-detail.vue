@@ -45,7 +45,7 @@
 					<uni-search-bar placeholder="搜索" @input="search"></uni-search-bar>
 				</view>
 				<view class="item-wrapper">
-					<u-empty text="暂无数据" mode="data" :show="coinEmpty" img-width="140"></u-empty>
+					<u-empty text="暂无数据" mode="data" img-width="140"></u-empty>
 					<view class="coin-item little-line" @click="select">
 						<view class="col">
 							<text>南极人</text>
@@ -86,6 +86,7 @@
 		methods:{
 			search(){},
 			select(){},
+			selectSide(){},
 			selectStock(){
 				this.$refs.popup.open()
 			},
@@ -95,6 +96,9 @@
 </script>
 
 <style lang='scss' scoped>
+	.container{
+		width: 100%;
+	}
 	page{
 		background: $page-color-base;
 	}
