@@ -4,6 +4,7 @@
 			<view class="header">
 				<text class="title">盈利<text class="count">共 0 个</text></text>
 				<text class="title">亏损<text class="count">共 0 个</text></text>
+				<text class="title">风险<text class="count">共 4% </text></text>
 			</view>
 			<view class="item">
 				<view class="top">
@@ -31,14 +32,24 @@
 						</view>
 					</view>
 					<view class="s-row row-title">
-						<view class="col">盈亏比</view>
-						<view class="col">执行日期</view>
-						<view class="col">优先级</view>
+						<view class="col">数量</view>
+						<view class="col">益损比</view>
+						<view class="col">风险额</view>
 					</view>
 					<view class="s-row row-amount">
-						<view class="col">200%</view>
+						<view class="col">1000</view>
+						<view class="col">60%</view>
+						<view class="col">2000</view>
+					</view>
+					<view class="s-row row-title">
+						<view class="col">执行日期</view>
+						<view class="col">优先级</view>
+						<view class="col">风险比</view>
+					</view>
+					<view class="s-row row-amount">
 						<view class="col">10/1 - 10/5</view>
 						<view class="col">等待</view>
+						<view class="col">2%</view>
 					</view>
 					<view class="s-row row-title">
 						<view class="col">说明</view>

@@ -2,7 +2,7 @@
 	<view class="container">
 		<!-- 列表 -->
 		<view class="coin-section m-t">
-			<u-empty text="暂无订单记录" mode="data" margin-top="200"></u-empty>
+			<empty text="暂无订单记录" mode="data" margin-top="200"></empty>
 			<view class="block little-line">
 				<view class="s-row">
 					<view class="col">
@@ -77,32 +77,15 @@
 				</view>
 			</view>
 		</view>
-		
-		<uni-popup ref="popup" type="top">
-			<view class="filter-wrapper">
-				<view class="filter">
-					<view class="filter-title">交易类型</view>
-					<view class="filter-pay">
-						<text @click="filter('BUY', undefined)" class="filter-pay-item">买入</text>
-						<text @click="filter('SELL', undefined)" class="filter-pay-item">卖出</text>
-						<text class="placeholder"></text>
-					</view>
-				</view>
-				
-				<view class="btn-wrapper">
-					<view class="btn" @click="reset">重置</view>
-					<view class="btn submit" @click="search">筛选</view>
-				</view>
-			</view>
-		</uni-popup>
 	</view>
 </template>
 
 <script>
 	import {uniPopup, uniIcons} from '@dcloudio/uni-ui'
 	import {commonMixin} from '@/common/mixin/mixin.js'
+	import empty from '../../components/empty.vue'
 	export default {
-		components: {uniPopup, uniIcons},
+		components: {uniPopup, uniIcons,empty},
 		mixins: [commonMixin],
 		data() {
 			return {
@@ -113,22 +96,6 @@
 		onReachBottom(){
 		},
 		onPullDownRefresh() {
-		},
-		filters: {
-			formatSideClass(v, item){
-				if(item.creator == item.buyerId){
-					return 'buy'
-				} else {
-					return 'sell'
-				}
-			},
-			formatSide(v, item){
-				if(item.creator == item.buyerId){
-					return '买入'
-				} else {
-					return '卖出'
-				}
-			}
 		},
 		onNavigationBarButtonTap(e) {
 			let $this = this;
@@ -145,13 +112,6 @@
 			});
 		},
 		methods: {
-			filter(side, status){
-			},
-			reset(){
-			},
-			search(){
-				this.$refs.popup.close();
-			},
 		}
 	}
 </script>

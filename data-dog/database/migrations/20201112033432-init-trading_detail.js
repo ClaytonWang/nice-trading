@@ -6,12 +6,12 @@ module.exports = {
     await queryInterface.createTable('trading_detail', {
       id: { type: INTEGER, primaryKey: true, autoIncrement: true },
       trading_plan_id: { type: INTEGER, allowNull: false },
-      trade_price: { type: DECIMAL(12, 4), allowNull: true },
-      trade_volume: { type: INTEGER, allowNull: true },
-      trade_date: { type: DATE, allowNull: true },
+      trading_price: { type: DECIMAL(12, 4), allowNull: true },
+      trading_volume: { type: INTEGER, allowNull: true },
+      trading_date: { type: DATE, allowNull: true },
       commission: { type: DECIMAL(12, 4), allowNull: true },
       stamp_tax: { type: DECIMAL(12, 4), allowNull: true },
-      trade_type: { type: STRING, allowNull: false },
+      trading_type: { type: STRING, allowNull: false },
       created_at: { type: DATE, defaultValue: Sequelize.NOW, allowNull: false },
       updated_at: { type: DATE, defaultValue: Sequelize.NOW, allowNull: false },
     });

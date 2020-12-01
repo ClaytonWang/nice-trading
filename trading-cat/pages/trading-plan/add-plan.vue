@@ -9,20 +9,24 @@
 			<input v-model="form.plan_price" type="number" class="cell-input" placeholder="请输价格" />
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
-			<text class="cell-tit">止损</text>
+			<text class="cell-tit">止损 <i v-if="stop_loss_rate" style="color: green;">{{stop_loss_rate}} %</i></text>
 			<input v-model="form.stop_loss" type="number" class="cell-input" placeholder="请输入单价" />
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
-			<text class="cell-tit">止赢</text>
+			<text class="cell-tit">止赢 <i v-if="take_profit_rate" style="color: red;">{{take_profit_rate}} %</i></text>
 			<input v-model="form.take_profit" type="number" class="cell-input" placeholder="请输入单价" />
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
-			<text class="cell-tit">盈亏比</text>
-			<text class="cell-tit">100%</text>
+			<text class="cell-tit">益损比</text>
+			<text class="cell-tit" :class="profitLostRate>=100?'red':'green'"> {{labelRate()}}</text>
+		</view>
+		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
+			<text class="cell-tit">风险额</text>
+			<input v-model="form.risk" type="number" class="cell-input" placeholder="请输入数量" />
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">数量</text>
-			<input v-model="form.plan_volume" type="number" class="cell-input" placeholder="请输入数量" />
+			<text class="cell-tit">{{plan_volume}}</text>
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">执行时间</text>
@@ -41,7 +45,7 @@
 			<text @click="selectPriority" class="cell-more">请选择</text>
 		</view>
 		<view class="list-cell" hover-class="cell-hover" :hover-stay-time="50">
-			<textarea placeholder="理由" style="width: 100%; font-size: 28upx;"></textarea>
+			<textarea v-model="form.comment" placeholder="备忘,理由" style="width: 100%; font-size: 28upx;"></textarea>
 		</view>
 		<button class="submit" @click="submit">确认</button>
 
@@ -93,6 +97,7 @@
 					name: undefined,
 					plan_price: undefined,
 					plan_volume: undefined,
+					risk:undefined,
 					stop_loss: undefined,
 					take_profit: undefined,
 					exec_start_date: currentDate,
@@ -108,6 +113,30 @@
 			},
 			endDate() {
 				return this.getDate('end');
+			},
+			profitLostRate(){
+				const {plan_price,stop_loss,take_profit } = this.form;
+				if(plan_price && stop_loss && take_profit){
+					return ((take_profit - plan_price) / (plan_price - stop_loss) * 100).toFixed(2);
+				}
+			},
+			plan_volume(){
+				const {plan_price,stop_loss,risk } = this.form;
+				if(plan_price && stop_loss && risk){
+					return (risk / (plan_price - stop_loss)).toFixed(2);
+				}
+			},
+			stop_loss_rate(){
+				const {plan_price,stop_loss } = this.form;
+				if(plan_price && stop_loss){
+					return ((plan_price - stop_loss) / plan_price * 100).toFixed(2);
+				}
+			},
+			take_profit_rate(){
+				const {plan_price,take_profit } = this.form;
+				if(plan_price && take_profit){
+					return ((take_profit - plan_price) / plan_price * 100).toFixed(2);
+				}
 			}
 		},
 		onLoad() {},
@@ -120,7 +149,21 @@
 			selectStock() {
 				this.$refs.popup.open()
 			},
-			submit() {},
+			submit() {
+				//if(!this.form.code){return;}
+				//if(!this.form.name){return;}
+				if(!this.form.plan_price){return;}
+				if(!this.form.plan_volume){
+					this.form.plan_volume = this.plan_volume;
+				}
+				if(!this.form.stop_loss){return;}
+				if(!this.form.take_profit){return;}
+				if(!this.form.exec_start_date){return;}
+				if(!this.form.exec_end_date){return;}
+				if(!this.form.priority){return;}
+				if(!this.form.comment){return;}
+				console.log(this.form);
+			},
 			selectPriority() {
 				let form = this.form
 				let arrayData = ['耐心等待', '等待', '一般', '高']
@@ -132,10 +175,10 @@
 				})
 			},
 			bindStartDateChange: function(e) {
-				this.date = e.target.value;
+				this.form.exec_start_date = e.target.value;
 			},
 			bindEndDateChange: function(e) {
-				this.date = e.target.value;
+				this.form.exec_end_date = e.target.value;
 			},
 			getDate(type) {
 				const date = new Date();
@@ -151,6 +194,14 @@
 				month = month > 9 ? month : '0' + month;;
 				day = day > 9 ? day : '0' + day;
 				return `${year}-${month}-${day}`;
+			},
+			labelRate(){
+				const {plan_price,stop_loss,take_profit } = this.form;
+				if(plan_price && stop_loss && take_profit){
+					return `${(take_profit - plan_price).toFixed(2)} / ${(plan_price - stop_loss).toFixed(2)} = ${this.profitLostRate} %` ;
+				}else{
+					return '输入盈亏价格'
+				}
 			}
 		}
 	}
@@ -164,7 +215,12 @@
 	page {
 		background: $page-color-base;
 	}
-
+	.red {
+		color: red !important;
+	}
+	.green {
+		color: green !important;
+	}
 	.list-cell {
 		display: flex;
 		flex-direction: row;
