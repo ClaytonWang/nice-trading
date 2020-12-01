@@ -33,6 +33,8 @@
 				</view>
 				<view class="s-row">
 					<view class="col subtitle row-title">操作备忘</view>
+					<view class="col subtitle row-title">买入评级</view>
+					<view class="col subtitle row-amount">60%</view>
 				</view>
 				<view class="s-row">
 					<view class="col subtitle row-amount">悄民顶级sdffsfd霜奇才大规模另</view>

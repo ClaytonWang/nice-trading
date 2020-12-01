@@ -13,6 +13,7 @@ module.exports = app => {
     exec_start_date: { type: DATE, allowNull: true },
     exec_end_date: { type: DATE, allowNull: true },
     priority: { type: INTEGER, defaultValue: 0, allowNull: false },
+    status: { type: INTEGER, defaultValue: 1, allowNull: false },
     comment: { type: TEXT, allowNull: true },
     created_at: { type: DATE, defaultValue: moment().utc().format(), allowNull: false },
     updated_at: { type: DATE, defaultValue: moment().utc().format(), allowNull: false },
