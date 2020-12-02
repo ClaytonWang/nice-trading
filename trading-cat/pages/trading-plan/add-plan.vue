@@ -55,11 +55,10 @@
 					<uni-search-bar placeholder="搜索" @input="search"></uni-search-bar>
 				</view>
 				<view class="item-wrapper">
-					<empty text="暂无数据" mode="data" img-width="140"></empty>
-					<view class="coin-item little-line" @click="select">
+					<empty v-if="searchRslt.length == 0" text="暂无数据" mode="data" img-width="140"></empty>
+					<view class="coin-item little-line" v-for="(item,index) in searchRslt" @click="select" :key="index">
 						<view class="col">
-							<text>南极人</text>
-							<text>600010</text>
+							<text>{{item.name}}({{item.code}})</text>
 						</view>
 					</view>
 				</view>
@@ -70,6 +69,10 @@
 
 <script>
 	import {
+		mapState,
+		mapActions
+	} from 'vuex'
+	import {
 		uniIcons,
 		uniPopup,
 		uniSearchBar
@@ -77,8 +80,9 @@
 	import {
 		commonMixin,
 		authMixin
-	} from '@/common/mixin/mixin.js'
-	import empty from '../../components/empty.vue'
+	} from '@/common/mixin/mixin.js';
+	import empty from '../../components/empty.vue';
+
 	export default {
 		components: {
 			uniIcons,
@@ -92,12 +96,13 @@
 				format: true
 			})
 			return {
+				searchRslt:[],
 				form: {
 					code: undefined,
 					name: undefined,
 					plan_price: undefined,
 					plan_volume: undefined,
-					risk:undefined,
+					risk: undefined,
 					stop_loss: undefined,
 					take_profit: undefined,
 					exec_start_date: currentDate,
@@ -114,27 +119,41 @@
 			endDate() {
 				return this.getDate('end');
 			},
-			profitLostRate(){
-				const {plan_price,stop_loss,take_profit } = this.form;
-				if(plan_price && stop_loss && take_profit){
+			profitLostRate() {
+				const {
+					plan_price,
+					stop_loss,
+					take_profit
+				} = this.form;
+				if (plan_price && stop_loss && take_profit) {
 					return ((take_profit - plan_price) / (plan_price - stop_loss) * 100).toFixed(2);
 				}
 			},
-			plan_volume(){
-				const {plan_price,stop_loss,risk } = this.form;
-				if(plan_price && stop_loss && risk){
+			plan_volume() {
+				const {
+					plan_price,
+					stop_loss,
+					risk
+				} = this.form;
+				if (plan_price && stop_loss && risk) {
 					return (risk / (plan_price - stop_loss)).toFixed(2);
 				}
 			},
-			stop_loss_rate(){
-				const {plan_price,stop_loss } = this.form;
-				if(plan_price && stop_loss){
+			stop_loss_rate() {
+				const {
+					plan_price,
+					stop_loss
+				} = this.form;
+				if (plan_price && stop_loss) {
 					return ((plan_price - stop_loss) / plan_price * 100).toFixed(2);
 				}
 			},
-			take_profit_rate(){
-				const {plan_price,take_profit } = this.form;
-				if(plan_price && take_profit){
+			take_profit_rate() {
+				const {
+					plan_price,
+					take_profit
+				} = this.form;
+				if (plan_price && take_profit) {
 					return ((take_profit - plan_price) / plan_price * 100).toFixed(2);
 				}
 			}
@@ -144,7 +163,27 @@
 
 		},
 		methods: {
-			search() {},
+			...mapActions('Trading', ['searchStock']),
+			async search(data) {
+				if(data.value){
+					const res = await this.searchStock(data.value);
+					if(res && res.data){
+						let data =res.data.split('=')[1];
+						if(data){
+							let arrData = data.split(";");
+							arrData && arrData.forEach((item)=>{
+								let temp = item.split(',');
+								this.searchRslt.push({
+									name:temp[0],
+									code:temp[2],
+									symbol:temp[3],
+								});
+							});
+						}
+					}
+					
+				}
+			},
 			select() {},
 			selectStock() {
 				this.$refs.popup.open()
@@ -152,16 +191,30 @@
 			submit() {
 				//if(!this.form.code){return;}
 				//if(!this.form.name){return;}
-				if(!this.form.plan_price){return;}
-				if(!this.form.plan_volume){
+				if (!this.form.plan_price) {
+					return;
+				}
+				if (!this.form.plan_volume) {
 					this.form.plan_volume = this.plan_volume;
 				}
-				if(!this.form.stop_loss){return;}
-				if(!this.form.take_profit){return;}
-				if(!this.form.exec_start_date){return;}
-				if(!this.form.exec_end_date){return;}
-				if(!this.form.priority){return;}
-				if(!this.form.comment){return;}
+				if (!this.form.stop_loss) {
+					return;
+				}
+				if (!this.form.take_profit) {
+					return;
+				}
+				if (!this.form.exec_start_date) {
+					return;
+				}
+				if (!this.form.exec_end_date) {
+					return;
+				}
+				if (!this.form.priority) {
+					return;
+				}
+				if (!this.form.comment) {
+					return;
+				}
 				console.log(this.form);
 			},
 			selectPriority() {
@@ -195,11 +248,15 @@
 				day = day > 9 ? day : '0' + day;
 				return `${year}-${month}-${day}`;
 			},
-			labelRate(){
-				const {plan_price,stop_loss,take_profit } = this.form;
-				if(plan_price && stop_loss && take_profit){
-					return `${(take_profit - plan_price).toFixed(2)} / ${(plan_price - stop_loss).toFixed(2)} = ${this.profitLostRate} %` ;
-				}else{
+			labelRate() {
+				const {
+					plan_price,
+					stop_loss,
+					take_profit
+				} = this.form;
+				if (plan_price && stop_loss && take_profit) {
+					return `${(take_profit - plan_price).toFixed(2)} / ${(plan_price - stop_loss).toFixed(2)} = ${this.profitLostRate} %`;
+				} else {
 					return '输入盈亏价格'
 				}
 			}
@@ -215,12 +272,15 @@
 	page {
 		background: $page-color-base;
 	}
+
 	.red {
 		color: red !important;
 	}
+
 	.green {
 		color: green !important;
 	}
+
 	.list-cell {
 		display: flex;
 		flex-direction: row;
