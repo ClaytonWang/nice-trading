@@ -1,16 +1,16 @@
 <template>
 	<view class="container">
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
-			<text class="cell-tit">南极人(600010)</text>
+			<text class="cell-tit" :class="form.trading_type=='BUY'?'red':'blue'">{{stockLable}}</text>
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">操作方向</text>
 			<radio-group name="side" @change="selectSide">
 				<label>
-					<radio value="BUY" :checked="form.trading_type=='BUY'" /><text class="cell-side">买入</text>
+					<radio value="BUY" :checked="form.trading_type=='BUY'" /><text class="cell-side red">买入</text>
 				</label>
 				<label>
-					<radio value="SELL" :checked="form.trading_type=='SELL'" /><text class="cell-side">卖出</text>
+					<radio value="SELL" :checked="form.trading_type=='SELL'" /><text class="cell-side blue">卖出</text>
 				</label>
 			</radio-group>
 		</view>
@@ -82,6 +82,7 @@
 				format: true
 			})
 			return {
+				stockLable:'',
 				form: {
 					trading_plan_id: undefined,
 					trading_price: undefined,
@@ -94,7 +95,12 @@
 				},
 			};
 		},
-		onLoad() {},
+		onLoad() {
+			if(this.$route.query.plan_id){
+				this.stockLable = this.$route.query.name + " ("+this.$route.query.code+")"
+				this.form.trading_plan_id = this.$route.query.plan_id
+			}
+		},
 		onUnload() {
 
 		},
@@ -181,6 +187,12 @@
 		width: 100%;
 	}
 
+	.red{
+		color: red !important;
+	}
+	.blue{
+		color: blue !important;
+	}
 	page {
 		background: $page-color-base;
 	}

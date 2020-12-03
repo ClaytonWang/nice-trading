@@ -1,8 +1,8 @@
 <template>
 	<view class="container">
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
-			<text class="cell-tit">股票</text>
-			<text class="cell-more" @click="selectStock">请选择</text>
+			<text class="cell-tit">{{stockLabel}}</text>
+			<text class="cell-more"  @click="navTo('/pages/public/stock-list')">请选择</text>
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">入场价</text>
@@ -25,8 +25,8 @@
 			<input v-model="form.risk" type="number" class="cell-input" placeholder="请输入数量" />
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
-			<text class="cell-tit">数量</text>
-			<text class="cell-tit">{{plan_volume}}</text>
+			<text class="cell-tit">数量/总额</text>
+			<text class="cell-tit">{{plan_volume * form.plan_price}}/{{plan_volume}}</text>
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">执行时间</text>
@@ -48,22 +48,6 @@
 			<textarea v-model="form.comment" placeholder="备忘,理由" style="width: 100%; font-size: 28upx;"></textarea>
 		</view>
 		<button class="submit" @click="submit">确认</button>
-
-		<uni-popup ref="popup" type="bottom">
-			<view class="coin-box">
-				<view class="coin-search">
-					<uni-search-bar placeholder="搜索" @input="search"></uni-search-bar>
-				</view>
-				<view class="item-wrapper">
-					<empty v-if="searchRslt.length == 0" text="暂无数据" mode="data" img-width="140"></empty>
-					<view class="coin-item little-line" v-for="(item,index) in searchRslt" @click="select" :key="index">
-						<view class="col">
-							<text>{{item.name}}({{item.code}})</text>
-						</view>
-					</view>
-				</view>
-			</view>
-		</uni-popup>
 	</view>
 </template>
 
@@ -97,9 +81,11 @@
 			})
 			return {
 				searchRslt:[],
+				stockLabel:'股票',
 				form: {
 					code: undefined,
 					name: undefined,
+					symbol:undefined,
 					plan_price: undefined,
 					plan_volume: undefined,
 					risk: undefined,
@@ -158,35 +144,22 @@
 				}
 			}
 		},
-		onLoad() {},
+		onLoad() {
+			uni.$on('selectStock', this.selectStock)
+		},
 		onUnload() {
-
+			uni.$off('selectStock', this.selectStock)
 		},
 		methods: {
-			...mapActions('Trading', ['searchStock']),
-			async search(data) {
-				if(data.value){
-					const res = await this.searchStock(data.value);
-					if(res && res.data){
-						let data =res.data.split('=')[1];
-						if(data){
-							let arrData = data.split(";");
-							arrData && arrData.forEach((item)=>{
-								let temp = item.split(',');
-								this.searchRslt.push({
-									name:temp[0],
-									code:temp[2],
-									symbol:temp[3],
-								});
-							});
-						}
-					}
-					
-				}
-			},
 			select() {},
-			selectStock() {
-				this.$refs.popup.open()
+			selectStock({stock}) {
+				console.log(stock);
+				this.stockLabel = stock.item.name;
+				if(this.stockLabel){
+					this.form.name=this.stockLabel.split(" (")[0];
+					this.form.code=this.stockLabel.split(" (")[1].replace(")","");
+					this.form.symbol = stock.item.key;
+				}
 			},
 			submit() {
 				//if(!this.form.code){return;}

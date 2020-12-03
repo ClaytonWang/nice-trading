@@ -104,7 +104,7 @@
 			    success: function (res) {
 			        let i = res.tapIndex
 					uni.navigateTo({
-						url: "/pages/trading-detail/add-detail"
+						url: "/pages/trading-detail/add-detail?name=南极人&code=600010&symbol=sh_600010&plan_id=1"
 					})
 			    },
 			    fail: function (res) {
