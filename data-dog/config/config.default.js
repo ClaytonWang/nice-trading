@@ -36,7 +36,13 @@ module.exports = appInfo => {
     security: {
       csrf: {
         enable: false,
+        ignoreJSON: true,
       },
+      domainWhiteList: [ '*' ],
+    },
+    cors: {
+      origin: '*',
+      allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
     },
   };
 

@@ -2,18 +2,18 @@
 	<view class="container">
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">{{stockLabel}}</text>
-			<text class="cell-more"  @click="navTo('/pages/public/stock-list')">请选择</text>
+			<text class="cell-more" @click="navTo('/pages/public/stock-list')">请选择</text>
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">入场价</text>
 			<input v-model="form.plan_price" type="number" class="cell-input" placeholder="请输价格" />
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
-			<text class="cell-tit">止损 <i v-if="stop_loss_rate" style="color: green;">{{stop_loss_rate}} %</i></text>
+			<text class="cell-tit">止损<i v-if="stop_loss_rate" style="color: green;">{{stop_loss_rate}} %</i></text>
 			<input v-model="form.stop_loss" type="number" class="cell-input" placeholder="请输入单价" />
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
-			<text class="cell-tit">止赢 <i v-if="take_profit_rate" style="color: red;">{{take_profit_rate}} %</i></text>
+			<text class="cell-tit">止赢<i v-if="take_profit_rate" style="color: red;">{{take_profit_rate}} %</i></text>
 			<input v-model="form.take_profit" type="number" class="cell-input" placeholder="请输入单价" />
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
@@ -25,8 +25,8 @@
 			<input v-model="form.risk" type="number" class="cell-input" placeholder="请输入数量" />
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
-			<text class="cell-tit">数量/总额</text>
-			<text class="cell-tit">{{plan_volume * form.plan_price}}/{{plan_volume}}</text>
+			<text class="cell-tit">总额/数量</text>
+			<text class="cell-tit">{{plan_totoal}}元 / {{plan_volume}}股</text>
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">执行时间</text>
@@ -80,12 +80,12 @@
 				format: true
 			})
 			return {
-				searchRslt:[],
-				stockLabel:'股票',
+				searchRslt: [],
+				stockLabel: '股票',
 				form: {
 					code: undefined,
 					name: undefined,
-					symbol:undefined,
+					symbol: undefined,
 					plan_price: undefined,
 					plan_volume: undefined,
 					risk: undefined,
@@ -112,7 +112,7 @@
 					take_profit
 				} = this.form;
 				if (plan_price && stop_loss && take_profit) {
-					return ((take_profit - plan_price) / (plan_price - stop_loss) * 100).toFixed(2);
+					return (Math.abs(take_profit - plan_price) / Math.abs(plan_price - stop_loss) * 100).toFixed(2);
 				}
 			},
 			plan_volume() {
@@ -122,7 +122,12 @@
 					risk
 				} = this.form;
 				if (plan_price && stop_loss && risk) {
-					return (risk / (plan_price - stop_loss)).toFixed(2);
+					return (risk / Math.abs(plan_price - stop_loss)).toFixed(2);
+				}
+			},
+			plan_totoal() {
+				if (this.form.plan_price && this.plan_volume) {
+					return (this.plan_volume * this.form.plan_price).toFixed(2);
 				}
 			},
 			stop_loss_rate() {
@@ -131,7 +136,7 @@
 					stop_loss
 				} = this.form;
 				if (plan_price && stop_loss) {
-					return ((plan_price - stop_loss) / plan_price * 100).toFixed(2);
+					return (Math.abs(plan_price - stop_loss) / plan_price * 100).toFixed(2);
 				}
 			},
 			take_profit_rate() {
@@ -140,7 +145,7 @@
 					take_profit
 				} = this.form;
 				if (plan_price && take_profit) {
-					return ((take_profit - plan_price) / plan_price * 100).toFixed(2);
+					return (Math.abs(take_profit - plan_price) / plan_price * 100).toFixed(2);
 				}
 			}
 		},
@@ -151,44 +156,83 @@
 			uni.$off('selectStock', this.selectStock)
 		},
 		methods: {
+			...mapActions('Trading', ['addPlan']),
 			select() {},
-			selectStock({stock}) {
+			selectStock({
+				stock
+			}) {
 				console.log(stock);
 				this.stockLabel = stock.item.name;
-				if(this.stockLabel){
-					this.form.name=this.stockLabel.split(" (")[0];
-					this.form.code=this.stockLabel.split(" (")[1].replace(")","");
+				if (this.stockLabel) {
+					this.form.name = this.stockLabel.split(" (")[0];
+					this.form.code = this.stockLabel.split(" (")[1].replace(")", "");
 					this.form.symbol = stock.item.key;
 				}
 			},
-			submit() {
-				//if(!this.form.code){return;}
-				//if(!this.form.name){return;}
+			async submit() {
+				if (!this.form.code) {
+					this.$msg('请选择股票');
+					return;
+				}
+				if (!this.form.name) {
+					this.$msg('请选择股票');
+					return;
+				}
 				if (!this.form.plan_price) {
+					this.$msg('请输入场价');
 					return;
 				}
 				if (!this.form.plan_volume) {
 					this.form.plan_volume = this.plan_volume;
 				}
 				if (!this.form.stop_loss) {
+					this.$msg('请输入止损价');
 					return;
 				}
 				if (!this.form.take_profit) {
+					this.$msg('请输入止盈价');
 					return;
 				}
 				if (!this.form.exec_start_date) {
+					this.$msg('请输入开始日期');
 					return;
 				}
 				if (!this.form.exec_end_date) {
+					this.$msg('请输入结束日期');
 					return;
 				}
 				if (!this.form.priority) {
+					this.$msg('请选择优先级');
 					return;
 				}
 				if (!this.form.comment) {
+					this.$msg('请输入备注');
 					return;
 				}
-				console.log(this.form);
+				//['耐心等待', '等待', '一般', '高'] 0,1,2,3
+				switch(this.form.priority){
+					case '耐心等待':
+					this.form.priority = 0;
+					break;
+					case '等待':
+					this.form.priority = 1;
+					break;
+					case '一般':
+					this.form.priority = 2;
+					break;
+					case '高':
+					this.form.priority = 3;
+					break;
+				}
+				const res = await this.addPlan(this.form)
+				if(res.data){
+					this.$msg("添加成功!");
+					setTimeout(()=>{
+						uni.navigateBack({ });
+					},500);
+				}else{
+					this.$msg(res.errMsg);
+				}
 			},
 			selectPriority() {
 				let form = this.form

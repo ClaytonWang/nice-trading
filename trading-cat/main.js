@@ -18,6 +18,28 @@ Vue.prototype.$store = store
 
 App.mpType = 'app'
 
+const navTo = (url)=>{
+	uni.navigateTo({
+		url: url
+	})
+}
+const msg = (title, duration=1500, mask=false, icon='none', success)=>{
+	//统一提示方便全局修改
+	if(Boolean(title) === false){
+		return;
+	}
+	uni.showToast({
+		title,
+		duration,
+		mask,
+		icon,
+		success
+	});
+}
+
+Vue.prototype.$msg = msg;
+Vue.prototype.$navTo = navTo;
+
 const app = new Vue({
 	store,
 	...App

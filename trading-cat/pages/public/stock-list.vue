@@ -21,7 +21,6 @@
 			};
 		},
 		async onNavigationBarSearchInputChanged(data){
-			console.log(data)
 			if(data.text){
 				let letter = data.text.charAt(0).toUpperCase();
 				await this.search(data.text);

@@ -23,7 +23,7 @@
 			<input v-model="form.trading_volume" type="number" class="cell-input" placeholder="请输入数量" />
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
-			<text class="cell-tit">交易日期</text>
+			<text class="cell-tit">操作日期</text>
 			<picker mode="date" :value="form.trading_date" :start="startDate" :end="endDate" @change="bindDateChange">
 				<view class="uni-input">{{form.trading_date}}</view>
 			</picker>
@@ -61,6 +61,10 @@
 </template>
 
 <script>
+	import {
+		mapState,
+		mapActions
+	} from 'vuex'
 	import {
 		uniIcons,
 		uniPopup,
@@ -119,7 +123,7 @@
 				if (trading_price && trading_volume) {
 					let v = trading_price * trading_volume * 0.00025;
 					if (v <= 5) return 5;
-					return v;
+					return v.toFixed(2);
 				} else {
 					return 0;
 				}
@@ -131,13 +135,14 @@
 				} = this.form;
 				if (trading_price && trading_volume) {
 					return (trading_price * trading_volume * 0.001);
-					return v;
+					return v.toFixed(2);
 				} else {
 					return 0;
 				}
 			}
 		},
 		methods: {
+			...mapActions('Trading', ['addDetail']),
 			search() {},
 			select() {},
 			selectSide(value) {
@@ -147,18 +152,39 @@
 			selectStock() {
 				this.$refs.popup.open()
 			},
-			submit() {
-				if(!this.form.trading_type){ return ;}
-				if(!this.form.trading_price){ return ;}
-				if(!this.form.trading_volume){ return ;}
-				if(!this.form.trading_date){ return ;}
-				if(!this.form.comment){ return ;}
+			async submit() {
+				if(!this.form.trading_type){ 
+					this.$msg('请选择交易方向');
+					return ;}
+				if(!this.form.trading_price){ 
+					this.$msg('请输入成交价格');
+					return ;}
+				if(!this.form.trading_volume){ 
+					this.$msg('请输入成交数量');
+					return ;}
+				if(!this.form.trading_date){ 
+					this.$msg('请输操作日期');
+					return ;}
+				if(!this.form.comment){ 
+					this.$msg('请输备注');
+					return ;}
 				this.form.commission = this.commission;
 				if(this.form.trading_type==='SELL'){
 					this.form.stamp_tax = this.stamp_tax;
 				}
 				
-				console.log(this.form);
+				const res = await this.addDetail(this.form);
+				if(res.data){
+					this.$msg("添加成功!");
+					setTimeout(()=>{
+						/* uni.navigateTo({
+							url: "/pages/trading-detail/detail-list"
+						}); */
+						uni.navigateBack({ });
+					},500);
+				}else{
+					this.$msg(res.errMsg);
+				}
 			},
 			bindDateChange: function(e) {
 				this.form.trading_date = e.target.value;
