@@ -21,11 +21,27 @@ export default {
 		}
 	},
 	
+	async getPlanList({commit},id){
+		try{
+			return await plan.get(id);
+		}catch(e){
+			console.log(e);
+		}
+	},
+	
 	async addDetail({commit},data){
 		try{
 			return await planDetail.add(data);
 		}catch(e){
 			console.log(e);
 		}
-	}
+	},
+	
+	async getDetailList({commit},id){
+		try{
+			return await planDetail.get(id);
+		}catch(e){
+			console.log(e);
+		}
+	},
 };

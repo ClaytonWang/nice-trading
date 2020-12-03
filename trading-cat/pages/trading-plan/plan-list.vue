@@ -6,29 +6,33 @@
 				<text class="title">亏损<text class="count">共 0 个</text></text>
 				<text class="title">风险<text class="count">共 4% </text></text>
 			</view>
-			<view class="item">
+			<view class="item" v-for="(item,index) in plan_list" :key="index">
 				<view class="top">
-					<view class="stock" @click="navTo()">南极人(600010)</view>
+					<view class="stock" @click="navTo(item.id)">{{item.name}} ({{item.code}})</view>
 					<view class="opt">
-						<switch checked="1" style="transform:scale(0.7);" />
+						<switch :checked="item.status==1" style="transform:scale(0.7);" />
 						<icon type="cancel" size="26" />
 					</view>
 				</view>
 				<view class="center">
+					<view class="s-row row-amount">
+						<view class="col">{{item.exec_start_date | moment("MM/DD")}} - {{item.exec_end_date | moment("MM/DD")}}</view>
+						<view class="col">优先级: {{item.priority | formatPriority}}</view>
+					</view>
 					<view class="s-row row-title">
 						<view class="col">入场</view>
 						<view class="col">止损</view>
 						<view class="col">止赢</view>
 					</view>
 					<view class="s-row row-amount">
-						<view class="col">100.12</view>
+						<view class="col">{{item.plan_price | fixed}}</view>
 						<view class="col">
-							100.12
-							<i class="stop_loss">-6.12%</i>
+							{{item.stop_loss | fixed}}
+							<i class="stop_loss">-{{stop_loss_rate(item) | fixed}}</i>
 						</view>
 						<view class="col">
-							110.28
-							<i class="take_profit">16.12%</i>
+							{{item.take_profit | fixed}}
+							<i class="take_profit">{{take_profit_rate(item) | fixed}}</i>
 						</view>
 					</view>
 					<view class="s-row row-title">
@@ -37,26 +41,16 @@
 						<view class="col">风险额</view>
 					</view>
 					<view class="s-row row-amount">
-						<view class="col">1000</view>
-						<view class="col">60%</view>
-						<view class="col">2000</view>
-					</view>
-					<view class="s-row row-title">
-						<view class="col">执行日期</view>
-						<view class="col">优先级</view>
-						<view class="col">风险比</view>
-					</view>
-					<view class="s-row row-amount">
-						<view class="col">10/1 - 10/5</view>
-						<view class="col">等待</view>
-						<view class="col">2%</view>
+						<view class="col">{{item.plan_volume | fixed}}</view>
+						<view class="col">{{profitLostRate(item) | fixed}}</view>
+						<view class="col">{{item.risk | fixed}}</view>
 					</view>
 					<view class="s-row row-title">
 						<view class="col">说明</view>
 					</view>
 					<view class="s-row row-amount">
 						<view class="col">
-							据成都市卫健委消息，11月29日上午，成都市获悉重庆市SK海力士公司一韩国籍员工于11月26日自重庆来蓉，由双流国际机场搭乘航班飞往韩国，该旅客11月28日在韩国诊断为无症状感染者。目前，成都已完成重庆协查出境无症状感染者相关人员筛查，核酸检测均为阴性。详细
+							{{item.comment}}
 						</view>
 					</view>
 				</view>
@@ -68,12 +62,43 @@
 	</view>
 </template>
 <script>
+	import {
+		mapState,
+		mapActions
+	} from 'vuex'
+	import {
+		commonMixin
+	} from '@/common/mixin/mixin.js';
 	export default {
+		mixins: [commonMixin],
 		data() {
-			return {}
+			return {
+				plan_list: [],
+			}
+		},
+		filters: {
+			formatPriority(v) {
+				switch (v.toString()) {
+					case '0':
+						return '耐心等待';
+						break;
+					case '1':
+						return '等待';
+						break;
+					case '2':
+						return '一般';
+						break;
+					case '3':
+						return '高';
+						break;
+				}
+			},
+			formatNum(v) {
+				return parseFloat(v).toFixed(2);
+			},
 		},
 		onShow() {
-			//this.getList()
+			this.getList()
 		},
 		// #ifndef MP
 		onNavigationBarButtonTap(e) {
@@ -91,12 +116,50 @@
 		},
 		// #endif
 		methods: {
-			getList() {},
-			navTo() {
+			...mapActions('Trading', ['getPlanList']),
+			async getList() {
+				const res = await this.getPlanList();
+				console.log(res);
+				if (res.data) {
+					this.plan_list = res.data.rows;
+				} else {
+					this.$msg(data.errMsg);
+					this.plan_list = [];
+				}
+			},
+			navTo(id) {
 				uni.navigateTo({
-					url: '/pages/trading-detail/detail-list'
+					url: '/pages/trading-detail/detail-list?plan_id=' + id
 				})
-			}
+			},
+			stop_loss_rate(item) {
+				const {
+					plan_price,
+					stop_loss
+				} = item;
+				if (plan_price && stop_loss) {
+					return (Math.abs(plan_price - stop_loss) / plan_price * 100).toFixed(2);
+				}
+			},
+			take_profit_rate(item) {
+				const {
+					plan_price,
+					take_profit
+				} = item;
+				if (plan_price && take_profit) {
+					return (Math.abs(take_profit - plan_price) / plan_price * 100).toFixed(2);
+				}
+			},
+			profitLostRate(item) {
+				const {
+					plan_price,
+					stop_loss,
+					take_profit
+				} = item;
+				if (plan_price && stop_loss && take_profit) {
+					return (Math.abs(take_profit - plan_price) / Math.abs(plan_price - stop_loss) * 100).toFixed(2);
+				}
+			},
 		}
 	}
 </script>
@@ -165,9 +228,11 @@
 				justify-content: space-between;
 				align-items: center;
 				margin-bottom: 30upx;
-				.stock{
+
+				.stock {
 					font-weight: bold;
 				}
+
 				.opt {
 					display: flex;
 					flex-direction: row;
@@ -184,11 +249,13 @@
 						flex: 1;
 						padding: 4upx 0 10upx 0;
 					}
-					.take_profit{
+
+					.take_profit {
 						font-size: $font-xsm;
 						color: red;
 					}
-					.stop_loss{
+
+					.stop_loss {
 						font-size: $font-xsm;
 						color: green;
 					}

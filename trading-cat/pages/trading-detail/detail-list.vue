@@ -2,8 +2,8 @@
 	<view class="container">
 		<!-- 列表 -->
 		<view class="coin-section m-t">
-			<empty text="暂无订单记录" mode="data" margin-top="200"></empty>
-			<view class="block little-line">
+			<empty v-if="detial_list.length == 0" text="暂无订单记录" mode="data" margin-top="200"></empty>
+			<view class="block little-line" v-for="(item,index) in detial_list" :key="index">
 				<view class="s-row">
 					<view class="col">
 						<text class="coin buy" >买入</text>
@@ -81,6 +81,10 @@
 </template>
 
 <script>
+	import {
+		mapState,
+		mapActions
+	} from 'vuex'
 	import {uniPopup, uniIcons} from '@dcloudio/uni-ui'
 	import {commonMixin} from '@/common/mixin/mixin.js'
 	import empty from '../../components/empty.vue'
@@ -89,9 +93,11 @@
 		mixins: [commonMixin],
 		data() {
 			return {
+				detial_list:[]
 			};
 		},
 		onShow(){
+			this.getList()
 		},
 		onReachBottom(){
 		},
@@ -112,6 +118,16 @@
 			});
 		},
 		methods: {
+			...mapActions('Trading', ['getDetailList']),
+			async getList() {
+				const res = await this.getDetailList(this.$route.query.plan_id);
+				console.log(res);
+				if (res && res.data) {
+					this.plan_list = res.data.rows;
+				} else {
+					this.detial_list = [];
+				}
+			},
 		}
 	}
 </script>

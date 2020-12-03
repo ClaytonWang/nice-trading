@@ -9,6 +9,7 @@ export function add(plan) {
 }
 
 export function get(id) {
+	if(!id){ id= '';}
   return request({
     url: '/api/trading-plan/'+id,
     method: 'GET'

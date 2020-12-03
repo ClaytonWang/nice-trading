@@ -177,9 +177,6 @@
 				if(res.data){
 					this.$msg("添加成功!");
 					setTimeout(()=>{
-						/* uni.navigateTo({
-							url: "/pages/trading-detail/detail-list"
-						}); */
 						uni.navigateBack({ });
 					},500);
 				}else{
