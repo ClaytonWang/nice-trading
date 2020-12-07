@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+  data-dog:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ENV_NAME: dev
+    restart: always
+    depends_on:
+      - trading-db
+    networks:
+      - webservices
+    ports:
+      - 7001:7001
+
+  trading-db:
+    image: bitnami/mariadb:latest
+    container_name: trading-db
+    restart: always
+    volumes:
+      - ./trading_db_data:/bitnami
+    ports:
+      - 3306:3306
+    environment:
+      - MARIADB_USER=nice_trading
+      - MARIADB_PASSWORD=Password1
+      - MARIADB_DATABASE=my_trading
+      - MARIADB_ROOT_USER=root
+      - MARIADB_ROOT_PASSWORD=Password1
+      - ALLOW_EMPTY_PASSWORD=no
+    networks:
+      - webservices
+
+volumes:
+  trading_db_data:
+    driver: local
+
+
+networks:
+  webservices:
+    driver: bridge
