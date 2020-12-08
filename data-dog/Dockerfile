@@ -7,10 +7,10 @@ ENV NODE_ENV dev
 ENV NODE_CONFIG_ENV dev
 
 # Set the timezone in docker
-RUN apk --update add tzdata \\
-   && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \\
-   && echo "Asia/Shanghai" > /etc/timezone \\
-   && apk del tzdata
+# RUN apk --update add tzdata \\
+#    && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \\
+#    && echo "Asia/Shanghai" > /etc/timezone \\
+#    && apk del tzdata
 
 # Create Directory for the Container
 RUN mkdir -p /usr/src/app
