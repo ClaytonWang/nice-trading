@@ -1,10 +1,10 @@
 FROM node:15.3.0-alpine3.10
 # Env
 ENV TIME_ZONE=Asia/Shanghai
-ENV ENV_NAME dev
-ENV EGG_SERVER_ENV dev
-ENV NODE_ENV dev
-ENV NODE_CONFIG_ENV dev
+ENV ENV_NAME production
+ENV EGG_SERVER_ENV production
+ENV NODE_ENV production
+ENV NODE_CONFIG_ENV production
 
 # Set the timezone in docker
 # RUN apk --update add tzdata \\
