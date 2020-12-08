@@ -7,11 +7,6 @@ services:
     environment:
       ENV_NAME: dev
     restart: always
-    command:
-      - /bin/bash
-      - -c
-      - |
-        npx sequelize db:migrate
     depends_on:
       - trading-db
     networks:
