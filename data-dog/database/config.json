@@ -17,7 +17,7 @@
     "username": "root",
     "password": "Password1",
     "database": "my_trading",
-    "host": "127.0.0.1",
+    "host": "trading-db",
     "dialect": "mysql"
   }
 }
