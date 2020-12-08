@@ -17,6 +17,7 @@ services:
 
   trading-db:
     image: bitnami/mariadb:latest
+    user: root
     container_name: trading-db
     restart: always
     volumes:
