@@ -2,8 +2,8 @@
   "development": {
     "username": "root",
     "password": "Password1",
-    "database": "my_trade_dev",
-    "host": "127.0.0.1",
+    "database": "my_trading_dev",
+    "host": "my_trading",
     "dialect": "mysql"
   },
   "test": {
