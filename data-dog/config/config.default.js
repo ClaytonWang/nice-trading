@@ -23,10 +23,10 @@ module.exports = appInfo => {
     // myAppName: 'egg',
     sequelize: {
       dialect: 'mysql', // support: mysql, mariadb, postgres, mssql
-      database: 'my_trade_dev',
-      host: 'localhost',
+      database: 'my_trading',
+      host: 'trading-db',
       port: 3306,
-      username: 'root',
+      username: 'nice_trading',
       password: 'Password1',
       define: {
         timestamps: false,
