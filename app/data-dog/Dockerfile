@@ -17,7 +17,7 @@ RUN mkdir -p /usr/src/app
 
 WORKDIR /usr/src/app
 # Only copy the package.json file to work directory
-COPY package.json .
+COPY ./package.json .
 # Install all Packages
 RUN npm install --production
 # Copy all other source code to work directory
