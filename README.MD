@@ -1,14 +1,16 @@
-## Nice Trading
-----
-记录交易的系统，能让自已对自已所有的交易有所回顾，吸取教训。
+#How to use it
+---
+### First start Proxy
 
-----
+```terminal
+cd proxy
+$ ./start.sh
+```
 
-### admin-template
-前端：是第三方样式组件库，直接拿来做PC前端架子。
+### Then start your app
 
-### trading-dog
-前端：uni-app框架做的mobile端
+```terminal
+cd app
+docker-compose up -d
 
-### data-dog
-后端：用 egg js + mysql 存取数据。RESTFull 风格的API。
+```
