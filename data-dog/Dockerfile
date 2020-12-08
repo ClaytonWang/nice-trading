@@ -23,6 +23,6 @@ RUN npm install --production
 # Copy all other source code to work directory
 ADD . /usr/src/app
 # Start
-CMD [ "npx","sequelize","db:migrate","&","npm", "start" ]
+CMD [ "npm", "start" ]
 
 EXPOSE 7001
