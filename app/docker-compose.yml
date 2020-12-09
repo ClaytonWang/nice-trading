@@ -5,13 +5,13 @@ services:
       context: ./data-dog
       dockerfile: Dockerfile
     environment:
-      ENV_NAME: production
+      - ENV_NAME=production
+      - VIRTUAL_HOST=trading.dw3c.com
+      - VIRTUAL_PORT=7001
     container_name: data-dog
     restart: always
     depends_on:
       - trading-db
-    networks:
-      - webservices
     ports:
       - 7001:7001
 
@@ -33,22 +33,18 @@ services:
       - MYSQL_ROOT_PASSWORD=Password1
       - ALLOW_EMPTY_PASSWORD=no
       - MYSQL_AUTHENTICATION_PLUGIN=mysql_native_password
-    networks:
-      - webservices
 
-  bridge-nginx:
-    image: nginx:alpine
-    container_name: bridge-nginx
-    volumes:
-      - ./bridge-nginx/conf:/etc/nginx/conf.d
-    depends_on:
-      - data-dog
-    environment:
-      - VIRTUAL_HOST=trading.dw3c.com
-      #- LETSENCRYPT_HOST=trading.dw3c.com
-      #- LETSENCRYPT_EMAIL=lovejunlic@qq.com
-    networks:
-      - webservices
+  # bridge-nginx:
+  #   image: nginx:alpine
+  #   container_name: bridge-nginx
+  #   volumes:
+  #     - ./bridge-nginx/conf:/etc/nginx/conf.d
+  #   depends_on:
+  #     - data-dog
+  #   environment:
+  #     - VIRTUAL_HOST=trading.dw3c.com
+  #     - LETSENCRYPT_HOST=trading.dw3c.com
+  #     - LETSENCRYPT_EMAIL=lovejunlic@qq.com
 
 volumes:
   trading_db_data:
@@ -57,5 +53,6 @@ volumes:
     driver: local
 
 networks:
-  webservices:
-    driver: bridge
+  default:
+    external:
+      name: webservices
