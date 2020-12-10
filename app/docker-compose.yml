@@ -14,7 +14,7 @@ services:
       - MYSQL_DB_NAME=my_trading
       - BACKUP_DAYS=3
     depends_on:
-      - trading-db
+      - data-dog
 
   data-dog:
     build:
