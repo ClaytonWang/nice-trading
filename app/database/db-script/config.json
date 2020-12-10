@@ -3,7 +3,7 @@
     "username": "root",
     "password": "Password1",
     "database": "my_trading_dev",
-    "host": "my_trading",
+    "host": "trading-db",
     "dialect": "mysql"
   },
   "test": {

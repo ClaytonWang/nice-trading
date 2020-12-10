@@ -10,10 +10,10 @@ npm install --save-dev sequelize-cli
 const path = require('path');
 
 module.exports = {
-  config: path.join(__dirname, 'config.json'),
-  'migrations-path': path.join(__dirname, 'migrations'),
-  'seeders-path': path.join(__dirname, 'seeders'),
-  'models-path': path.join(__dirname, 'model'),
+  config: path.join(__dirname, 'database/config.json'),
+  'migrations-path': path.join(__dirname, 'database/migrations'),
+  'seeders-path': path.join(__dirname, 'database/seeders'),
+  'models-path': path.join(__dirname, 'app/model'),
 };
 
 //初始化 Migrations 配置文件和目录
