@@ -2,17 +2,19 @@ version: "3"
 services:
   mysql-auto-backup:
     build:
-      context: ./database/backup
+      context: ./database/backup-script
       dockerfile: Dockerfile
     container_name: mysql-auto-backup
     volumes: 
-      - ./database/backup/mysql_backups:/mysql_backups/:rw 
+      - ./database/data/backup:/backup
     environment: 
-      - MYSQL_DB_HOST=trading-db
-      - MYSQL_DB_USER=root
-      - MYSQL_DB_PWD=Password1
-      - MYSQL_DB_NAME=my_trading
-      - BACKUP_DAYS=3
+      DBHOST: trading-db
+      USERNAME: root
+      PASSWORD: "Password1"
+      DBEXCLUDE: "performance_schema information_schema"
+      CRON_SCHEDULE: "0 5 * * *"
+      EXTRA_OPTS: "--single-transaction"
+      DBNAMES: "my_trading"
     depends_on:
       - data-dog
 
