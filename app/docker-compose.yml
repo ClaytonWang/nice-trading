@@ -24,7 +24,7 @@ services:
       dockerfile: Dockerfile
     environment:
       - ENV_NAME=production
-      - VIRTUAL_HOST=trading.dw3c.com
+      - VIRTUAL_HOST=trading.moyebuy.com
       - VIRTUAL_PORT=7001
     container_name: data-dog
     restart: always
