@@ -7,6 +7,10 @@ COPY Shanghai /etc/localtime
 COPY mysql_backup.sh /
 COPY docker-entrypoint.sh /usr/local/bin/
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+RUN chmod +x /mysql_backup.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+
+ENTRYPOINT ["/bin/sh","docker-entrypoint.sh"]
 
 CMD ["sh"]
