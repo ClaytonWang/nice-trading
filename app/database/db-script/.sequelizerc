@@ -3,8 +3,8 @@
 const path = require('path');
 
 module.exports = {
-  config: path.join(__dirname, 'db-script/config.json'),
-  'migrations-path': path.join(__dirname, 'db-script/migrations'),
-  'seeders-path': path.join(__dirname, 'db-script/seeders'),
-  'models-path': path.join(__dirname, '../data-dog/app/model'),
+  config: path.join(__dirname, 'config.json'),
+  'migrations-path': path.join(__dirname, 'migrations'),
+  'seeders-path': path.join(__dirname, 'seeders'),
+  'models-path': path.join(__dirname, 'model'),
 };

@@ -2,3 +2,5 @@ data
 !.env*
 !.env.sample
 .DS_Store
+proxy/nginx-data
+app/database/data

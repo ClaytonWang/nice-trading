@@ -15,6 +15,7 @@ services:
       CRON_SCHEDULE: "0 5 * * *"
       EXTRA_OPTS: "--single-transaction"
       DBNAMES: "my_trading"
+      DOWEEKLY: 6
     depends_on:
       - data-dog
 
@@ -24,8 +25,10 @@ services:
       dockerfile: Dockerfile
     environment:
       - ENV_NAME=production
-      - VIRTUAL_HOST=trading.moyebuy.com
+      - VIRTUAL_HOST=api.moyebuy.com
       - VIRTUAL_PORT=7001
+      - LETSENCRYPT_HOST=api.moyebuy.com
+      - LETSENCRYPT_EMAIL=lovejunlic@qq.com
     container_name: data-dog
     restart: always
     depends_on:
@@ -60,7 +63,7 @@ services:
 volumes:
   trading_db_data:
     driver: local
-  mysql_backups:
+  backup:
     driver: local
   conf:
     driver: local
