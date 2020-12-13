@@ -11,12 +11,15 @@ export const commonMixin = {
     return { }
   },
   filters: {
-	  fixed(v, scale){
+	  fixed(v, scale,unit){
 		  if(v){
 			  if(!scale){
 				  scale = 2
 			  }
-			  return parseFloat(v).toFixed(scale)
+			  if(!unit){
+				  unit = "";
+			  }
+			  return parseFloat(v).toFixed(scale) +unit;
 		  }
 		  return v
 	  }

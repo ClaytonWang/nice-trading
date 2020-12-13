@@ -11,7 +11,7 @@
 					<view class="stock" @click="navTo(item.id)">{{item.name}} ({{item.code}})</view>
 					<view class="opt">
 						<switch :checked="item.status==1" style="transform:scale(0.7);" />
-						<icon type="cancel" size="26" />
+						<icon type="cancel" size="26" @click="del(item.id)"/>
 					</view>
 				</view>
 				<view class="center">
@@ -28,11 +28,11 @@
 						<view class="col">{{item.plan_price | fixed}}</view>
 						<view class="col">
 							{{item.stop_loss | fixed}}
-							<i class="stop_loss">-{{stop_loss_rate(item) | fixed}}</i>
+							<i class="stop_loss">-{{stop_loss_rate(item) | fixed(2,'%')}}</i>
 						</view>
 						<view class="col">
 							{{item.take_profit | fixed}}
-							<i class="take_profit">{{take_profit_rate(item) | fixed}}</i>
+							<i class="take_profit">{{take_profit_rate(item) | fixed(2,'%')}}</i>
 						</view>
 					</view>
 					<view class="s-row row-title">
@@ -55,7 +55,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="empty">
+			<view class="empty" v-if="plan_list && plan_list.length==0">
 				暂无
 			</view>
 		</view>
@@ -116,11 +116,11 @@
 		},
 		// #endif
 		methods: {
-			...mapActions('Trading', ['getPlanList']),
+			...mapActions('Trading', ['getPlanList','delPlanItem']),
 			async getList() {
 				const res = await this.getPlanList();
 				console.log(res);
-				if (res.data) {
+				if (res && res.data) {
 					this.plan_list = res.data.rows;
 				} else {
 					this.$msg(data.errMsg);
@@ -160,6 +160,14 @@
 					return (Math.abs(take_profit - plan_price) / Math.abs(plan_price - stop_loss) * 100).toFixed(2);
 				}
 			},
+			async del(id){
+				const res = await this.delPlanItem(id);
+				if(res && res.data){
+					this.getList()
+				}else{
+					this.$msg(res.errMsg);
+				}
+			}
 		}
 	}
 </script>

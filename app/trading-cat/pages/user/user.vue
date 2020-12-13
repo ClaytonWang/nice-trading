@@ -9,9 +9,9 @@
 				</view>
 			</view>
 			<view class="center-list">
-				<view class="center-list-item border-bottom">
+				<view class="center-list-item border-bottom" @click="toRiskSetting">
 					<text class="list-icon">&#xe60f;</text>
-					<text class="list-text">帐号管理</text>
+					<text class="list-text">风险设置</text>
 					<text class="navigat-arrow">&#xe65e;</text>
 				</view>
 				<!-- #ifdef APP-PLUS -->
@@ -133,6 +133,11 @@
 			toInvite() {
 				uni.navigateTo({
 					url: '/pages/invite/invite'
+				})
+			},
+			toRiskSetting(){
+				uni.navigateTo({
+					url:'/pages/setting/setting'
 				})
 			}
 		}

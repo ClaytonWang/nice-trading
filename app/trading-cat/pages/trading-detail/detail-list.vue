@@ -97,7 +97,7 @@
 			};
 		},
 		onShow(){
-			this.getList()
+			this.getList();
 		},
 		onReachBottom(){
 		},
@@ -120,10 +120,10 @@
 		methods: {
 			...mapActions('Trading', ['getDetailList']),
 			async getList() {
-				const res = await this.getDetailList(this.$route.query.plan_id);
+				const res = await this.getDetailList(1);
 				console.log(res);
 				if (res && res.data) {
-					this.plan_list = res.data.rows;
+					this.detial_list = res.data.rows;
 				} else {
 					this.detial_list = [];
 				}

@@ -4,6 +4,8 @@ import * as plan from '@/api/trading-plan.js';
 
 import * as planDetail from '@/api/trading-detail.js';
 
+import * as setting from '@/api/setting.js';
+
 export default {
 	async searchStock({commit},keyword){
 		try{
@@ -29,6 +31,16 @@ export default {
 		}
 	},
 	
+	async delPlanItem({commit},id){
+		try{
+			return await plan.del(id);
+		}catch(e){
+			console.log(e);
+		}
+	},
+	
+	
+	
 	async addDetail({commit},data){
 		try{
 			return await planDetail.add(data);
@@ -44,4 +56,34 @@ export default {
 			console.log(e);
 		}
 	},
+	
+	async delDetailItem({commit},id){
+		try{
+			return await planDetail.del(id);
+		}catch(e){
+			console.log(e);
+		}
+	},
+	
+	async addUpdateSetting({commit},data){
+		try{
+			data.commission_rate = data.commission_rate/10000;
+			data.fee_rate = data.fee_rate / 1000;
+			if(data.id){
+				return await setting.update(data);
+			}else{
+				return await setting.add(data);
+			}
+		}catch(e){
+			console.log(e);
+		}
+	},
+	
+	async getSetting({commit},id){
+		try{
+			return await setting.get(id);
+		}catch(e){
+			console.log(e);
+		}
+	}
 };

@@ -17,24 +17,7 @@ services:
       DBNAMES: "my_trading"
       DOWEEKLY: 6
     depends_on:
-      - data-dog
-
-  data-dog:
-    build:
-      context: ./data-dog
-      dockerfile: Dockerfile
-    environment:
-      - ENV_NAME=production
-      - VIRTUAL_HOST=api.moyebuy.com
-      - VIRTUAL_PORT=7001
-      - LETSENCRYPT_HOST=api.moyebuy.com
-      - LETSENCRYPT_EMAIL=lovejunlic@qq.com
-    container_name: data-dog
-    restart: always
-    depends_on:
       - trading-db
-    ports:
-      - 7001:7001
 
   trading-db:
     image: bitnami/mysql:latest
@@ -43,7 +26,7 @@ services:
     restart: always
     volumes:
       #NOTE: As this is a non-root container, the mounted files and directories must have the proper permissions for the UID 1001.
-      - ./database/data/trading_db_data:/bitnami/mysql/data
+      - ./data/trading_db_data:/bitnami/mysql/data
     ports:
       - 3306:3306
     environment:
@@ -64,8 +47,6 @@ volumes:
   trading_db_data:
     driver: local
   backup:
-    driver: local
-  conf:
     driver: local
 
 networks:

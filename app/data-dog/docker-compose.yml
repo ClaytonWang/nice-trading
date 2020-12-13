@@ -1,0 +1,23 @@
+version: "3"
+services:
+  data-dog:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ENV_NAME=production
+      - VIRTUAL_HOST=api.moyebuy.com
+      - VIRTUAL_PORT=7001
+      - LETSENCRYPT_HOST=api.moyebuy.com
+      - LETSENCRYPT_EMAIL=lovejunlic@qq.com
+    container_name: data-dog
+    restart: always
+    depends_on:
+      - trading-db
+    ports:
+      - 7001:7001
+
+networks:
+  default:
+    external:
+      name: webservices

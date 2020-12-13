@@ -99,7 +99,8 @@
 				},
 			};
 		},
-		onLoad() {
+		onShow() {
+			console.log(this.$route)
 			if(this.$route.query.plan_id){
 				this.stockLable = this.$route.query.name + " ("+this.$route.query.code+")"
 				this.form.trading_plan_id = this.$route.query.plan_id
@@ -174,7 +175,7 @@
 				}
 				
 				const res = await this.addDetail(this.form);
-				if(res.data){
+				if(res && res.data){
 					this.$msg("添加成功!");
 					setTimeout(()=>{
 						uni.navigateBack({ });

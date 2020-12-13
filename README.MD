@@ -10,7 +10,16 @@ $ ./start.sh
 ### Then start your app
 
 ```terminal
-cd app
-docker-compose up -d
+#db
+cd app/database
+sudo docker-compose up -d
+
+#api
+cd app/data-dog
+sudo docker-compose up -d
+
+#web
+cd app/trading-cat
+sudo docker-compose up -d
 
 ```

@@ -100,7 +100,8 @@
 				"enablePullDownRefresh": false
 			}
 
-		}, {
+		}, 
+		{
 			"path": "pages/public/stock-list",
 			"style": {
 				"app-plus": {
@@ -115,6 +116,13 @@
 						}
 					}
 				}
+			}
+		}, 
+		{
+			"path": "pages/setting/setting",
+			"style": {
+				"navigationBarTitleText": "风险设置",
+				"enablePullDownRefresh": false
 			}
 		}
 	],
