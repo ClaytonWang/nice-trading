@@ -12,12 +12,10 @@ services:
       - LETSENCRYPT_EMAIL=lovejunlic@qq.com
     container_name: data-dog
     restart: always
-    depends_on:
-      - trading-db
     ports:
       - 7001:7001
 
 networks:
   default:
     external:
-      name: webservices
+      name: webproxy
