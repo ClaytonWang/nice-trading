@@ -49,7 +49,15 @@ export default {
 		}
 	},
 	
-	async getDetailList({commit},id){
+	async getDetailList({commit},plan_id){
+		try{
+			return await planDetail.getList(plan_id);
+		}catch(e){
+			console.log(e);
+		}
+	},
+	
+	async getDetail({commit},id){
 		try{
 			return await planDetail.get(id);
 		}catch(e){

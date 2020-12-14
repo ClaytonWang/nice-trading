@@ -6,8 +6,8 @@
 			<view class="block little-line" v-for="(item,index) in detial_list" :key="index">
 				<view class="s-row">
 					<view class="col">
-						<text class="coin buy" >买入</text>
-						<text class="coin buy">南极人(600010)</text>
+						<text class="coin" :class="item.trading_type==='BUY'?'buy':'sell'" >{{item.trading_type | trading_type}}</text>
+						<text class="coin" :class="item.trading_type==='BUY'?'buy':'sell'">{{name}}({{code}})</text>
 					</view>
 					<view class="col r light"></view>
 				</view>
@@ -17,9 +17,9 @@
 					<view class="col subtitle row-title">成交额</view>
 				</view>
 				<view class="s-row">
-					<view class="col subtitle row-amount">20.12</view>
-					<view class="col subtitle row-amount">1000</view>
-					<view class="col subtitle row-amount">20120</view>
+					<view class="col subtitle row-amount">{{item.trading_price | fixed}}</view>
+					<view class="col subtitle row-amount">{{item.trading_volume | fixed}}</view>
+					<view class="col subtitle row-amount">{{item.trading_volume * item.trading_price | fixed}}</view>
 				</view>
 				<view class="s-row">
 					<view class="col subtitle row-title">时间</view>
@@ -27,53 +27,17 @@
 					<view class="col subtitle row-title">税费</view>
 				</view>
 				<view class="s-row">
-					<view class="col subtitle row-amount">2020/10/11</view>
-					<view class="col subtitle row-amount">5</view>
-					<view class="col subtitle row-amount">6</view>
+					<view class="col subtitle row-amount">{{item.trading_date | moment("YY/MM/DD")}}</view>
+					<view class="col subtitle row-amount">{{item.commission | fixed}}</view>
+					<view class="col subtitle row-amount">{{item.stamp_tax | fixed}}</view>
 				</view>
 				<view class="s-row">
 					<view class="col subtitle row-title">操作备忘</view>
-					<view class="col subtitle row-title">买入评级</view>
-					<view class="col subtitle row-amount">60%</view>
+					<!-- <view class="col subtitle row-title">{{item.trading_type==1?'买入评级':'卖出评级'}}</view> -->
+					<view class="col subtitle row-amount"></view>
 				</view>
 				<view class="s-row">
-					<view class="col subtitle row-amount">悄民顶级sdffsfd霜奇才大规模另</view>
-				</view>
-			</view>
-			<view class="block little-line">
-				<view class="s-row">
-					<view class="col">
-						<text class="coin sell" >卖出</text>
-						<text class="coin sell">南极人(600010)</text>
-					</view>
-					<view class="col r light">
-					</view>
-				</view>
-				<view class="s-row">
-					<view class="col subtitle row-title">成交价</view>
-					<view class="col subtitle row-title">成交量</view>
-					<view class="col subtitle row-title">成交额</view>
-				</view>
-				<view class="s-row">
-					<view class="col subtitle row-amount">20.12</view>
-					<view class="col subtitle row-amount">1000</view>
-					<view class="col subtitle row-amount">20120</view>
-				</view>
-				<view class="s-row">
-					<view class="col subtitle row-title">时间</view>
-					<view class="col subtitle row-title">佣金</view>
-					<view class="col subtitle row-title">税费</view>
-				</view>
-				<view class="s-row">
-					<view class="col subtitle row-amount">2020/10/11</view>
-					<view class="col subtitle row-amount">5</view>
-					<view class="col subtitle row-amount">6</view>
-				</view>
-				<view class="s-row">
-					<view class="col subtitle row-title">操作备忘</view>
-				</view>
-				<view class="s-row">
-					<view class="col subtitle row-amount">悄民顶级sdffsfd霜奇才大规模另</view>
+					<view class="col subtitle row-amount">{{item.comment}}</view>
 				</view>
 			</view>
 		</view>
@@ -91,13 +55,33 @@
 	export default {
 		components: {uniPopup, uniIcons,empty},
 		mixins: [commonMixin],
+		filters:{
+			trading_type(v){
+				if(v==='BUY'){
+					return "买入";
+				}else{
+					return "卖出";
+				}
+			}
+		},
 		data() {
 			return {
-				detial_list:[]
+				detial_list:[],
+				plan_id:'',
+				code:'',
+				name:'',
+				symbol:''
 			};
 		},
-		onShow(){
-			this.getList();
+		onLoad(options){
+			this.plan_id = options.plan_id;
+			this.code = options.code;
+			this.name = options.name;
+			this.symbol = options.symbol;
+			this.getList(options.plan_id);
+		},
+		onShow() {
+			this.getList(this.plan_id);
 		},
 		onReachBottom(){
 		},
@@ -110,7 +94,7 @@
 			    success: function (res) {
 			        let i = res.tapIndex
 					uni.navigateTo({
-						url: "/pages/trading-detail/add-detail?name=南极人&code=600010&symbol=sh_600010&plan_id=1"
+						url: `/pages/trading-detail/add-detail?name=${$this.name}&code=${$this.code}&symbol=${$this.symbol}&plan_id=${$this.plan_id}`
 					})
 			    },
 			    fail: function (res) {
@@ -119,15 +103,15 @@
 		},
 		methods: {
 			...mapActions('Trading', ['getDetailList']),
-			async getList() {
-				const res = await this.getDetailList(1);
+			async getList(plan_id) {
+				const res = await this.getDetailList(plan_id);
 				console.log(res);
 				if (res && res.data) {
 					this.detial_list = res.data.rows;
 				} else {
 					this.detial_list = [];
 				}
-			},
+			}
 		}
 	}
 </script>

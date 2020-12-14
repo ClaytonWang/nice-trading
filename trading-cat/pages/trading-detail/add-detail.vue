@@ -99,11 +99,11 @@
 				},
 			};
 		},
-		onShow() {
-			console.log(this.$route)
-			if(this.$route.query.plan_id){
-				this.stockLable = this.$route.query.name + " ("+this.$route.query.code+")"
-				this.form.trading_plan_id = this.$route.query.plan_id
+		onLoad(options) {
+			console.log(options)
+			if(options.plan_id){
+				this.stockLable = options.name + " ("+options.code+")"
+				this.form.trading_plan_id = options.plan_id;
 			}
 		},
 		onUnload() {

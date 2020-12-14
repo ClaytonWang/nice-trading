@@ -8,7 +8,7 @@
 			</view>
 			<view class="item" v-for="(item,index) in plan_list" :key="index">
 				<view class="top">
-					<view class="stock" @click="navTo(item.id)">{{item.name}} ({{item.code}})</view>
+					<view class="stock" @click="navTo(item.id,item.name,item.code,item.symbol)">{{item.name}} ({{item.code}})</view>
 					<view class="opt">
 						<switch :checked="item.status==1" style="transform:scale(0.7);" />
 						<icon type="cancel" size="26" @click="del(item.id)"/>
@@ -93,9 +93,6 @@
 						break;
 				}
 			},
-			formatNum(v) {
-				return parseFloat(v).toFixed(2);
-			},
 		},
 		onShow() {
 			this.getList()
@@ -119,7 +116,6 @@
 			...mapActions('Trading', ['getPlanList','delPlanItem']),
 			async getList() {
 				const res = await this.getPlanList();
-				console.log(res);
 				if (res && res.data) {
 					this.plan_list = res.data.rows;
 				} else {
@@ -127,9 +123,9 @@
 					this.plan_list = [];
 				}
 			},
-			navTo(id) {
+			navTo(id,name,code,symbol) {
 				uni.navigateTo({
-					url: '/pages/trading-detail/detail-list?plan_id=' + id
+					url: `/pages/trading-detail/detail-list?plan_id=${id}&name=${name}&code=${code}&symbol=${symbol}`
 				})
 			},
 			stop_loss_rate(item) {

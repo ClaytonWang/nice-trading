@@ -22,3 +22,11 @@ export function del(id) {
     method: 'DELETE'
   })
 }
+
+export function getList(trading_plan_id) {
+  return request({
+    url: '/api/trading-detail',
+	data:{trading_plan_id},
+    method: 'GET'
+  })
+}

@@ -23,7 +23,7 @@ class TradingDetailService extends Service {
     const tradingDetail = await this.ctx.model.TradingDetail.findByPk(id, {
       include: [{
         model: this.ctx.model.TradingPlan,
-        attributes: [ 'id', 'name', 'created_at', 'updated_at' ],
+        attributes: [ 'id', 'code', 'symbol', 'name', 'created_at', 'updated_at' ],
       }],
     });
     if (!tradingDetail) {

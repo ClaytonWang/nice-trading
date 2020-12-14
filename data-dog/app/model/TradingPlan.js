@@ -4,9 +4,9 @@ module.exports = app => {
   const { INTEGER, DATE, STRING, DECIMAL, TEXT } = app.Sequelize;
   const TradingPlan = app.model.define('trading_plan', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
-    code: { type: STRING, allowNull: true },
-    symbol: { type: STRING, allowNull: true },
-    name: { type: STRING, allowNull: true },
+    code: { type: STRING, allowNull: true }, // 600010
+    symbol: { type: STRING, allowNull: true }, // sh_b00010
+    name: { type: STRING, allowNull: true }, // 南极电商
     plan_price: { type: DECIMAL(12, 4), allowNull: true },
     plan_volume: { type: INTEGER, allowNull: true },
     risk: { type: DECIMAL(12, 4), allowNull: true },

@@ -20,8 +20,9 @@ export const commonMixin = {
 				  unit = "";
 			  }
 			  return parseFloat(v).toFixed(scale) +unit;
+		  }else{
+			  return '0.00'
 		  }
-		  return v
 	  }
   },
   methods: {
