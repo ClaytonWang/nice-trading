@@ -27,6 +27,7 @@ $ sudo start.sh
 ### Then start your app
 
 ```terminal
+# use proxy network 'webproxy'
 #db
 cd app/database
 sudo docker-compose up -d
