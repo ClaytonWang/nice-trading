@@ -2,11 +2,11 @@ version: "3"
 services:
   mysql-auto-backup:
     build:
-      context: ./database/backup-script
+      context: ./backup-script
       dockerfile: Dockerfile
     container_name: mysql-auto-backup
     volumes: 
-      - ./database/data/backup:/backup
+      - ./data/backup:/backup
     environment: 
       DBHOST: trading-db
       USERNAME: root

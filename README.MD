@@ -20,8 +20,9 @@
 
 ```terminal
 git clone https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion.git proxy
-cd proxy & sudo chmod + x start.sh
-$ sudo start.sh
+cd proxy
+sudo chmod +x start.sh
+$ sudo ./start.sh
 ```
 
 ### Then start your app
@@ -30,14 +31,14 @@ $ sudo start.sh
 # use proxy network 'webproxy'
 #db
 cd app/database
-sudo docker-compose up -d
+sudo docker-compose up --build -d
 
 #api
 cd app/data-dog
-sudo docker-compose up -d
+sudo docker-compose up --build -d
 
 #web
 cd app/trading-cat
-sudo docker-compose up -d
+sudo docker-compose up --build -d
 
 ```
