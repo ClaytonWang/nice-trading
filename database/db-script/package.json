@@ -12,7 +12,8 @@
     "sequelize-cli": "^6.2.0"
   },
   "scripts": {
-    "start": "npx sequelize db:migrate"
+    "start": "npx sequelize db:migrate --env production",
+    "dev": "npx sequelize db:migrate --env development"
   },
   "ci": {
     "version": "10"
