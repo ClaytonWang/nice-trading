@@ -31,17 +31,22 @@ const MescrollMixin = {
 			this.mescroll = mescroll;
 			this.mescrollInitByRef(); // 兼容字节跳动小程序
 		},
-		// 以ref的方式初始化mescroll对象 (兼容字节跳动小程序: http://www.mescroll.com/qa.html?v=20200107#q26)
+		// 以ref的方式初始化mescroll对象 (兼容字节跳动小程序)
 		mescrollInitByRef() {
 			if(!this.mescroll || !this.mescroll.resetUpScroll){
 				let mescrollRef = this.$refs.mescrollRef;
 				if(mescrollRef) this.mescroll = mescrollRef.mescroll
 			}
 		},
-		// 下拉刷新的回调
+		// 下拉刷新的回调 (mixin默认resetUpScroll)
 		downCallback() {
-			// mixin默认resetUpScroll
-			this.mescroll.resetUpScroll()
+			if(this.mescroll.optUp.use){
+				this.mescroll.resetUpScroll()
+			}else{
+				setTimeout(()=>{
+					this.mescroll.endSuccess();
+				}, 500)
+			}
 		},
 		// 上拉加载的回调
 		upCallback() {

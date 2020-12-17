@@ -8,11 +8,16 @@ export function add(plan) {
   })
 }
 
-export function get(id) {
-	if(!id){ id= '';}
+export function get(params) {
+	console.log(params)
+	if(!params.id){ params.id= '';}
   return request({
-    url: '/api/trading-plan/'+id,
-    method: 'GET'
+    url: '/api/trading-plan/'+params.id,
+    method: 'GET',
+	data:{
+		limit:params.limit,
+		offset:params.offset,
+	}
   })
 }
 

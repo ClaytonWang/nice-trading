@@ -1,64 +1,66 @@
 <template>
 	<view class="container">
-		<view class="pay-group">
-			<view class="header">
-				<text class="title">盈利<text class="count">共 0 个</text></text>
-				<text class="title">亏损<text class="count">共 0 个</text></text>
-				<text class="title">风险<text class="count">共 4% </text></text>
-			</view>
-			<view class="item" v-for="(item,index) in plan_list" :key="index">
-				<view class="top">
-					<view class="stock" @click="navTo(item.id,item.name,item.code,item.symbol)">{{item.name}} ({{item.code}})</view>
-					<view class="opt">
-						<switch :checked="item.status==1" style="transform:scale(0.7);" />
-						<icon type="cancel" size="26" @click="del(item.id)"/>
+		<mescroll-body ref="mescrollRef" @init="mescrollInit" @down="downCallback" @up="upCallback" :down="downOption" :up="upOption">
+			<view class="pay-group">
+				<view class="header">
+					<text class="title">盈利<text class="count">共 0 个</text></text>
+					<text class="title">亏损<text class="count">共 0 个</text></text>
+					<text class="title">风险<text class="count">共 4% </text></text>
+				</view>
+				<view class="item" v-for="(item,index) in plan_list" :key="index">
+					<view class="top">
+						<view class="stock">{{item.name}} ({{item.code}})</view>
+						<view class="opt">
+							<switch :checked="item.status==1" style="transform:scale(0.7);" />
+							<icon type="cancel" size="26" @click="del(item.id)" />
+						</view>
+					</view>
+					<view class="center" @click="navTo(item.id,item.name,item.code,item.symbol)">
+						<view class="s-row row-amount">
+							<view class="col">{{item.exec_start_date | moment("MM/DD")}} - {{item.exec_end_date | moment("MM/DD")}}</view>
+							<view class="col">优先级: {{item.priority | formatPriority}}</view>
+						</view>
+						<view class="s-row row-title">
+							<view class="col">入场</view>
+							<view class="col">止损</view>
+							<view class="col">止赢</view>
+						</view>
+						<view class="s-row row-amount">
+							<view class="col">{{item.plan_price | fixed}}</view>
+							<view class="col">
+								{{item.stop_loss | fixed}}
+								<i class="stop_loss">-{{stop_loss_rate(item) | fixed(2,'%')}}</i>
+							</view>
+							<view class="col">
+								{{item.take_profit | fixed}}
+								<i class="take_profit">{{take_profit_rate(item) | fixed(2,'%')}}</i>
+							</view>
+						</view>
+						<view class="s-row row-title">
+							<view class="col">数量</view>
+							<view class="col">益损比</view>
+							<view class="col">风险额</view>
+						</view>
+						<view class="s-row row-amount">
+							<view class="col">{{item.plan_volume | fixed}}</view>
+							<view class="col">{{profitLostRate(item) | fixed}}</view>
+							<view class="col">{{item.risk | fixed}}</view>
+						</view>
+						<view class="s-row row-title">
+							<view class="col">说明</view>
+						</view>
+						<view class="s-row row-amount">
+							<view class="col">
+								{{item.comment}}
+							</view>
+						</view>
 					</view>
 				</view>
-				<view class="center">
-					<view class="s-row row-amount">
-						<view class="col">{{item.exec_start_date | moment("MM/DD")}} - {{item.exec_end_date | moment("MM/DD")}}</view>
-						<view class="col">优先级: {{item.priority | formatPriority}}</view>
-					</view>
-					<view class="s-row row-title">
-						<view class="col">入场</view>
-						<view class="col">止损</view>
-						<view class="col">止赢</view>
-					</view>
-					<view class="s-row row-amount">
-						<view class="col">{{item.plan_price | fixed}}</view>
-						<view class="col">
-							{{item.stop_loss | fixed}}
-							<i class="stop_loss">-{{stop_loss_rate(item) | fixed(2,'%')}}</i>
-						</view>
-						<view class="col">
-							{{item.take_profit | fixed}}
-							<i class="take_profit">{{take_profit_rate(item) | fixed(2,'%')}}</i>
-						</view>
-					</view>
-					<view class="s-row row-title">
-						<view class="col">数量</view>
-						<view class="col">益损比</view>
-						<view class="col">风险额</view>
-					</view>
-					<view class="s-row row-amount">
-						<view class="col">{{item.plan_volume | fixed}}</view>
-						<view class="col">{{profitLostRate(item) | fixed}}</view>
-						<view class="col">{{item.risk | fixed}}</view>
-					</view>
-					<view class="s-row row-title">
-						<view class="col">说明</view>
-					</view>
-					<view class="s-row row-amount">
-						<view class="col">
-							{{item.comment}}
-						</view>
-					</view>
+				<view class="empty" v-if="plan_list && plan_list.length==0">
+					暂无
 				</view>
 			</view>
-			<view class="empty" v-if="plan_list && plan_list.length==0">
-				暂无
-			</view>
-		</view>
+		</mescroll-body>
 	</view>
 </template>
 <script>
@@ -69,11 +71,24 @@
 	import {
 		commonMixin
 	} from '@/common/mixin/mixin.js';
+	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
+	let option = {
+		page: {
+			num:0,
+			size: 10 // 每页数据的数量,默认10
+		},
+		noMoreSize: 5, // 配置列表的总数量要大于等于5条才显示'-- END --'的提示
+		empty: {
+			tip: '暂无相关数据'
+		}
+	};
 	export default {
-		mixins: [commonMixin],
+		mixins: [commonMixin, MescrollMixin],
 		data() {
 			return {
 				plan_list: [],
+				upOption: option,
+				downOption: option
 			}
 		},
 		filters: {
@@ -95,7 +110,7 @@
 			},
 		},
 		onShow() {
-			this.getList()
+			//this.getList()
 		},
 		// #ifndef MP
 		onNavigationBarButtonTap(e) {
@@ -113,9 +128,9 @@
 		},
 		// #endif
 		methods: {
-			...mapActions('Trading', ['getPlanList','delPlanItem']),
-			async getList() {
-				const res = await this.getPlanList();
+			...mapActions('Trading', ['getPlanList', 'delPlanItem']),
+			async getList(params) {
+				const res = await this.getPlanList(params);
 				if (res && res.data) {
 					this.plan_list = res.data.rows;
 				} else {
@@ -123,7 +138,7 @@
 					this.plan_list = [];
 				}
 			},
-			navTo(id,name,code,symbol) {
+			navTo(id, name, code, symbol) {
 				uni.navigateTo({
 					url: `/pages/trading-detail/detail-list?plan_id=${id}&name=${name}&code=${code}&symbol=${symbol}`
 				})
@@ -156,13 +171,18 @@
 					return (Math.abs(take_profit - plan_price) / Math.abs(plan_price - stop_loss) * 100).toFixed(2);
 				}
 			},
-			async del(id){
+			async del(id) {
 				const res = await this.delPlanItem(id);
-				if(res && res.data){
+				if (res && res.data) {
 					this.getList()
-				}else{
+				} else {
 					this.$msg(res.errMsg);
 				}
+			},
+			upCallback(page) {
+				let offset = page.num -1; // 页码, 默认从1开始
+				let limit = page.size; // 页长, 默认每页10条
+				this.getList({offset,limit,id:''})
 			}
 		}
 	}

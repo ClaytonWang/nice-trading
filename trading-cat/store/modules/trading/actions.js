@@ -23,9 +23,9 @@ export default {
 		}
 	},
 	
-	async getPlanList({commit},id){
+	async getPlanList({commit},params){
 		try{
-			return await plan.get(id);
+			return await plan.get(params);
 		}catch(e){
 			console.log(e);
 		}
