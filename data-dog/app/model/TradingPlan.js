@@ -21,8 +21,8 @@ module.exports = app => {
     updated_at: { type: DATE, defaultValue: moment().utc().format(), allowNull: false },
   });
 
-  TradingPlan.prototype.associate = function() {
-    app.model.TradingPlan.hasMany(app.model.TradingDetail, { as: 'tradingDetail', foreignKey: 'trading_plan_id', constraints: false });
+  TradingPlan.associate = function() {
+    app.model.TradingPlan.hasMany(app.model.TradingDetail, { foreignKey: 'trading_plan_id', constraints: false });
   };
 
   return TradingPlan;

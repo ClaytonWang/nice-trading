@@ -10,9 +10,5 @@ module.exports = app => {
     updated_at: { type: DATE, defaultValue: moment().utc().format(), allowNull: false },
   });
 
-  Comment.associate = function() {
-    app.model.Comment.belongsTo(app.model.TradingDetail, { foreignKey: 'trading_detail_id' });
-  };
-
   return Comment;
 };
