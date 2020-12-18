@@ -7,6 +7,7 @@ module.exports = app => {
     code: { type: STRING, allowNull: true }, // 600010
     symbol: { type: STRING, allowNull: true }, // sh_b00010
     name: { type: STRING, allowNull: true }, // 南极电商
+    actual_price: { type: DECIMAL(12, 4), allowNull: true },
     plan_price: { type: DECIMAL(12, 4), allowNull: true },
     plan_volume: { type: INTEGER, allowNull: true },
     risk: { type: DECIMAL(12, 4), allowNull: true },
@@ -23,6 +24,7 @@ module.exports = app => {
 
   TradingPlan.associate = function() {
     app.model.TradingPlan.hasMany(app.model.TradingDetail, { foreignKey: 'trading_plan_id', constraints: false });
+    app.model.TradingPlan.hasMany(app.model.Comment, { foreignKey: 'external_id', constraints: false });
   };
 
   return TradingPlan;

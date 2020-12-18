@@ -39,7 +39,13 @@ export default {
 		}
 	},
 	
-	
+	async updatePlan({commit},data){
+		try{
+			return await plan.update(data);
+		}catch(e){
+			console.log(e);
+		}
+	},
 	
 	async addDetail({commit},data){
 		try{

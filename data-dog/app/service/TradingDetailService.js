@@ -10,6 +10,12 @@ class TradingDetailService extends Service {
       limit,
       // attributes: [ 'id', 'trading_plan_id', 'created_at', 'updated_at' ],
       order: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]],
+      include: [{
+        model: this.ctx.model.TradingPlan,
+        // attributes: [ 'id', 'code', 'symbol', 'name', 'created_at', 'updated_at' ],
+      }, {
+        model: this.ctx.model.Comment,
+      }],
     };
     if (trading_plan_id) {
       options.where = {
@@ -23,7 +29,9 @@ class TradingDetailService extends Service {
     const tradingDetail = await this.ctx.model.TradingDetail.findByPk(id, {
       include: [{
         model: this.ctx.model.TradingPlan,
-        attributes: [ 'id', 'code', 'symbol', 'name', 'created_at', 'updated_at' ],
+        // attributes: [ 'id', 'code', 'symbol', 'name', 'created_at', 'updated_at' ],
+      }, {
+        model: this.ctx.model.Comment,
       }],
     });
     if (!tradingDetail) {

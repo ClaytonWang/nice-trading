@@ -1,15 +1,18 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-// 定义创建接口的请求参数规则
-const createRule = {
-  accesstoken: 'string',
-  title: 'string',
-  tab: { type: 'enum', values: [ 'ask', 'share', 'job' ], required: false },
-  content: 'string',
-};
 
 class SettingController extends Controller {
+
+  async index() {
+    const ctx = this.ctx;
+    const query = {
+      limit: ctx.helper.parseInt(ctx.query.limit),
+      offset: ctx.helper.parseInt(ctx.query.offset),
+      user_id: ctx.helper.parseInt(ctx.query.user_id),
+    };
+    ctx.body = await ctx.service.settingService.list(query);
+  }
 
   // eg: get api/trade/1
   async show() {

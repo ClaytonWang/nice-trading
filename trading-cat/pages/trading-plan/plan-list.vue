@@ -1,53 +1,68 @@
 <template>
 	<view class="container">
-		<mescroll-body ref="mescrollRef" @init="mescrollInit" @down="downCallback" @up="upCallback" :down="downOption" :up="upOption">
+		<mescroll-body ref="mescrollRef" @init="mescrollInit" @up="upCallback" @down="downCallback">
 			<view class="pay-group">
 				<view class="header">
 					<text class="title">盈利<text class="count">共 0 个</text></text>
 					<text class="title">亏损<text class="count">共 0 个</text></text>
 					<text class="title">风险<text class="count">共 4% </text></text>
 				</view>
-				<view class="item" v-for="(item,index) in plan_list" :key="index">
+				<view class="item" :class="item.status?'':'gray'" v-for="(item,index) in plan_list" :key="index">
 					<view class="top">
-						<view class="stock">{{item.name}} ({{item.code}})</view>
+						<view class="stock">{{item.name}} ({{item.code}}) {{item.status?'':' --- 结束'}}</view>
 						<view class="opt">
-							<switch :checked="item.status==1" style="transform:scale(0.7);" />
-							<icon type="cancel" size="26" @click="del(item.id)" />
+							<switch :checked="item.status" style="transform:scale(0.7);" @change="changeStatus($event,item)" />
+							<uni-icons type="trash" color="red" size="22" @click="del(item.id,item.name)"></uni-icons>
 						</view>
 					</view>
 					<view class="center" @click="navTo(item.id,item.name,item.code,item.symbol)">
-						<view class="s-row row-amount">
-							<view class="col">{{item.exec_start_date | moment("MM/DD")}} - {{item.exec_end_date | moment("MM/DD")}}</view>
-							<view class="col">优先级: {{item.priority | formatPriority}}</view>
-						</view>
 						<view class="s-row row-title">
-							<view class="col">入场</view>
+							<view class="col">计划/成本</view>
 							<view class="col">止损</view>
 							<view class="col">止赢</view>
 						</view>
 						<view class="s-row row-amount">
-							<view class="col">{{item.plan_price | fixed}}</view>
 							<view class="col">
-								{{item.stop_loss | fixed}}
+								{{item.plan_price | fixed}}/{{item.plan_price | fixed}}<br />
+								<i :class="slide_point(item.plan_price,item.plan_price)>=0?'take_profit':'stop_loss'">{{slide_point(item.plan_price,item.plan_price) | fixed(2,'%')}}</i>
+							</view>
+							<view class="col">
+								{{item.stop_loss | fixed}}<br />
 								<i class="stop_loss">-{{stop_loss_rate(item) | fixed(2,'%')}}</i>
 							</view>
 							<view class="col">
-								{{item.take_profit | fixed}}
+								{{item.take_profit | fixed}}<br />
 								<i class="take_profit">{{take_profit_rate(item) | fixed(2,'%')}}</i>
 							</view>
 						</view>
 						<view class="s-row row-title">
-							<view class="col">数量</view>
+							<view class="col">数量(股)</view>
 							<view class="col">益损比</view>
 							<view class="col">风险额</view>
 						</view>
 						<view class="s-row row-amount">
 							<view class="col">{{item.plan_volume | fixed}}</view>
-							<view class="col">{{profitLostRate(item) | fixed}}</view>
-							<view class="col">{{item.risk | fixed}}</view>
+							<view class="col red">{{profitLostRate(item) | fixed(2,'%')}}</view>
+							<view class="col">{{item.risk | fixed}}￥</view>
 						</view>
 						<view class="s-row row-title">
-							<view class="col">说明</view>
+							<view class="col">入场时间</view>
+							<view class="col">优先级</view>
+							<view class="col">创建时间</view>
+						</view>
+						<view class="s-row row-amount">
+							<view class="col">{{item.exec_start_date | moment("MM/DD")}} - {{item.exec_end_date | moment("MM/DD")}}</view>
+							<view class="col">{{item.priority | formatPriority}}</view>
+							<view class="col">{{item.created_at | moment("MM/DD HH:mm")}}</view>
+						</view>
+						
+					</view>
+					<view class="bottom">
+						<view class="s-row row-title">
+							<view class="col">
+								备注
+								<uni-icons type="compose" color="blue" size="20" @click="edit(item.id)" style="margin-left: 15px;"></uni-icons>
+							</view>
 						</view>
 						<view class="s-row row-amount">
 							<view class="col">
@@ -56,11 +71,16 @@
 						</view>
 					</view>
 				</view>
-				<view class="empty" v-if="plan_list && plan_list.length==0">
+				<!-- <view class="empty" v-if="plan_list && plan_list.length==0">
 					暂无
-				</view>
+				</view> -->
 			</view>
 		</mescroll-body>
+		<uni-popup ref="popup" type="bottom">
+			<view class="coin-box">
+			<icon type="cancontactcel" size="20" @click="del(item.id,item.name)" />
+			</view>
+		</uni-popup>
 	</view>
 </template>
 <script>
@@ -72,23 +92,12 @@
 		commonMixin
 	} from '@/common/mixin/mixin.js';
 	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
-	let option = {
-		page: {
-			num:0,
-			size: 10 // 每页数据的数量,默认10
-		},
-		noMoreSize: 5, // 配置列表的总数量要大于等于5条才显示'-- END --'的提示
-		empty: {
-			tip: '暂无相关数据'
-		}
-	};
 	export default {
 		mixins: [commonMixin, MescrollMixin],
 		data() {
 			return {
-				plan_list: [],
-				upOption: option,
-				downOption: option
+				mescroll: null,
+				plan_list: []
 			}
 		},
 		filters: {
@@ -110,7 +119,7 @@
 			},
 		},
 		onShow() {
-			//this.getList()
+			//this.downCallback();
 		},
 		// #ifndef MP
 		onNavigationBarButtonTap(e) {
@@ -128,14 +137,24 @@
 		},
 		// #endif
 		methods: {
-			...mapActions('Trading', ['getPlanList', 'delPlanItem']),
+			...mapActions('Trading', ['getPlanList', 'delPlanItem', 'updatePlan']),
+			mescrollInit(mescroll) {
+				this.mescroll = mescroll;
+			},
 			async getList(params) {
 				const res = await this.getPlanList(params);
 				if (res && res.data) {
-					this.plan_list = res.data.rows;
+					if (params.offset == 0) {
+						this.plan_list = [];
+					}
+					this.plan_list = this.plan_list.concat(res.data.rows);
+					let curPageLen = res.data.rows.length;
+					let totalSize = res.data.count;
+					this.mescroll.endBySize(curPageLen, totalSize);
 				} else {
 					this.$msg(data.errMsg);
 					this.plan_list = [];
+					this.mescroll.endErr();
 				}
 			},
 			navTo(id, name, code, symbol) {
@@ -151,6 +170,12 @@
 				if (plan_price && stop_loss) {
 					return (Math.abs(plan_price - stop_loss) / plan_price * 100).toFixed(2);
 				}
+			},
+			slide_point(plan, actual) {
+				if (actual == null || actual == undefined) {
+					actual = 0;
+				}
+				return (((plan - actual) / plan) * 100).toFixed(2);
 			},
 			take_profit_rate(item) {
 				const {
@@ -171,18 +196,46 @@
 					return (Math.abs(take_profit - plan_price) / Math.abs(plan_price - stop_loss) * 100).toFixed(2);
 				}
 			},
-			async del(id) {
-				const res = await this.delPlanItem(id);
+			async changeStatus(e, item) {
+				item.status = e.target.value ? 1 : 0;
+				const res = await this.updatePlan(item);
 				if (res && res.data) {
-					this.getList()
+					this.$msg('sucess');
 				} else {
-					this.$msg(res.errMsg);
+					console.log(res)
+					//this.$msg(res.errMsg);
 				}
 			},
-			upCallback(page) {
-				let offset = page.num -1; // 页码, 默认从1开始
+			async del(id, name) {
+				uni.showModal({
+					content: `确定删除"${name}"吗？`,
+					showCancel: true,
+					success: async (res) => {
+						if (res.confirm) {
+							const res = await this.delPlanItem(id);
+							if (res && res.data) {
+								this.$msg('删除成功！');
+								this.downCallback();
+							} else {
+								this.$msg(res.errMsg);
+							}
+						}
+					}
+				});
+			},
+			edit(id){
+				this.$refs.popup.open();
+			},
+			downCallback() {
+				this.mescroll.resetUpScroll();
+			},
+			async upCallback(page) {
+				let offset = page.num - 1; // 页码, 默认从1开始
 				let limit = page.size; // 页长, 默认每页10条
-				this.getList({offset,limit,id:''})
+				await this.getList({
+					offset,
+					limit
+				});
 			}
 		}
 	}
@@ -190,6 +243,14 @@
 <style lang='scss' scoped>
 	page {
 		background: $page-color-base;
+	}
+
+	.red {
+		color: red;
+	}
+
+	.gray {
+		background-color: #cccccc !important;
 	}
 
 	.container {
@@ -263,8 +324,8 @@
 					align-items: center;
 				}
 			}
-
-			.center {
+			
+			.center,.bottom {
 				.s-row {
 					display: flex;
 					align-items: center;

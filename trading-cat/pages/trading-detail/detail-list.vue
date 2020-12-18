@@ -105,7 +105,6 @@
 			...mapActions('Trading', ['getDetailList']),
 			async getList(plan_id) {
 				const res = await this.getDetailList(plan_id);
-				console.log(res);
 				if (res && res.data) {
 					this.detial_list = res.data.rows;
 				} else {

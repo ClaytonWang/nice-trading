@@ -26,5 +26,6 @@ module.exports = app => {
   router.resources('trading-detail', '/api/trading-detail', controller.tradingDetailController);
   router.resources('comment', '/api/comment', controller.commentController);
   router.resources('setting', '/api/setting', controller.settingController);
+  router.resources('user', '/api/user', controller.userController);
 
 };

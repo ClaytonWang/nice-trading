@@ -2,30 +2,29 @@
 
 const Controller = require('egg').Controller;
 
-class TradeController extends Controller {
-  // eg: get api/trade
+class UserController extends Controller {
+
   async index() {
     const ctx = this.ctx;
     const query = {
       limit: ctx.helper.parseInt(ctx.query.limit),
       offset: ctx.helper.parseInt(ctx.query.offset),
-      status: ctx.helper.parseInt(ctx.query.status),
     };
-    ctx.body = await ctx.service.tradingPlanService.list(query);
+    ctx.body = await ctx.service.userService.list(query);
   }
 
   // eg: get api/trade/1
   async show() {
     const ctx = this.ctx;
-    ctx.body = await ctx.service.tradingPlanService.find(ctx.helper.parseInt(ctx.params.id));
+    ctx.body = await ctx.service.userService.find(ctx.helper.parseInt(ctx.params.id));
   }
 
   // eg: post api/trade
   async create() {
     const ctx = this.ctx;
     // ctx.validate(createRule, ctx.request.body);
-    const tade = await ctx.service.tradingPlanService.create(ctx.request.body);
-    ctx.body = tade;
+    const user = await ctx.service.userService.create(ctx.request.body);
+    ctx.body = user;
     ctx.status = 201;
   }
 
@@ -34,16 +33,16 @@ class TradeController extends Controller {
     const ctx = this.ctx;
     const id = ctx.helper.parseInt(ctx.params.id);
     const body = ctx.request.body;
-    ctx.body = await ctx.service.tradingPlanService.update({ id, updates: body });
+    ctx.body = await ctx.service.userService.update({ id, updates: body });
   }
 
   // eg: delete api/trade/1
   async destroy() {
     const ctx = this.ctx;
     const id = ctx.helper.parseInt(ctx.params.id);
-    await ctx.service.tradingPlanService.del(id);
+    await ctx.service.userService.del(id);
     ctx.status = 200;
   }
 }
 
-module.exports = TradeController;
+module.exports = UserController;

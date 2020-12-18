@@ -4,12 +4,25 @@ const Service = require('egg').Service;
 const moment = require('moment');
 
 class TradingService extends Service {
-  async list({ offset = 0, limit = 10 }) {
-    return this.ctx.model.TradingPlan.findAndCountAll({
+  async list({ offset = 0, limit = 10, status }) {
+
+    const options = {
       offset,
       limit,
       order: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]],
-    });
+      include: [{
+        // association: this.ctx.model.TradingPlan.hasMany(this.ctx.model.TradingDetail, { foreignKey: 'trading_plan_id', constraints: false }),
+        model: this.ctx.model.TradingDetail,
+      }, {
+        model: this.ctx.model.Comment,
+      }],
+    };
+    if (status !== undefined) {
+      options.where = {
+        status,
+      };
+    }
+    return this.ctx.model.TradingPlan.findAndCountAll(options);
   }
 
   async create(trading) {
@@ -25,6 +38,8 @@ class TradingService extends Service {
       include: [{
         // association: this.ctx.model.TradingPlan.hasMany(this.ctx.model.TradingDetail, { foreignKey: 'trading_plan_id', constraints: false }),
         model: this.ctx.model.TradingDetail,
+      }, {
+        model: this.ctx.model.Comment,
       }],
     });
     if (!trading) {

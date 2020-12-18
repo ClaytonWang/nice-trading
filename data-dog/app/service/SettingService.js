@@ -5,6 +5,21 @@ const moment = require('moment');
 
 class SettingService extends Service {
 
+  async list({ offset = 0, limit = 10, user_id }) {
+
+    const options = {
+      offset,
+      limit,
+      order: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]],
+    };
+    if (user_id) {
+      options.where = {
+        user_id,
+      };
+    }
+    return this.ctx.model.Setting.findAndCountAll(options);
+  }
+
   async create(model) {
     const ctx = this.ctx;
     model.updated_at = moment().utc().format();
