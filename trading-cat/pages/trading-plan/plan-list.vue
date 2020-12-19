@@ -8,11 +8,13 @@
 					<text class="title">风险<text class="count">共 4% </text></text>
 				</view>
 				<view class="item" :class="item.status?'':'gray'" v-for="(item,index) in plan_list" :key="index">
-					<view class="top">
-						<view class="stock">{{item.name}} ({{item.code}}) {{item.status?'':' --- 结束'}}</view>
-						<view class="opt">
+					<view class="top"  @longpress="showOpration">
+						<view class="stock">{{item.name}} ({{item.code}})</view>
+						<uni-icons v-if="!isSHowOp" type="list" size="22" @click="showOpration"></uni-icons>
+						<view class="opt" v-show="isSHowOp">
 							<switch :checked="item.status" style="transform:scale(0.7);" @change="changeStatus($event,item)" />
-							<uni-icons type="trash" color="red" size="22" @click="del(item.id,item.name)"></uni-icons>
+							<uni-icons type="trash" color="red" style="margin-left: 30upx;" size="22" @click="del(item.id,item.name)"></uni-icons>
+							<uni-icons type="redo" size="22" style="margin-left: 40upx;" @click="showOpration"></uni-icons>
 						</view>
 					</view>
 					<view class="center" @click="navTo(item.id,item.name,item.code,item.symbol)">
@@ -23,8 +25,8 @@
 						</view>
 						<view class="s-row row-amount">
 							<view class="col">
-								{{item.plan_price | fixed}}/{{item.plan_price | fixed}}<br />
-								<i :class="slide_point(item.plan_price,item.plan_price)>=0?'take_profit':'stop_loss'">{{slide_point(item.plan_price,item.plan_price) | fixed(2,'%')}}</i>
+								{{item.plan_price | fixed}}/{{item.actual_price | fixed}}<br />
+								<i :class="slide_point(item.plan_price,item.actual_price)>=0?'take_profit':'stop_loss'">{{slide_point(item.plan_price,item.plan_price) | fixed(2,'%')}}</i>
 							</view>
 							<view class="col">
 								{{item.stop_loss | fixed}}<br />
@@ -48,7 +50,7 @@
 						<view class="s-row row-title">
 							<view class="col">入场时间</view>
 							<view class="col">优先级</view>
-							<view class="col">创建时间</view>
+							<view class="col">关注时间</view>
 						</view>
 						<view class="s-row row-amount">
 							<view class="col">{{item.exec_start_date | moment("MM/DD")}} - {{item.exec_end_date | moment("MM/DD")}}</view>
@@ -64,11 +66,19 @@
 								<uni-icons type="compose" color="blue" size="20" @click="edit(item.id)" style="margin-left: 15px;"></uni-icons>
 							</view>
 						</view>
-						<view class="s-row row-amount">
-							<view class="col">
-								{{item.comment}}
+						<template v-for="(cItem,cIndex) in item.comments">
+							<view class="s-row row-title" :key="cIndex">
+								<view class="col">
+									{{cItem.created_at | moment("YYYY/MM/DD HH:mm")}}
+								</view>
 							</view>
-						</view>
+							<view class="s-row row-amount" :key="'c'+cIndex">
+								<view class="col">
+									{{cItem.comment}}
+								</view>
+							</view>
+						</template>
+						
 					</view>
 				</view>
 				<!-- <view class="empty" v-if="plan_list && plan_list.length==0">
@@ -119,7 +129,8 @@
 				mescroll: null,
 				plan_list: [],
 				popup_plan_id: '',
-				popup_comments: ''
+				popup_comments: '',
+				isSHowOp:false
 			}
 		},
 		filters: {
@@ -162,6 +173,9 @@
 			...mapActions('Trading', ['getPlanList', 'delPlanItem', 'updatePlan', 'addComents']),
 			mescrollInit(mescroll) {
 				this.mescroll = mescroll;
+			},
+			showOpration(){
+				this.isSHowOp=!this.isSHowOp;
 			},
 			async getList(params) {
 				const res = await this.getPlanList(params);
