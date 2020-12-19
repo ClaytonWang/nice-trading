@@ -4,7 +4,7 @@ const Service = require('egg').Service;
 const moment = require('moment');
 
 class TradingService extends Service {
-  async list({ offset = 0, limit = 10, status = 1 }) {
+  async list({ offset = 0, limit = 10, status }) {
 
     const options = {
       offset,
