@@ -19,12 +19,23 @@ export default {
 	
 	async addPlan({commit},data){
 		try{
-			return await plan.add(data);
+			if(data.id){
+				return await plan.update(data);
+			}else{
+				return await plan.add(data);
+			}
+			
 		}catch(e){
 			console.log(e);
 		}
 	},
-	
+	async getPlan({commit},id){
+		try{
+			return await plan.get({id});
+		}catch(e){
+			console.log(e);
+		}
+	},
 	async getPlanList({commit},params){
 		try{
 			return await plan.get(params);
@@ -51,15 +62,19 @@ export default {
 	
 	async addDetail({commit},data){
 		try{
-			return await planDetail.add(data);
+			if(data.id){
+				return await planDetail.update(data);
+			}else{
+				return await planDetail.add(data);
+			}
 		}catch(e){
 			console.log(e);
 		}
 	},
 	
-	async getDetailList({commit},plan_id){
+	async getDetailList({commit},params){
 		try{
-			return await planDetail.getList(plan_id);
+			return await planDetail.get(params);
 		}catch(e){
 			console.log(e);
 		}
@@ -67,7 +82,7 @@ export default {
 	
 	async getDetail({commit},id){
 		try{
-			return await planDetail.get(id);
+			return await planDetail.get({id});
 		}catch(e){
 			console.log(e);
 		}

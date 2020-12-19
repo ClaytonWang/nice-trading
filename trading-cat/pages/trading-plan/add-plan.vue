@@ -2,12 +2,16 @@
 	<view class="container">
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">{{stockLabel}}</text>
-			<text class="cell-more" @click="navTo('/pages/public/stock-list')">请选择</text>
+			<text v-if="!plan_id" class="cell-more" @click="navTo('/pages/public/stock-list')">请选择</text>
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
-			<text class="cell-tit">入场价</text>
+			<text class="cell-tit">计划价</text>
 			<input v-model="form.plan_price" type="number" class="cell-input" placeholder="请输价格" />
 		</view>
+		<!-- <view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
+			<text class="cell-tit">成交价</text>
+			<input v-model="form.actual_price" type="number" class="cell-input" placeholder="请输价格" />
+		</view> -->
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">止损<i v-if="stop_loss_rate" style="color: green;">{{stop_loss_rate}} %</i></text>
 			<input v-model="form.stop_loss" type="number" class="cell-input" placeholder="请输入单价" />
@@ -32,11 +36,11 @@
 			<text class="cell-tit">执行时间</text>
 			<view class="cell-cust">
 				<picker mode="date" :value="form.exec_start_date" :start="startDate" :end="endDate" @change="bindStartDateChange">
-					<view class="uni-input">{{form.exec_start_date}}</view>
+					<view class="uni-input">{{form.exec_start_date | moment("YYYY-MM-DD")}}</view>
 				</picker>
 				<text class="gap">-</text>
 				<picker mode="date" :value="form.exec_end_date" :start="startDate" :end="endDate" @change="bindEndDateChange">
-					<view class="uni-input">{{form.exec_end_date}}</view>
+					<view class="uni-input">{{form.exec_end_date | moment("YYYY-MM-DD")}}</view>
 				</picker>
 			</view>
 		</view>
@@ -44,7 +48,7 @@
 			<text class="cell-tit">{{form.priority==null ? '优先级' : form.priority}}</text>
 			<text @click="selectPriority" class="cell-more">请选择</text>
 		</view>
-		<view class="list-cell" hover-class="cell-hover" :hover-stay-time="50">
+		<view class="list-cell" hover-class="cell-hover" :hover-stay-time="50" v-if="!plan_id">
 			<textarea v-model="form.comment" placeholder="备忘,理由" style="width: 100%; font-size: 28upx;"></textarea>
 		</view>
 		<button class="submit" @click="submit">确认</button>
@@ -82,6 +86,7 @@
 			return {
 				searchRslt: [],
 				stockLabel: '股票',
+				plan_id:'',
 				form: {
 					code: undefined,
 					name: undefined,
@@ -149,19 +154,26 @@
 				}
 			}
 		},
-		onLoad() {
+		async onLoad(options) {
+			this.plan_id = options.plan_id;
+			if(this.plan_id){
+				const res = await this.getPlan(this.plan_id);
+				if(res && res.data){
+					this.form = res.data[0];
+					this.stockLabel = this.form.name+'('+this.form.code+')';
+				}
+			}
 			uni.$on('selectStock', this.selectStock)
 		},
 		onUnload() {
 			uni.$off('selectStock', this.selectStock)
 		},
 		methods: {
-			...mapActions('Trading', ['addPlan']),
+			...mapActions('Trading', ['addPlan','getPlan']),
 			select() {},
 			selectStock({
 				stock
 			}) {
-				console.log(stock);
 				this.stockLabel = stock.item.name;
 				if (this.stockLabel) {
 					this.form.name = this.stockLabel.split(" (")[0];
@@ -170,6 +182,7 @@
 				}
 			},
 			async submit() {
+				console.log(this.form)
 				if (!this.form.code) {
 					this.$msg('请选择股票');
 					return;
@@ -205,7 +218,7 @@
 					this.$msg('请选择优先级');
 					return;
 				}
-				if (!this.form.comment) {
+				if (!this.form.comment && !this.plan_id) {
 					this.$msg('请输入备注');
 					return;
 				}

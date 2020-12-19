@@ -7,7 +7,6 @@ module.exports = app => {
     code: { type: STRING, allowNull: true }, // 600010
     symbol: { type: STRING, allowNull: true }, // sh_b00010
     name: { type: STRING, allowNull: true }, // 南极电商
-    actual_price: { type: DECIMAL(12, 4), allowNull: true },
     plan_price: { type: DECIMAL(12, 4), allowNull: true },
     plan_volume: { type: INTEGER, allowNull: true },
     risk: { type: DECIMAL(12, 4), allowNull: true },

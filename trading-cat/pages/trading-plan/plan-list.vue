@@ -8,12 +8,13 @@
 					<text class="title">风险<text class="count">共 4% </text></text>
 				</view>
 				<view class="item" :class="item.status?'':'gray'" v-for="(item,index) in plan_list" :key="index">
-					<view class="top"  @longpress="showOpration">
+					<view class="top" @longpress="showOpration">
 						<view class="stock">{{item.name}} ({{item.code}})</view>
 						<uni-icons v-if="!isSHowOp" type="list" size="22" @click="showOpration"></uni-icons>
 						<view class="opt" v-show="isSHowOp">
+							<uni-icons type="trash" color="red" style="margin-right: 30upx;" size="22" @click="del(item.id,item.name)"></uni-icons>
 							<switch :checked="item.status" style="transform:scale(0.7);" @change="changeStatus($event,item)" />
-							<uni-icons type="trash" color="red" style="margin-left: 30upx;" size="22" @click="del(item.id,item.name)"></uni-icons>
+							<uni-icons type="compose" style="margin-left: 30upx;" size="22" @click="editPlan(item.id)"></uni-icons>
 							<uni-icons type="redo" size="22" style="margin-left: 40upx;" @click="showOpration"></uni-icons>
 						</view>
 					</view>
@@ -25,8 +26,8 @@
 						</view>
 						<view class="s-row row-amount">
 							<view class="col">
-								{{item.plan_price | fixed}}/{{item.actual_price | fixed}}<br />
-								<i :class="slide_point(item.plan_price,item.actual_price)>=0?'take_profit':'stop_loss'">{{slide_point(item.plan_price,item.plan_price) | fixed(2,'%')}}</i>
+								{{item.plan_price | fixed}}/{{actual_price(item.trading_details) | fixed}}<br />
+								<i :class="slide_point(item.plan_price,actual_price(item.trading_details))>=0?'take_profit':'stop_loss'">{{slide_point(item.plan_price,actual_price(item.trading_details)) | fixed(2,'%')}}</i>
 							</view>
 							<view class="col">
 								{{item.stop_loss | fixed}}<br />
@@ -63,7 +64,7 @@
 						<view class="s-row row-title">
 							<view class="col">
 								备注
-								<uni-icons type="compose" color="blue" size="20" @click="edit(item.id)" style="margin-left: 15px;"></uni-icons>
+								<uni-icons v-show="isSHowOp" type="compose" color="blue" size="20" @click="editComment(item.id)" style="margin-left: 15px;"></uni-icons>
 							</view>
 						</view>
 						<template v-for="(cItem,cIndex) in item.comments">
@@ -81,9 +82,6 @@
 						
 					</view>
 				</view>
-				<!-- <view class="empty" v-if="plan_list && plan_list.length==0">
-					暂无
-				</view> -->
 			</view>
 		</mescroll-body>
 		<uni-popup ref="popup" type="share" :maskClick="false">
@@ -118,7 +116,7 @@
 		commonMixin
 	} from '@/common/mixin/mixin.js';
 	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
-	import wybLoading from '@/components/wyb-loading/wyb-loading.vue'
+	import wybLoading from '@/components/wyb-loading/wyb-loading.vue';
 	export default {
 		mixins: [commonMixin, MescrollMixin],
 		components: {
@@ -153,6 +151,10 @@
 		},
 		onShow() {
 			//this.downCallback();
+			this.getList({
+				offset:0,
+				limit:10
+			});
 		},
 		// #ifndef MP
 		onNavigationBarButtonTap(e) {
@@ -174,8 +176,41 @@
 			mescrollInit(mescroll) {
 				this.mescroll = mescroll;
 			},
+			actual_price(trading_details){
+				if(trading_details && trading_details.length>0){
+					let totalAmount=0,totalVol=0;
+					for(let item of trading_details){
+						if(!item.stamp_tax){
+							item.stamp_tax=0;
+						}
+						if(!item.trading_price){
+							item.trading_price=0;
+						}
+						if(!item.trading_volume){
+							item.trading_volume=0;
+						}
+						if(!item.commission){
+							item.commission=0;
+						}
+						if(item.trading_type==='BUY'){
+							totalAmount = totalAmount+parseFloat(item.trading_price) * parseFloat(item.trading_volume) + parseFloat(item.commission) + parseFloat(item.stamp_tax);
+							totalVol = totalVol+parseFloat(item.trading_volume);
+						}
+					}
+					
+					if(!totalVol) return 0;
+					return (totalAmount / totalVol).toFixed(2);
+				}else{
+					return 0;
+				}
+			},
 			showOpration(){
 				this.isSHowOp=!this.isSHowOp;
+			},
+			editPlan(id){
+				uni.navigateTo({
+					url: `/pages/trading-plan/add-plan?plan_id=${id}`
+				})
 			},
 			async getList(params) {
 				const res = await this.getPlanList(params);
@@ -194,6 +229,7 @@
 				}
 			},
 			navTo(id, name, code, symbol) {
+				if(this.isSHowOp) return;
 				uni.navigateTo({
 					url: `/pages/trading-detail/detail-list?plan_id=${id}&name=${name}&code=${code}&symbol=${symbol}`
 				})
@@ -259,7 +295,7 @@
 					}
 				});
 			},
-			edit(id) {
+			editComment(id) {
 				this.popup_plan_id = id;
 				this.$refs.popup.open();
 			},
@@ -284,6 +320,7 @@
 						this.popup_plan_id = '';
 						this.popup_comments = '';
 						this.closePop();
+						this.downCallback();
 					} else {
 						this.$msg(resp.errMsg);
 					}

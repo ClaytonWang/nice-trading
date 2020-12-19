@@ -35,7 +35,7 @@ class TradeDetailController extends Controller {
   async destroy() {
     const ctx = this.ctx;
     const id = ctx.helper.parseInt(ctx.params.id);
-    await ctx.service.tradingDetailService.destroy({ id });
+    await ctx.service.tradingDetailService.destroy(id);
     ctx.status = 200;
   }
 }

@@ -45,7 +45,7 @@ class TradingDetailService extends Service {
     model.updated_at = moment().utc().format();
     const newDetail = await ctx.model.TradingDetail.create(model);
     const coment = {
-      external_id: newDetail.id,
+      external_id: 'detail_' + newDetail.id,
       comment: model.comment,
       updated_at: moment().utc().format(),
     };
@@ -60,10 +60,18 @@ class TradingDetailService extends Service {
     return tradingDetail.update(updates);
   }
 
-  async destroy({ id }) {
-    const tradingDetail = await this.ctx.model.TradingDetail.findByPk(id);
-    if (!tradingDetail) this.ctx.throw(404, 'trading detail not found');
-    return tradingDetail.destroy();
+  async destroy(id) {
+    try {
+      const tradingDetail = await this.find(id);
+      if (!tradingDetail) this.ctx.throw(404, 'trading detail not found');
+
+      for (const comment of tradingDetail.comments) {
+        comment.destroy();
+      }
+      return tradingDetail.destroy();
+    } catch (err) {
+      return err;
+    }
   }
 }
 

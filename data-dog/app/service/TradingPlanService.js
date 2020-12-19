@@ -31,7 +31,7 @@ class TradingService extends Service {
     const newTrading = await ctx.model.TradingPlan.create(trading);
 
     const coment = {
-      external_id: newTrading.id,
+      external_id: 'plan_' + newTrading.id,
       comment: trading.comment,
       updated_at: moment().utc().format(),
     };
@@ -67,16 +67,23 @@ class TradingService extends Service {
   }
 
   async del(id) {
-    const tradings = await this.find(id);
+    try {
+      const tradings = await this.find(id);
 
-    if (!tradings) {
-      this.ctx.throw(404, 'trading not found');
-    }
-    for (const plan of tradings) {
-      for (const detail of plan.trading_details) {
-        detail.destroy();
+      if (!tradings) {
+        this.ctx.throw(404, 'trading not found');
       }
-      plan.destroy();
+      for (const plan of tradings) {
+        for (const detail of plan.trading_details) {
+          detail.destroy();
+        }
+        for (const comment of plan.comments) {
+          comment.destroy();
+        }
+        plan.destroy();
+      }
+    } catch (err) {
+      return err;
     }
     return {};
   }

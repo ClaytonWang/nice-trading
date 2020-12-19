@@ -20,10 +20,7 @@ export function get(params) {
   return request({
     url: '/api/trading-plan/'+params.id,
     method: 'GET',
-	data:{
-		limit:params.limit,
-		offset:params.offset,
-	}
+	data:params
   })
 }
 

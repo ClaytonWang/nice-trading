@@ -25,7 +25,7 @@
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">操作日期</text>
 			<picker mode="date" :value="form.trading_date" :start="startDate" :end="endDate" @change="bindDateChange">
-				<view class="uni-input">{{form.trading_date}}</view>
+				<view class="uni-input">{{form.trading_date | moment("YYYY-MM-DD")}}</view>
 			</picker>
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
@@ -36,7 +36,7 @@
 			<text class="cell-tit">税费</text>
 			<text class="cell-tit">{{stamp_tax}}</text>
 		</view>
-		<view class="list-cell" hover-class="cell-hover" :hover-stay-time="50">
+		<view class="list-cell" hover-class="cell-hover" :hover-stay-time="50" v-if="!form.id">
 			<textarea placeholder="心得感悟" style="width: 100%; font-size: 28upx;" v-model="form.comment"></textarea>
 		</view>
 		<button class="submit" @click="submit">确认</button>
@@ -99,11 +99,17 @@
 				},
 			};
 		},
-		onLoad(options) {
-			console.log(options)
+		async onLoad(options) {
 			if(options.plan_id){
 				this.stockLable = options.name + " ("+options.code+")"
 				this.form.trading_plan_id = options.plan_id;
+			}
+			if(options.detail_id){
+				const res = await this.getDetail(options.detail_id);
+				if(res && res.data){
+					this.form = res.data;
+					this.stockLable = this.form.trading_plan.name+'('+this.form.trading_plan.code+')';
+				}
 			}
 		},
 		onUnload() {
@@ -143,7 +149,7 @@
 			}
 		},
 		methods: {
-			...mapActions('Trading', ['addDetail']),
+			...mapActions('Trading', ['addDetail','getDetail']),
 			search() {},
 			select() {},
 			selectSide(value) {
@@ -166,7 +172,7 @@
 				if(!this.form.trading_date){ 
 					this.$msg('请输操作日期');
 					return ;}
-				if(!this.form.comment){ 
+				if(!this.form.comment && !this.form.id){ 
 					this.$msg('请输备注');
 					return ;}
 				this.form.commission = this.commission;

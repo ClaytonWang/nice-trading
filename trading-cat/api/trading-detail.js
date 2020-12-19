@@ -8,11 +8,18 @@ export function add(planDetail) {
   })
 }
 
-export function get(id) {
-	if(!id){ id= '';}
+export function get(params) {
+	if(!params){
+		params={};
+	}
+	
+	if(!params.id){ 
+		params.id= '';
+	}
   return request({
-    url: '/api/trading-detail/'+id,
-    method: 'GET'
+    url: '/api/trading-detail/'+params.id,
+    method: 'GET',
+	data:params
   })
 }
 
@@ -23,10 +30,10 @@ export function del(id) {
   })
 }
 
-export function getList(trading_plan_id) {
+export function update(data) {
   return request({
-    url: '/api/trading-detail',
-	data:{trading_plan_id},
-    method: 'GET'
+    url: '/api/trading-detail/'+data.id,
+    method: 'PUT',
+	data
   })
 }
