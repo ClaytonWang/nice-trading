@@ -43,8 +43,15 @@ class TradingDetailService extends Service {
   async create(model) {
     const ctx = this.ctx;
     model.updated_at = moment().utc().format();
-    const data = await ctx.model.TradingDetail.create(model);
-    return data;
+    const newDetail = await ctx.model.TradingDetail.create(model);
+    const coment = {
+      external_id: newDetail.id,
+      comment: model.comment,
+      updated_at: moment().utc().format(),
+    };
+    const data = await ctx.model.Comment.create(coment);
+    newDetail.comment = data;
+    return newDetail;
   }
 
   async update({ id, updates }) {

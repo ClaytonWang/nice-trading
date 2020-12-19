@@ -28,7 +28,17 @@ class TradingService extends Service {
   async create(trading) {
     const ctx = this.ctx;
     trading.updated_at = moment().utc().format();
-    return await ctx.model.TradingPlan.create(trading);
+    const newTrading = await ctx.model.TradingPlan.create(trading);
+
+    const coment = {
+      external_id: newTrading.id,
+      comment: trading.comment,
+      updated_at: moment().utc().format(),
+    };
+    const data = await ctx.model.Comment.create(coment);
+    newTrading.comment = data;
+    return newTrading;
+
   }
 
   async find(id) {

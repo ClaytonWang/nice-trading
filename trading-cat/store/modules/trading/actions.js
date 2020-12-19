@@ -6,6 +6,8 @@ import * as planDetail from '@/api/trading-detail.js';
 
 import * as setting from '@/api/setting.js';
 
+import * as comment from '@/api/comment.js';
+
 export default {
 	async searchStock({commit},keyword){
 		try{
@@ -96,6 +98,14 @@ export default {
 	async getSetting({commit},id){
 		try{
 			return await setting.get(id);
+		}catch(e){
+			console.log(e);
+		}
+	},
+	
+	async addComents({commit},data){
+		try{
+			return await comment.add(data);
 		}catch(e){
 			console.log(e);
 		}

@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<mescroll-body ref="mescrollRef" @init="mescrollInit" @up="upCallback" @down="downCallback">
-			<view class="pay-group">
+			<view class="plan-group">
 				<view class="header">
 					<text class="title">盈利<text class="count">共 0 个</text></text>
 					<text class="title">亏损<text class="count">共 0 个</text></text>
@@ -55,7 +55,7 @@
 							<view class="col">{{item.priority | formatPriority}}</view>
 							<view class="col">{{item.created_at | moment("MM/DD HH:mm")}}</view>
 						</view>
-						
+
 					</view>
 					<view class="bottom">
 						<view class="s-row row-title">
@@ -76,11 +76,27 @@
 				</view> -->
 			</view>
 		</mescroll-body>
-		<uni-popup ref="popup" type="bottom">
-			<view class="coin-box">
-			<icon type="cancontactcel" size="20" @click="del(item.id,item.name)" />
+		<uni-popup ref="popup" type="share" :maskClick="false">
+			<view class="coments-box">
+				<view class="cmt-tool-bar">
+					<uni-icons type="closeempty" size="22" @click="closePop"></uni-icons>
+					<view @click="submitComment">
+						<uni-icons type="upload" size="22"></uni-icons>
+						提交
+					</view>
+				</view>
+
+				<view class="label">添加备注:</view>
+				<view class="comments">
+					<uni-forms border>
+						<uni-easyinput type="textarea" autoHeight :maxlength="-1" :trim="true" :clearable="false" v-model="popup_comments"
+						 placeholder="请输入内容"></uni-easyinput>
+					</uni-forms>
+
+				</view>
 			</view>
 		</uni-popup>
+		<wyb-loading ref="loading" />
 	</view>
 </template>
 <script>
@@ -92,12 +108,18 @@
 		commonMixin
 	} from '@/common/mixin/mixin.js';
 	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
+	import wybLoading from '@/components/wyb-loading/wyb-loading.vue'
 	export default {
 		mixins: [commonMixin, MescrollMixin],
+		components: {
+			wybLoading
+		},
 		data() {
 			return {
 				mescroll: null,
-				plan_list: []
+				plan_list: [],
+				popup_plan_id: '',
+				popup_comments: ''
 			}
 		},
 		filters: {
@@ -137,7 +159,7 @@
 		},
 		// #endif
 		methods: {
-			...mapActions('Trading', ['getPlanList', 'delPlanItem', 'updatePlan']),
+			...mapActions('Trading', ['getPlanList', 'delPlanItem', 'updatePlan', 'addComents']),
 			mescrollInit(mescroll) {
 				this.mescroll = mescroll;
 			},
@@ -212,19 +234,52 @@
 					showCancel: true,
 					success: async (res) => {
 						if (res.confirm) {
-							const res = await this.delPlanItem(id);
-							if (res && res.data) {
+							const resp = await this.delPlanItem(id);
+							if (resp && resp.data) {
 								this.$msg('删除成功！');
 								this.downCallback();
 							} else {
-								this.$msg(res.errMsg);
+								this.$msg(resp.errMsg);
 							}
 						}
 					}
 				});
 			},
-			edit(id){
+			edit(id) {
+				this.popup_plan_id = id;
 				this.$refs.popup.open();
+			},
+			async submitComment() {
+				try {
+					let data = {
+						external_id: this.popup_plan_id,
+						comment: this.popup_comments,
+					};
+					if (!data.external_id) {
+						this.$msg('external_id不能为空！');
+						return;
+					}
+					if (!data.comment) {
+						this.$msg('内容不能为空！');
+						return;
+					}
+					this.$refs.loading.showLoading();
+					const resp = await this.addComents(data);
+					if (resp && resp.data) {
+						this.$msg('添加成功！');
+						this.popup_plan_id = '';
+						this.popup_comments = '';
+						this.closePop();
+					} else {
+						this.$msg(resp.errMsg);
+					}
+				} catch (e) {
+					console.log(e);
+				}
+				this.$refs.loading.hideLoading();
+			},
+			closePop() {
+				this.$refs.popup.close();
 			},
 			downCallback() {
 				this.mescroll.resetUpScroll();
@@ -258,7 +313,23 @@
 		width: 100%;
 	}
 
-	.pay-group {
+	.coments-box {
+		height: 100%;
+		background-color: #FFFFFF;
+		padding: 10upx 20upx 50upx 20upx;
+
+		.cmt-tool-bar {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+		}
+
+		.label {
+			margin: 20upx 0;
+		}
+	}
+
+	.plan-group {
 		width: 100%;
 		margin-bottom: 40upx;
 
@@ -324,8 +395,9 @@
 					align-items: center;
 				}
 			}
-			
-			.center,.bottom {
+
+			.center,
+			.bottom {
 				.s-row {
 					display: flex;
 					align-items: center;
