@@ -14,6 +14,7 @@ class TradingService extends Service {
         // association: this.ctx.model.TradingPlan.hasMany(this.ctx.model.TradingDetail, { foreignKey: 'trading_plan_id', constraints: false }),
         model: this.ctx.model.TradingDetail,
       }, {
+        attributes: [ 'id', 'trading_plan_id', 'comment', 'created_at' ],
         model: this.ctx.model.Comment,
       }],
     };
@@ -31,7 +32,7 @@ class TradingService extends Service {
     const newTrading = await ctx.model.TradingPlan.create(trading);
 
     const coment = {
-      external_id: 'plan_' + newTrading.id,
+      trading_plan_id: newTrading.id,
       comment: trading.comment,
       updated_at: moment().utc().format(),
     };

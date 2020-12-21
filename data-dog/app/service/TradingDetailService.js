@@ -32,6 +32,7 @@ class TradingDetailService extends Service {
         // attributes: [ 'id', 'code', 'symbol', 'name', 'created_at', 'updated_at' ],
       }, {
         model: this.ctx.model.Comment,
+        attributes: [ 'id', 'trading_detail_id', 'comment', 'created_at' ],
       }],
     });
     if (!tradingDetail) {
@@ -45,7 +46,7 @@ class TradingDetailService extends Service {
     model.updated_at = moment().utc().format();
     const newDetail = await ctx.model.TradingDetail.create(model);
     const coment = {
-      external_id: 'detail_' + newDetail.id,
+      trading_detail_id: newDetail.id,
       comment: model.comment,
       updated_at: moment().utc().format(),
     };

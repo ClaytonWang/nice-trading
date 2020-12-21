@@ -17,7 +17,7 @@ module.exports = app => {
 
   TradingDetail.associate = function() {
     app.model.TradingDetail.belongsTo(app.model.TradingPlan, { foreignKey: 'trading_plan_id', constraints: false });
-    app.model.TradingDetail.hasMany(app.model.Comment, { foreignKey: 'external_id', constraints: false });
+    app.model.TradingDetail.hasMany(app.model.Comment, { foreignKey: 'trading_detail_id', constraints: false });
   };
 
   return TradingDetail;
