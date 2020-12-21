@@ -76,7 +76,7 @@ class TradingService extends Service {
       }
       for (const plan of tradings) {
         for (const detail of plan.trading_details) {
-          detail.destroy();
+          this.service.tradingDetailService.destroy(detail.id);
         }
         for (const comment of plan.comments) {
           comment.destroy();

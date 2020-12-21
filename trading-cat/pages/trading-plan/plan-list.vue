@@ -302,11 +302,11 @@
 			async submitComment() {
 				try {
 					let data = {
-						external_id: this.popup_plan_id,
+						trading_plan_id: this.popup_plan_id,
 						comment: this.popup_comments,
 					};
-					if (!data.external_id) {
-						this.$msg('external_id不能为空！');
+					if (!data.trading_plan_id) {
+						this.$msg('trading_plan_id不能为空！');
 						return;
 					}
 					if (!data.comment) {
