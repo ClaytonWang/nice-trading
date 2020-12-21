@@ -1,19 +1,25 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-// 定义创建接口的请求参数规则
-const createRule = {
-  accesstoken: 'string',
-  title: 'string',
-  tab: { type: 'enum', values: [ 'ask', 'share', 'job' ], required: false },
-  content: 'string',
-};
 
 class CommentController extends Controller {
+  async index() {
+    const ctx = this.ctx;
+    const query = {
+      limit: ctx.helper.parseInt(ctx.query.limit),
+      offset: ctx.helper.parseInt(ctx.query.offset),
+      trading_plan_id: ctx.helper.parseInt(ctx.query.trading_plan_id),
+      trading_detail_id: ctx.helper.parseInt(ctx.query.trading_detail_id),
+    };
+    ctx.body = await ctx.service.commentService.list(query);
+    ctx.status = 200;
+  }
+
   // eg: get api/trade/1
   async show() {
     const ctx = this.ctx;
     ctx.body = await ctx.service.commentService.find(ctx.helper.parseInt(ctx.params.id));
+    ctx.status = 200;
   }
 
   // eg: post api/trade
@@ -31,6 +37,7 @@ class CommentController extends Controller {
     const id = ctx.helper.parseInt(ctx.params.id);
     const body = ctx.request.body;
     ctx.body = await ctx.service.commentService.update({ id, updates: body });
+    ctx.status = 200;
   }
 
   // eg: delete api/trade/1
