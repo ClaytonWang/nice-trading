@@ -182,7 +182,6 @@
 				}
 			},
 			async submit() {
-				console.log(this.form)
 				if (!this.form.code) {
 					this.$msg('请选择股票');
 					return;

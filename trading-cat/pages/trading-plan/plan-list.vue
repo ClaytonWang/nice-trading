@@ -97,7 +97,7 @@
 				<view class="label">添加备注:</view>
 				<view class="comments">
 					<uni-forms border>
-						<uni-easyinput type="textarea" autoHeight :maxlength="-1" :trim="true" :clearable="false" v-model="popup_comments"
+						<uni-easyinput focus type="textarea" autoHeight :maxlength="-1" :trim="true" :clearable="false" v-model="popup_comments"
 						 placeholder="请输入内容"></uni-easyinput>
 					</uni-forms>
 
