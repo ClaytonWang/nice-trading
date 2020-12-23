@@ -40,23 +40,7 @@
 			<textarea placeholder="心得感悟" style="width: 100%; font-size: 28upx;" v-model="form.comment"></textarea>
 		</view>
 		<button class="submit" @click="submit">确认</button>
-
-		<uni-popup ref="popup" type="bottom">
-			<view class="coin-box">
-				<view class="coin-search">
-					<uni-search-bar placeholder="搜索" @input="search"></uni-search-bar>
-				</view>
-				<view class="item-wrapper">
-					<u-empty text="暂无数据" mode="data" img-width="140"></u-empty>
-					<view class="coin-item little-line" @click="select">
-						<view class="col">
-							<text>南极人</text>
-							<text>600010</text>
-						</view>
-					</view>
-				</view>
-			</view>
-		</uni-popup>
+		<wyb-loading ref="loading" />
 	</view>
 </template>
 
@@ -74,11 +58,13 @@
 		commonMixin,
 		authMixin
 	} from '@/common/mixin/mixin.js'
+	import wybLoading from '@/components/wyb-loading/wyb-loading.vue';
 	export default {
 		components: {
 			uniIcons,
 			uniPopup,
-			uniSearchBar
+			uniSearchBar,
+			wybLoading
 		},
 		mixins: [commonMixin],
 		data() {
@@ -153,7 +139,6 @@
 			search() {},
 			select() {},
 			selectSide(value) {
-				console.log(value)
 				this.form.trading_type = value.target.value;
 			},
 			selectStock() {
@@ -179,8 +164,9 @@
 				if(this.form.trading_type==='SELL'){
 					this.form.stamp_tax = this.stamp_tax;
 				}
-				
+				this.$refs.loading.showLoading();
 				const res = await this.addDetail(this.form);
+				this.$refs.loading.hideLoading();
 				if(res && res.data){
 					this.$msg("添加成功!");
 					setTimeout(()=>{

@@ -52,6 +52,7 @@
 			<textarea v-model="form.comment" placeholder="备忘,理由" style="width: 100%; font-size: 28upx;"></textarea>
 		</view>
 		<button class="submit" @click="submit">确认</button>
+		<wyb-loading ref="loading" />
 	</view>
 </template>
 
@@ -70,13 +71,14 @@
 		authMixin
 	} from '@/common/mixin/mixin.js';
 	import empty from '../../components/empty.vue';
-
+	import wybLoading from '@/components/wyb-loading/wyb-loading.vue';
 	export default {
 		components: {
 			uniIcons,
 			uniPopup,
 			uniSearchBar,
-			empty
+			empty,
+			wybLoading
 		},
 		mixins: [commonMixin],
 		data() {
@@ -194,9 +196,7 @@
 					this.$msg('请输入场价');
 					return;
 				}
-				if (!this.form.plan_volume) {
-					this.form.plan_volume = this.plan_volume;
-				}
+				
 				if (!this.form.stop_loss) {
 					this.$msg('请输入止损价');
 					return;
@@ -221,6 +221,7 @@
 					this.$msg('请输入备注');
 					return;
 				}
+				this.form.plan_volume = this.plan_volume;
 				//['耐心等待', '等待', '一般', '高'] 0,1,2,3
 				switch(this.form.priority){
 					case '耐心等待':
@@ -236,7 +237,9 @@
 					this.form.priority = 3;
 					break;
 				}
+				this.$refs.loading.showLoading();
 				const res = await this.addPlan(this.form)
+				this.$refs.loading.hideLoading();
 				if(res.data){
 					this.$msg("添加成功!");
 					setTimeout(()=>{

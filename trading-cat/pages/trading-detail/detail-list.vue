@@ -3,17 +3,17 @@
 		<!-- 列表 -->
 		<mescroll-body ref="mescrollRef" @init="mescrollInit" @up="upCallback" @down="downCallback">
 			<view class="coin-section m-t">
-				<view class="block little-line" v-for="(item,index) in detial_list" :key="index" @longpress="showOpration">
+				<view class="block little-line" v-for="(item,index) in detial_list" :key="index" @longpress="showOpration(item)">
 					<view class="s-row">
 						<view class="col">
 							<text class="coin" :class="item.trading_type==='BUY'?'buy':'sell'" >{{item.trading_type | trading_type}}</text>
 							<text class="coin" :class="item.trading_type==='BUY'?'buy':'sell'">{{name}}({{code}})</text>
 						</view>
-						<uni-icons v-if="!isSHowOp" type="list" size="22" @click="showOpration"></uni-icons>
-						<view class="col r light" v-show="isSHowOp">
+						<uni-icons v-if="!item.isSHowOp" type="list" size="22" @click="showOpration(item)"></uni-icons>
+						<view class="col r light" v-show="item.isSHowOp">
 							<uni-icons type="trash" color="red" style="margin-right: 30upx;" size="22" @click="del(item.id,name)"></uni-icons>
 							<uni-icons type="compose" style="margin-left: 30upx;" size="22" @click="editDetail(item.id)"></uni-icons>
-							<uni-icons type="redo" size="22" style="margin-left: 40upx;" @click="showOpration"></uni-icons>
+							<uni-icons type="redo" size="22" style="margin-left: 40upx;" @click="showOpration(item)"></uni-icons>
 						</view>
 					</view>
 					<view class="s-row">
@@ -37,18 +37,30 @@
 						<view class="col subtitle row-amount">{{item.stamp_tax | fixed}}</view>
 					</view>
 					<view class="s-row">
-						<view class="col subtitle row-title">操作备忘</view>
-						<!-- <view class="col subtitle row-title">{{item.trading_type==1?'买入评级':'卖出评级'}}</view> -->
-						<uni-icons v-show="isSHowOp" type="compose" color="blue" size="20" @click="editComment(item.id)" style="margin-left: 15px;"></uni-icons>
+						<view class="col subtitle row-title">
+							操作备忘
+							<uni-icons type="plusempty" color="blue" size="20" @click="addComment(item.id)" style="margin-left: 15px;"></uni-icons>
+						</view>
+						
 					</view>
 					<view v-for="(cItem,cIndex) in item.comments" :key="cIndex">
 						<view class="s-row">
 							<view class="col subtitle row-title">
 								{{cItem.created_at | moment("YYYY/MM/DD HH:mm")}}
 							</view>
+							<view class="col subtitle row-title" v-show="item.isSHowOp">
+								<view class="s-row">
+									<view class="col">
+										<uni-icons type="trash" color="blue" size="20" @click="delComment(cItem.id)"></uni-icons>
+									</view>
+									<view class="col">
+										<uni-icons type="compose" color="blue" size="20" @click="editComment(cItem.id,item.id,cItem.comment)"></uni-icons>
+									</view>
+								</view>
+							</view>
 						</view>
 						<view class="s-row">
-							<view class="col subtitle row-amount">{{cItem.comment}}</view>
+							<view class="col subtitle row-amount" style="white-space: pre-wrap;" v-html="cItem.comment"></view>
 						</view>
 					</view>
 				</view>
@@ -84,15 +96,12 @@
 	} from 'vuex'
 	import {uniPopup, uniIcons} from '@dcloudio/uni-ui';
 	import {commonMixin} from '@/common/mixin/mixin.js';
-	import empty from '../../components/empty.vue';
 	import wybLoading from '@/components/wyb-loading/wyb-loading.vue';
 	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
+	import PlanItem from '@/pages/trading-plan/components/plan-list-item.vue';
 	export default {
-		components: {uniPopup, uniIcons,empty},
+		components: {uniPopup, uniIcons,wybLoading,PlanItem},
 		mixins: [commonMixin,MescrollMixin],
-		components: {
-			wybLoading
-		},
 		filters:{
 			trading_type(v){
 				if(v==='BUY'){
@@ -106,13 +115,13 @@
 			return {
 				mescroll:null,
 				detial_list:[],
+				popup_comments_id:'',
 				popup_detail_id:'',
 				popup_comments:'',
 				plan_id:'',
 				code:'',
 				name:'',
 				symbol:'',
-				isSHowOp:false,
 			};
 		},
 		onLoad(options){
@@ -120,13 +129,10 @@
 			this.code = options.code;
 			this.name = options.name;
 			this.symbol = options.symbol;
+			this.getPlanInfo(this.plan_id);
 		},
 		onShow() {
-			this.getList({
-				offset:0,
-				limit:10,
-				trading_plan_id:this.plan_id
-			});
+			this.getPlanInfo(this.plan_id);
 		},
 		onReachBottom(){
 		},
@@ -147,12 +153,12 @@
 			});
 		},
 		methods: {
-			...mapActions('Trading', ['getDetailList','addComents','delDetailItem']),
+			...mapActions('Trading', ['getPlan','addComents','delDetailItem','deleteComment']),
 			mescrollInit(mescroll) {
 				this.mescroll = mescroll;
 			},
-			showOpration(){
-				this.isSHowOp=!this.isSHowOp;
+			showOpration(item){
+				this.$set(item,'isSHowOp',!item.isSHowOp);
 			},
 			editDetail(id){
 				uni.navigateTo({
@@ -176,8 +182,8 @@
 					}
 				});
 			},
-			async getList(params) {
-				const res = await this.getDetailList(params);
+			async getPlanInfo(id) {
+				const res = await this.getPlan(id);
 				if (res && res.data) {
 					if (params.offset == 0) {
 						this.detial_list = [];
@@ -196,6 +202,11 @@
 						trading_detail_id: this.popup_detail_id,
 						comment: this.popup_comments,
 					};
+					
+					if(this.popup_comments_id){
+						data.id = this.popup_comments_id;
+					}
+					
 					if (!data.trading_detail_id) {
 						this.$msg('trading_detail_id不能为空！');
 						return;
@@ -223,8 +234,32 @@
 			closePop() {
 				this.$refs.popup.close();
 			},
-			editComment(id){
+			delComment(id){
+				uni.showModal({
+					content: `确定删除吗？`,
+					showCancel: true,
+					success: async (res) => {
+						if (res.confirm) {
+							const resp = await this.deleteComment(id);
+							if (resp && resp.data) {
+								this.$msg('删除成功！');
+								this.downCallback();
+							} else {
+								this.$msg(resp.errMsg);
+							}
+						}
+					}
+				});
+			},
+			addComment(id){
 				this.popup_detail_id = id;
+				this.popup_comments_id = '';
+				this.$refs.popup.open();
+			},
+			editComment(id,detail_id,content){
+				this.popup_comments_id = id;
+				this.popup_detail_id = detail_id;
+				this.popup_comments = content;
 				this.$refs.popup.open();
 			},
 			downCallback() {

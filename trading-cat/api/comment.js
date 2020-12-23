@@ -23,3 +23,10 @@ export function get(id) {
     method: 'GET'
   });
 }
+
+export function del(id) {
+  return request({
+    url: '/api/comment/'+id,
+    method: 'DELETE'
+  })
+}

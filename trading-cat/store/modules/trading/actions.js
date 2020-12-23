@@ -120,9 +120,21 @@ export default {
 	
 	async addComents({commit},data){
 		try{
-			return await comment.add(data);
+			if(data.id){
+				return await comment.update(data);
+			}else{
+				return await comment.add(data);
+			}
 		}catch(e){
 			console.log(e);
 		}
-	}
+	},
+	
+	async deleteComment({commit},id){
+		try{
+			return await comment.del(id);
+		}catch(e){
+			console.log(e);
+		}
+	},
 };
