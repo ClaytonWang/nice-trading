@@ -43,7 +43,14 @@ class TradingService extends Service {
   }
 
   async find(id) {
-    const trading = await this.ctx.model.TradingPlan.findByPk(id);
+    const trading = await this.ctx.model.TradingPlan.findByPk(id, {
+      include: [{
+        // association: this.ctx.model.TradingPlan.hasMany(this.ctx.model.TradingDetail, { foreignKey: 'trading_plan_id', constraints: false }),
+        model: this.ctx.model.TradingDetail,
+      }, {
+        model: this.ctx.model.Comment,
+      }],
+    });
     if (!trading) {
       this.ctx.throw(404, 'trading not found');
     }
