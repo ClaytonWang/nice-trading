@@ -47,6 +47,9 @@ class TradingService extends Service {
       include: [{
         // association: this.ctx.model.TradingPlan.hasMany(this.ctx.model.TradingDetail, { foreignKey: 'trading_plan_id', constraints: false }),
         model: this.ctx.model.TradingDetail,
+        include: [{
+          model: this.ctx.model.Comment,
+        }],
       }, {
         model: this.ctx.model.Comment,
       }],

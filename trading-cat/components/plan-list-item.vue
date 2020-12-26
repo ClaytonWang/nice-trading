@@ -5,7 +5,7 @@
 			<uni-icons v-if="!item.isSHowOp" type="list" size="22" @click="showOpration(item)"></uni-icons>
 			<view class="opt" v-show="item.isSHowOp">
 				<uni-icons type="trash" color="red" style="margin-right: 30upx;" size="22" @click="del(item.id,item.name)"></uni-icons>
-				<switch :checked="item.status" style="transform:scale(0.7);" @change="changeStatus($event,item)" />
+				<switch :checked="Boolean(item.status)" style="transform:scale(0.7);" @change="changeStatus($event,item)" />
 				<uni-icons type="compose" style="margin-left: 30upx;" size="22" @click="editPlan(item.id)"></uni-icons>
 				<uni-icons type="redo" size="22" style="margin-left: 40upx;" @click="showOpration(item)"></uni-icons>
 			</view>
@@ -80,7 +80,7 @@
 					</view>
 				</view>
 			</template>
-
+			<Comments ref="cmts" />
 		</view>
 	</view>
 </template>
@@ -95,23 +95,25 @@
 	} from '@/common/mixin/mixin.js';
 	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
 	import wybLoading from '@/components/wyb-loading/wyb-loading.vue';
+	import Comments from '@/components/comments.vue';
 	export default {
-		name:'PlanItem',
+		name: 'PlanItem',
 		mixins: [commonMixin, MescrollMixin],
 		components: {
-			wybLoading
+			wybLoading,
+			Comments
 		},
-		props:['item'],
+		props: ['item'],
 		data() {
 			return {
 				plan_list: [],
-				popup_plan_id: '',
-				popup_comments_id: '',
-				popup_comments: ''
 			}
 		},
 		filters: {
 			formatPriority(v) {
+				if (!v) {
+					return v;
+				}
 				switch (v.toString()) {
 					case '0':
 						return '耐心等待';
@@ -144,7 +146,8 @@
 		},
 		// #endif
 		methods: {
-			...mapActions('Trading', ['delPlanItem', 'updatePlan', 'addComents']),
+			...mapActions('Trading', ['delPlanItem', 'updatePlan', 'deleteComment']),
+
 			actual_price(trading_details) {
 				if (trading_details && trading_details.length > 0) {
 					let totalAmount = 0,
@@ -182,6 +185,22 @@
 				uni.navigateTo({
 					url: `/pages/trading-plan/add-plan?plan_id=${id}`
 				})
+			},
+			delComment(id) {
+				uni.showModal({
+					content: `确定删除吗？`,
+					showCancel: true,
+					success: async (res) => {
+						if (res.confirm) {
+							const resp = await this.deleteComment(id);
+							if (resp && resp.data) {
+								this.$msg('删除成功！');
+							} else {
+								this.$msg(resp.errMsg);
+							}
+						}
+					}
+				});
 			},
 			async getList(params) {
 				const res = await this.getPlanList(params);
@@ -257,7 +276,6 @@
 							const resp = await this.delPlanItem(id);
 							if (resp && resp.data) {
 								this.$msg('删除成功！');
-								this.downCallback();
 							} else {
 								this.$msg(resp.errMsg);
 							}
@@ -266,58 +284,17 @@
 				});
 			},
 			addComment(id) {
-				this.popup_comments_id = '';
-				this.popup_plan_id = id;
-				this.$refs.popup.open();
+				this.$refs.cmts.$emit('open',{
+					cmt_id:'',
+					trading_plan_id:id
+				});
 			},
-			editComment(id, plan_id, content) {
-				this.popup_plan_id = plan_id,
-					this.popup_comments_id = id;
-				this.popup_comments = content;
-				this.$refs.popup.open();
-			},
-			async submitComment() {
-				try {
-					let data = {
-						comment: this.popup_comments,
-						trading_plan_id: this.popup_plan_id
-					};
-
-					if (this.popup_comments_id) {
-						data.id = this.popup_comments_id;
-					}
-
-					if (!data.trading_plan_id) {
-						this.$msg('trading_plan_id不能为空！');
-						return;
-					}
-
-					if (!data.comment) {
-						this.$msg('内容不能为空！');
-						return;
-					}
-					this.$refs.loading.showLoading();
-					const resp = await this.addComents(data);
-					this.$refs.loading.hideLoading();
-					if (resp && resp.data) {
-						this.$msg('添加成功！');
-						this.popup_plan_id = '';
-						this.popup_comments = '';
-						this.closePop();
-						this.downCallback();
-					} else {
-						this.$msg(resp.errMsg);
-					}
-				} catch (e) {
-					console.log(e);
-				}
-
-			},
-			closePop() {
-				this.$refs.popup.close();
-			},
-			downCallback() {
-				this.mescroll.resetUpScroll();
+			editComment(id, trading_plan_id, comment) {
+				this.$refs.cmts.$emit('open',{
+					cmt_id:id,
+					comment,
+					trading_plan_id
+				});
 			},
 		}
 	}
@@ -332,122 +309,69 @@
 		background-color: #cccccc !important;
 	}
 
-	.coments-box {
-		height: 100%;
-		background-color: #FFFFFF;
-		padding: 10upx 20upx 50upx 20upx;
-
-		.cmt-tool-bar {
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-		}
-
-		.label {
-			margin: 20upx 0;
-		}
-	}
-
-	.plan-group {
+	.item {
+		margin: 20upx 0upx;
 		width: 100%;
-		margin-bottom: 40upx;
+		padding: 20upx;
+		text-align: left;
+		font-size: $font-md;
+		display: flex;
+		flex-direction: column;
+		background-color: #FFFFFF;
+		border: 1px solid #cccccc;
+		border-radius: 4px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
 
-		.header {
+		.top {
 			display: flex;
 			flex-direction: row;
 			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 30upx;
 
-			.title {
-				font-size: $font-md;
+			.stock {
+				font-weight: bold;
 			}
 
-			.count {
-				margin-left: 20upx;
-				font-size: $font-sm;
+			.opt {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+			}
+		}
+
+		.center,
+		.bottom {
+			.s-row {
+				display: flex;
+				align-items: center;
+
+				.col {
+					flex: 1;
+					padding: 4upx 0 10upx 0;
+				}
+
+				.take_profit {
+					font-size: $font-xsm;
+					color: red;
+				}
+
+				.stop_loss {
+					font-size: $font-xsm;
+					color: green;
+				}
+			}
+
+			.row-title {
+				font-size: $font-base;
+				font-weight: normal;
 				color: $font-color-light;
 			}
 
-			.add {
-				font-size: $font-md;
-				color: $font-color-spec;
-			}
-		}
-
-		.empty {
-			margin: 20upx 0upx;
-			width: 100%;
-			height: 180upx;
-			line-height: 180upx;
-			background: $uni-color-subbg;
-			border-radius: 20upx;
-			text-align: center;
-			font-size: $font-md;
-		}
-
-		.item {
-			margin: 20upx 0upx;
-			width: 100%;
-			padding: 20upx;
-			text-align: left;
-			font-size: $font-md;
-			display: flex;
-			flex-direction: column;
-			background-color: #FFFFFF;
-			border: 1px solid #cccccc;
-			border-radius: 4px;
-			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
-
-			.top {
-				display: flex;
-				flex-direction: row;
-				justify-content: space-between;
-				align-items: center;
-				margin-bottom: 30upx;
-
-				.stock {
-					font-weight: bold;
-				}
-
-				.opt {
-					display: flex;
-					flex-direction: row;
-					align-items: center;
-				}
-			}
-
-			.center,
-			.bottom {
-				.s-row {
-					display: flex;
-					align-items: center;
-
-					.col {
-						flex: 1;
-						padding: 4upx 0 10upx 0;
-					}
-
-					.take_profit {
-						font-size: $font-xsm;
-						color: red;
-					}
-
-					.stop_loss {
-						font-size: $font-xsm;
-						color: green;
-					}
-				}
-
-				.row-title {
-					font-size: $font-base;
-					font-weight: normal;
-					color: $font-color-light;
-				}
-
-				.row-amount {
-					font-size: $font-base;
-					font-weight: normal;
-					color: $font-color-dark;
-				}
+			.row-amount {
+				font-size: $font-base;
+				font-weight: normal;
+				color: $font-color-dark;
 			}
 		}
 	}

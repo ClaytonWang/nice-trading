@@ -137,4 +137,12 @@ export default {
 			console.log(e);
 		}
 	},
+	
+	async getComments({commit},param){
+		try{
+			return await comment.get(param);
+		}catch(e){
+			console.log(e);
+		}
+	},
 };

@@ -16,11 +16,18 @@ export function update(data) {
   });
 }
 
-export function get(id) {
-	if(!id){ id= '';}
+export function get(params) {
+	if(!params){
+		params={};
+	}
+	
+	if(!params.id){ 
+		params.id= '';
+	}
   return request({
-    url: '/api/comment/'+id,
-    method: 'GET'
+    url: '/api/comment/'+params.id,
+    method: 'GET',
+	data:params
   });
 }
 

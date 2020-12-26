@@ -23,11 +23,11 @@
 		commonMixin
 	} from '@/common/mixin/mixin.js';
 	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
-	import PlanItem from './components/plan-list-item.vue';
+	import PlanItem from '@/components/plan-list-item.vue';
 	export default {
 		mixins: [commonMixin, MescrollMixin],
 		components: {
-			PlanItem
+			PlanItem,
 		},
 		data() {
 			return {
