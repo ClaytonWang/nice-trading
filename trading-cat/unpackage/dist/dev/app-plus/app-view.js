@@ -4277,7 +4277,12 @@ var render = function() {
                 return [
                   _c("PlanItem", {
                     key: item["k0"],
-                    attrs: { _i: "11-" + $30 }
+                    attrs: { _i: "11-" + $30 },
+                    on: {
+                      delPlan: function($event) {
+                        return _vm.$handleViewEvent($event)
+                      }
+                    }
                   })
                 ]
               })
@@ -4417,19 +4422,20 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-uni-view",
-    { staticClass: _vm._$g(0, "sc"), class: _vm._$g(0, "c"), attrs: { _i: 0 } },
+    {
+      staticClass: _vm._$g(0, "sc"),
+      class: _vm._$g(0, "c"),
+      attrs: { _i: 0 },
+      on: {
+        longpress: function($event) {
+          return _vm.$handleViewEvent($event)
+        }
+      }
+    },
     [
       _c(
         "v-uni-view",
-        {
-          staticClass: _vm._$g(1, "sc"),
-          attrs: { _i: 1 },
-          on: {
-            longpress: function($event) {
-              return _vm.$handleViewEvent($event)
-            }
-          }
-        },
+        { staticClass: _vm._$g(1, "sc"), attrs: { _i: 1 } },
         [
           _c(
             "v-uni-view",
@@ -4809,7 +4815,15 @@ var render = function() {
               )
             ]
           }),
-          _c("Comments", { ref: "cmts", attrs: { _i: 55 } })
+          _c("Comments", {
+            ref: "cmts",
+            attrs: { _i: 55 },
+            on: {
+              added: function($event) {
+                return _vm.$handleViewEvent($event)
+              }
+            }
+          })
         ],
         2
       )
@@ -8264,7 +8278,15 @@ var render = function() {
         [
           _vm._l(_vm._$g(3, "f"), function(item, index, $20, $30) {
             return [
-              _c("DetailItem", { key: item["k0"], attrs: { _i: "4-" + $30 } })
+              _c("DetailItem", {
+                key: item["k0"],
+                attrs: { _i: "4-" + $30 },
+                on: {
+                  delDetail: function($event) {
+                    return _vm.$handleViewEvent($event)
+                  }
+                }
+              })
             ]
           })
         ],

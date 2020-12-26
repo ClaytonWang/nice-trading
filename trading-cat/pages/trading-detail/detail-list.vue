@@ -4,7 +4,7 @@
 		<PlanItem :item="planInfo"></PlanItem>
 		<view class="coin-section m-t">
 			<template v-for="(item,index) in planInfo.trading_details">
-				<DetailItem :item="item" :name="planInfo.name" :code="planInfo.code" :key="index"></DetailItem>
+				<DetailItem :item="item" :name="planInfo.name" :code="planInfo.code" @delDetail="deleteDetail" :key="index"></DetailItem>
 			</template>
 		</view>
 		<wyb-loading ref="loading" />
@@ -64,14 +64,14 @@
 				success: function(res) {
 					let i = res.tapIndex
 					uni.navigateTo({
-						url: `/pages/trading-detail/add-detail?name=${$this.name}&code=${$this.code}&symbol=${$this.symbol}&plan_id=${$this.plan_id}`
+						url: `/pages/trading-detail/add-detail?name=${$this.planInfo.name}&code=${$this.planInfo.code}&symbol=${$this.planInfo.symbol}&plan_id=${$this.plan_id}`
 					})
 				},
 				fail: function(res) {}
 			});
 		},
 		methods: {
-			...mapActions('Trading', ['getPlan', 'addComents', 'delDetailItem', 'deleteComment']),
+			...mapActions('Trading', ['getPlan', 'addComents', 'deleteComment']),
 			showOpration(item) {
 				this.$set(item, 'isSHowOp', !item.isSHowOp);
 			},
@@ -79,23 +79,6 @@
 				uni.navigateTo({
 					url: `/pages/trading-detail/add-detail?detail_id=${id}`
 				})
-			},
-			async del(id) {
-				uni.showModal({
-					content: `确定删除吗？`,
-					showCancel: true,
-					success: async (res) => {
-						if (res.confirm) {
-							const resp = await this.delDetailItem(id);
-							if (resp && resp.data) {
-								this.$msg('删除成功！');
-								this.getPlanInfo(this.plan_id);
-							} else {
-								this.$msg(resp.errMsg);
-							}
-						}
-					}
-				});
 			},
 			async getPlanInfo(id) {
 				const res = await this.getPlan(id);
@@ -121,6 +104,9 @@
 					}
 				});
 			},
+			deleteDetail(id){
+				this.getPlanInfo(this.plan_id);
+			}
 		}
 	}
 </script>

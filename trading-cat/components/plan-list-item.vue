@@ -1,6 +1,6 @@
 <template>
-	<view class="item" :class="item.status?'':'gray'">
-		<view class="top" @longpress="showOpration(item)">
+	<view class="item" :class="item.status?'':'gray'" @longpress="showOpration(item)">
+		<view class="top">
 			<view class="stock">{{item.name}} ({{item.code}})</view>
 			<uni-icons v-if="!item.isSHowOp" type="list" size="22" @click="showOpration(item)"></uni-icons>
 			<view class="opt" v-show="item.isSHowOp">
@@ -80,7 +80,7 @@
 					</view>
 				</view>
 			</template>
-			<Comments ref="cmts" />
+			<Comments ref="cmts" @added="addedCmt" />
 		</view>
 	</view>
 </template>
@@ -195,6 +195,10 @@
 							const resp = await this.deleteComment(id);
 							if (resp && resp.data) {
 								this.$msg('删除成功！');
+								let index = this.item.comments.findIndex((i)=>{
+									return i.id==id;
+								});
+								this.item.comments.splice(index,1);
 							} else {
 								this.$msg(resp.errMsg);
 							}
@@ -276,6 +280,7 @@
 							const resp = await this.delPlanItem(id);
 							if (resp && resp.data) {
 								this.$msg('删除成功！');
+								this.$emit('delPlan',id);
 							} else {
 								this.$msg(resp.errMsg);
 							}
@@ -296,6 +301,9 @@
 					trading_plan_id
 				});
 			},
+			addedCmt(cmt){
+				this.item.comments.push(cmt)
+			}
 		}
 	}
 </script>

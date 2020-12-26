@@ -8,7 +8,7 @@
 					<text class="title">风险<text class="count">共 4% </text></text>
 				</view>
 				<template v-for="(item,index) in plan_list">
-					<PlanItem :item="item" :key="index"></PlanItem>
+					<PlanItem :item="item" :key="index" @delPlan="delelePlan"></PlanItem>
 				</template>
 			</view>
 		</mescroll-body>
@@ -108,6 +108,9 @@
 					offset,
 					limit
 				});
+			},
+			delelePlan(){
+				this.downCallback();
 			}
 		}
 	}

@@ -42,7 +42,6 @@
 				if (data) {
 					this.cmt = data;
 				}
-				console.log(this.cmt)
 				this.$refs.popup.open();
 			});
 		},
@@ -93,7 +92,7 @@
 					if (resp && resp.data) {
 						this.$msg('添加成功！');
 						this.closePop();
-						this.$emit('added');
+						this.$emit('added',resp.data);
 					} else {
 						this.$msg(resp.errMsg);
 					}

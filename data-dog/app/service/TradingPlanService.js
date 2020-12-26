@@ -70,22 +70,26 @@ class TradingService extends Service {
 
   async del(id) {
     try {
-      const tradings = await this.find(id);
+      const plan = await this.ctx.model.TradingPlan.findByPk(id, {
+        include: [{
+          model: this.ctx.model.TradingDetail,
+        }, {
+          model: this.ctx.model.Comment,
+        }],
+      });
 
-      if (!tradings) {
+      if (!plan) {
         this.ctx.throw(404, 'trading not found');
       }
-      for (const plan of tradings) {
-        for (const detail of plan.trading_details) {
-          this.service.tradingDetailService.destroy(detail.id);
-        }
-        for (const comment of plan.comments) {
-          comment.destroy();
-        }
-        plan.destroy();
+      for (const detail of plan.trading_details) {
+        this.service.tradingDetailService.destroy(detail.id);
       }
+      for (const comment of plan.comments) {
+        comment.destroy();
+      }
+      plan.destroy();
     } catch (err) {
-      return err;
+      return err.message;
     }
     return {};
   }

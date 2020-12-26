@@ -98,7 +98,7 @@
 			};
 		},
 		methods: {
-			...mapActions('Trading', ['addComents', 'deleteComment']),
+			...mapActions('Trading', ['addComents', 'delDetailItem', 'deleteComment']),
 			showOpration(item) {
 				this.$set(item, 'isSHowOp', !item.isSHowOp);
 			},
@@ -106,6 +106,23 @@
 				uni.navigateTo({
 					url: `/pages/trading-detail/add-detail?detail_id=${id}`
 				})
+			},
+			async del(id) {
+				uni.showModal({
+					content: `确定删除吗？`,
+					showCancel: true,
+					success: async (res) => {
+						if (res.confirm) {
+							const resp = await this.delDetailItem(id);
+							if (resp && resp.data) {
+								this.$msg('删除成功！');
+								this.$emit('delDetail',id);
+							} else {
+								this.$msg(resp.errMsg);
+							}
+						}
+					}
+				});
 			},
 			delComment(id) {
 				uni.showModal({
@@ -116,7 +133,10 @@
 							const resp = await this.deleteComment(id);
 							if (resp && resp.data) {
 								this.$msg('删除成功！');
-								this.downCallback();
+								let index = this.item.comments.findIndex((i)=>{
+									return i.id==id;
+								});
+								this.item.comments.splice(index,1);
 							} else {
 								this.$msg(resp.errMsg);
 							}
@@ -137,8 +157,8 @@
 					trading_detail_id
 				});
 			},
-			addedCmt(){
-				console.log(11111);
+			addedCmt(cmt){
+				this.item.comments.push(cmt)
 			}
 		}
 	}

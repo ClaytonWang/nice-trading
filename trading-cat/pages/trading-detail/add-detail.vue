@@ -86,6 +86,7 @@
 			};
 		},
 		async onLoad(options) {
+			console.log(options)
 			if(options.plan_id){
 				this.stockLable = options.name + " ("+options.code+")"
 				this.form.trading_plan_id = options.plan_id;
