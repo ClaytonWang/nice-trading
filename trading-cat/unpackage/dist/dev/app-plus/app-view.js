@@ -8271,28 +8271,56 @@ var render = function() {
     "v-uni-view",
     { staticClass: _vm._$g(0, "sc"), attrs: { _i: 0 } },
     [
-      _c("PlanItem", { attrs: { _i: 1 } }),
       _c(
-        "v-uni-view",
-        { staticClass: _vm._$g(2, "sc"), attrs: { _i: 2 } },
+        "mescroll-body",
+        {
+          ref: "mescrollRef",
+          attrs: { _i: 1 },
+          on: {
+            init: function($event) {
+              return _vm.$handleViewEvent($event)
+            },
+            up: function($event) {
+              return _vm.$handleViewEvent($event)
+            },
+            down: function($event) {
+              return _vm.$handleViewEvent($event)
+            }
+          }
+        },
         [
-          _vm._l(_vm._$g(3, "f"), function(item, index, $20, $30) {
-            return [
-              _c("DetailItem", {
-                key: item["k0"],
-                attrs: { _i: "4-" + $30 },
-                on: {
-                  delDetail: function($event) {
-                    return _vm.$handleViewEvent($event)
-                  }
-                }
+          _c("PlanItem", {
+            attrs: { _i: 2 },
+            on: {
+              delPlan: function($event) {
+                return _vm.$handleViewEvent($event)
+              }
+            }
+          }),
+          _c(
+            "v-uni-view",
+            { staticClass: _vm._$g(3, "sc"), attrs: { _i: 3 } },
+            [
+              _vm._l(_vm._$g(4, "f"), function(item, index, $20, $30) {
+                return [
+                  _c("DetailItem", {
+                    key: item["k0"],
+                    attrs: { _i: "5-" + $30 },
+                    on: {
+                      delDetail: function($event) {
+                        return _vm.$handleViewEvent($event)
+                      }
+                    }
+                  })
+                ]
               })
-            ]
-          })
+            ],
+            2
+          )
         ],
-        2
+        1
       ),
-      _c("wyb-loading", { ref: "loading", attrs: { _i: 5 } })
+      _c("wyb-loading", { ref: "loading", attrs: { _i: 6 } })
     ],
     1
   )

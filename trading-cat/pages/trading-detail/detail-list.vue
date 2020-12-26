@@ -1,12 +1,14 @@
 <template>
 	<view class="container">
-		<!-- 列表 -->
-		<PlanItem :item="planInfo"></PlanItem>
-		<view class="coin-section m-t">
-			<template v-for="(item,index) in planInfo.trading_details">
-				<DetailItem :item="item" :name="planInfo.name" :code="planInfo.code" @delDetail="deleteDetail" :key="index"></DetailItem>
-			</template>
-		</view>
+		<mescroll-body ref="mescrollRef" @init="mescrollInit" @up="upCallback" @down="downCallback">
+			<!-- 列表 -->
+			<PlanItem :item="planInfo" @delPlan="delelePlan"></PlanItem>
+			<view class="coin-section m-t">
+				<template v-for="(item,index) in planInfo.trading_details">
+					<DetailItem :item="item" :name="planInfo.name" :code="planInfo.code" @delDetail="deleteDetail" :key="index"></DetailItem>
+				</template>
+			</view>
+		</mescroll-body>
 		<wyb-loading ref="loading" />
 	</view>
 </template>
@@ -26,6 +28,7 @@
 	import wybLoading from '@/components/wyb-loading/wyb-loading.vue';
 	import PlanItem from '@/components/plan-list-item.vue';
 	import DetailItem from '@/components/detail-list-item.vue';
+	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
 	export default {
 		components: {
 			uniPopup,
@@ -34,7 +37,7 @@
 			PlanItem,
 			DetailItem
 		},
-		mixins: [commonMixin],
+		mixins: [commonMixin,MescrollMixin],
 		filters: {
 			trading_type(v) {
 				if (v === 'BUY') {
@@ -46,6 +49,7 @@
 		},
 		data() {
 			return {
+				mescroll: null,
 				planInfo: {},
 				plan_id: '',
 			};
@@ -72,6 +76,9 @@
 		},
 		methods: {
 			...mapActions('Trading', ['getPlan', 'addComents', 'deleteComment']),
+			mescrollInit(mescroll) {
+				this.mescroll = mescroll;
+			},
 			showOpration(item) {
 				this.$set(item, 'isSHowOp', !item.isSHowOp);
 			},
@@ -85,8 +92,11 @@
 				if (res && res.data) {
 					this.planInfo = res.data;
 				}
+				this.mescroll.endBySize(1, 1);
 			},
-			
+			async upCallback(page) {
+				await this.getPlanInfo(this.plan_id);
+			},
 			delComment(id) {
 				uni.showModal({
 					content: `确定删除吗？`,
@@ -96,7 +106,7 @@
 							const resp = await this.deleteComment(id);
 							if (resp && resp.data) {
 								this.$msg('删除成功！');
-								this.getPlanInfo(this.plan_id);
+								await this.getPlanInfo(this.plan_id);
 							} else {
 								this.$msg(resp.errMsg);
 							}
@@ -104,8 +114,13 @@
 					}
 				});
 			},
-			deleteDetail(id){
-				this.getPlanInfo(this.plan_id);
+			async deleteDetail(id){
+				await this.upCallback();
+			},
+			delelePlan(){
+				uni.navigateTo({
+					url: `/pages/trading-plan/plan-list`
+				})
 			}
 		}
 	}

@@ -161,7 +161,7 @@
 			if(this.plan_id){
 				const res = await this.getPlan(this.plan_id);
 				if(res && res.data){
-					this.form = res.data[0];
+					this.form = res.data;
 					this.stockLabel = this.form.name+'('+this.form.code+')';
 				}
 			}

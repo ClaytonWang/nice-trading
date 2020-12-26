@@ -33,9 +33,6 @@
 			return {
 				mescroll: null,
 				plan_list: [],
-				popup_plan_id: '',
-				popup_comments_id:'',
-				popup_comments: ''
 			}
 		},
 		filters: {
