@@ -13,7 +13,6 @@
 				:key="index" 
 				:title="item.name+'('+item.code+')'"
 				:note="noteLable(item)"
-				rightText="查看"
 				clickable
 				@click="navTo(item.id,item.name,item.code,item.symbol)"></uni-list-item>
 			</uni-list>
@@ -30,6 +29,7 @@
 	} from '@/common/mixin/mixin.js';
 	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
 	import PlanItem from '@/components/plan-list-item.vue';
+	import moment from 'moment';
 	export default {
 		mixins: [commonMixin, MescrollMixin],
 		components: {
@@ -100,7 +100,20 @@
 				})
 			},
 			noteLable(item){
-				return "止损："+item.stop_loss+"  止赢："+item.take_profit;
+				return "止损:"+this.fixed(item.stop_loss)+"  止赢:"+this.fixed(item.take_profit)+' 日期:' + moment.parseZone(item.exec_start_date).local().format('YYYY-MM-DD');
+			},
+			fixed(v, scale,unit){
+					  if(v){
+						  if(!scale){
+							  scale = 2
+						  }
+						  if(!unit){
+							  unit = "";
+						  }
+						  return parseFloat(v).toFixed(scale) +unit;
+					  }else{
+						  return '0.00'
+					  }
 			}
 		}
 	}
