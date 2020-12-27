@@ -1,16 +1,22 @@
 <template>
 	<view class="container">
+		<view class="header">
+			<text class="title">盈利<text class="count">共 0 个</text></text>
+			<text class="title">亏损<text class="count">共 0 个</text></text>
+			<text class="title">风险<text class="count">共 4% </text></text>
+		</view>
 		<mescroll-body ref="mescrollRef" @init="mescrollInit" @up="upCallback" @down="downCallback">
-			<view class="plan-group">
-				<view class="header">
-					<text class="title">盈利<text class="count">共 0 个</text></text>
-					<text class="title">亏损<text class="count">共 0 个</text></text>
-					<text class="title">风险<text class="count">共 4% </text></text>
-				</view>
-				<template v-for="(item,index) in plan_list">
-					<PlanItem :item="item" :key="index" @delPlan="delelePlan"></PlanItem>
-				</template>
-			</view>
+			<uni-list v-for="(item,index) in plan_list" :border="false">
+			    <uni-list-item
+				:showArrow="true"
+				:ellipsis="1" 
+				:key="index" 
+				:title="item.name+'('+item.code+')'"
+				:note="noteLable(item)"
+				rightText="查看"
+				clickable
+				@click="navTo(item.id,item.name,item.code,item.symbol)"></uni-list-item>
+			</uni-list>
 		</mescroll-body>
 	</view>
 </template>
@@ -34,24 +40,6 @@
 				mescroll: null,
 				plan_list: [],
 			}
-		},
-		filters: {
-			formatPriority(v) {
-				switch (v.toString()) {
-					case '0':
-						return '耐心等待';
-						break;
-					case '1':
-						return '等待';
-						break;
-					case '2':
-						return '一般';
-						break;
-					case '3':
-						return '高';
-						break;
-				}
-			},
 		},
 		onShow() {
 			this.getList({
@@ -106,18 +94,29 @@
 					limit
 				});
 			},
-			delelePlan(){
-				this.downCallback();
+			navTo(id, name, code, symbol) {
+				uni.navigateTo({
+					url: `/pages/trading-detail/detail-list?plan_id=${id}&name=${name}&code=${code}&symbol=${symbol}`
+				})
+			},
+			noteLable(item){
+				return "止损："+item.stop_loss+"  止赢："+item.take_profit;
 			}
 		}
 	}
 </script>
 <style lang='scss' scoped>
-	page {
-		background: $page-color-base;
-	}
 	.container {
 		padding: $page-row-spacing;
 		width: 100%;
+		.header {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+		
+			.title {
+				font-size: $font-md;
+			}
+		}
 	}
 </style>

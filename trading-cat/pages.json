@@ -124,6 +124,13 @@
 				"navigationBarTitleText": "风险设置",
 				"enablePullDownRefresh": false
 			}
+		}, 
+		{
+			"path": "pages/notepad/note-list",
+			"style": {
+				"navigationBarTitleText": "笔记本",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"tabBar": {
@@ -137,11 +144,18 @@
 				"selectedIconPath": "static/img/homeHL.png"
 			},
 			{
+				"pagePath": "pages/notepad/note-list",
+				"text": "笔记本",
+				"iconPath": "static/tabbar/tab-news.png",
+				"selectedIconPath": "static/tabbar/tab-news-active.png"
+			}, 
+			{
 				"pagePath": "pages/trading-plan/plan-list",
 				"text": "交易计划",
 				"iconPath": "static/tabbar/tab-wallet.png",
 				"selectedIconPath": "static/tabbar/tab-wallet-active.png"
-			}, {
+			},
+			{
 				"pagePath": "pages/user/user",
 				"text": "我的",
 				"iconPath": "static/img/user.png",
