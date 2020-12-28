@@ -5,7 +5,7 @@
 			    <uni-list-item 
 					v-for="(item,index) in note_list" 
 					:title="item.title"
-					clickable="true"
+					clickable
 					@click="navTo(item.id)"></uni-list-item>
 			</uni-list>
 		</mescroll-body>
@@ -44,14 +44,14 @@
 	  },
 	  // #endif
 	  methods: {
-		  ...mapActions('Trading', ['getComments']),
+		  ...mapActions('Trading', ['getNotePads']),
 		navTo(id) {
 			uni.navigateTo({
 				url: `/pages/notepad/note-detail?id=${id}`
 			})
 		},
 		async getList(params) {
-			const res = await this.getComments(params);
+			const res = await this.getNotePads(params);
 			if (res && res.data) {
 				if (params.offset == 0) {
 					this.note_list = [];

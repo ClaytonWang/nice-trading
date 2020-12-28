@@ -27,5 +27,6 @@ module.exports = app => {
   router.resources('comment', '/api/comment', controller.commentController);
   router.resources('setting', '/api/setting', controller.settingController);
   router.resources('user', '/api/user', controller.userController);
+  router.resources('notepad', '/api/notepad', controller.notePadController);
 
 };

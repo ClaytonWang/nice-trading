@@ -8,6 +8,8 @@ import * as setting from '@/api/setting.js';
 
 import * as comment from '@/api/comment.js';
 
+import * as notepad from '@/api/notepad.js';
+
 export default {
 	async searchStock({commit},keyword){
 		try{
@@ -141,6 +143,34 @@ export default {
 	async getComments({commit},param){
 		try{
 			return await comment.get(param);
+		}catch(e){
+			console.log(e);
+		}
+	},
+	
+	async addUpdateNotePad({commit},data){
+		try{
+			if(data.id){
+				return await notepad.update(data);
+			}else{
+				return await notepad.add(data);
+			}
+		}catch(e){
+			console.log(e);
+		}
+	},
+	
+	async deleteNotePad({commit},id){
+		try{
+			return await notepad.del(id);
+		}catch(e){
+			console.log(e);
+		}
+	},
+	
+	async getNotePads({commit},param){
+		try{
+			return await notepad.get(param);
 		}catch(e){
 			console.log(e);
 		}

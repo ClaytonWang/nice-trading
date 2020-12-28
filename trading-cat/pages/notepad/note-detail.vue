@@ -30,7 +30,7 @@
 	    }
 	  },
 	  methods: {
-		  ...mapActions('Trading', ['getComments']),
+		  ...mapActions('Trading', ['getNotePads']),
 	    preview(src, e) {
 	      // do something
 	    },
@@ -41,7 +41,7 @@
 			this.mescroll.resetUpScroll();
 		},
 		async getNote(id) {
-			const res = await this.getComments({id});
+			const res = await this.getNotePads({id});
 			if (res && res.data) {
 				if(res.data.type=='markdown'){
 					this.article = marked(res.data.comment);

@@ -14,7 +14,7 @@ class CommentService extends Service {
     };
     if (trading_plan_id) {
       options.where = {
-        trading_plan_id,
+        trading_plan_id: 'NULL',
       };
     }
     if (trading_detail_id) {
