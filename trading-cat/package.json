@@ -6,7 +6,8 @@
     "@dcloudio/uni-ui": "^1.2.8",
     "pako": "^2.0.2",
     "uview-ui": "^1.8.2",
-    "vue-moment": "^4.1.0"
+    "vue-moment": "^4.1.0",
+	"marked": "^1.2.7"
   },
   "scripts": {},
   "author": "Clay Wang",

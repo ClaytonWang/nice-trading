@@ -56,10 +56,6 @@
 		},
 		onLoad(options) {
 			this.plan_id = options.plan_id;
-			this.getPlanInfo(this.plan_id);
-		},
-		onShow() {
-			this.getPlanInfo(this.plan_id);
 		},
 		onNavigationBarButtonTap(e) {
 			let $this = this;

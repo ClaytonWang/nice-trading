@@ -6,8 +6,10 @@
 			<text class="title">风险<text class="count">共 4% </text></text>
 		</view>
 		<mescroll-body ref="mescrollRef" @init="mescrollInit" @up="upCallback" @down="downCallback">
-			<uni-list v-for="(item,index) in plan_list" :border="false">
+			<uni-list :border="true">
 			    <uni-list-item
+				v-for="(item,index) in plan_list"
+				class="list-item"
 				:showArrow="true"
 				:ellipsis="1" 
 				:key="index" 
@@ -41,12 +43,7 @@
 				plan_list: [],
 			}
 		},
-		onShow() {
-			this.getList({
-				offset:0,
-				limit:10
-			});
-		},
+
 		// #ifndef MP
 		onNavigationBarButtonTap(e) {
 			let $this = this;
@@ -130,6 +127,9 @@
 			.title {
 				font-size: $font-md;
 			}
+		}
+		.list-item{
+			margin-top: 5px;
 		}
 	}
 </style>

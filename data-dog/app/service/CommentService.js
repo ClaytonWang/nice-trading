@@ -5,7 +5,7 @@ const moment = require('moment');
 
 class CommentService extends Service {
 
-  async list({ offset = 0, limit = 10, trading_plan_id = '', trading_detail_id = '' }) {
+  async list({ offset = 0, limit = 10, trading_plan_id = null, trading_detail_id = null }) {
 
     const options = {
       offset,

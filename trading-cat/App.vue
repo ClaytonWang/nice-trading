@@ -25,16 +25,9 @@
 </script>
 
 <style lang='scss'>
-	@import "uview-ui/index.scss";
-	@font-face {
-		font-family: yticon;
-		font-weight: normal;
-		font-style: normal;
-		src: url('./static/font/font_1078604_w4kpxh0rafi.ttf') format('truetype');
-	}
 	/* 头条小程序需要把 iconfont 样式放到组件外 */
 	@import "components/m-icon/m-icon.css";
-	
+	@import "./uni.scss";
 	
 	/*每个页面公共css */
 	page {
