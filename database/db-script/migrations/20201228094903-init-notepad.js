@@ -8,7 +8,7 @@ module.exports = {
       title: { type: STRING, allowNull: true },
       content: { type: TEXT, allowNull: true },
       type: { type: STRING, allowNull: true , defaultValue:'html'},
-      delta: { type: STRING, allowNull: true },
+      delta: { type: TEXT, allowNull: true },
       created_at: { type: DATE, defaultValue: Sequelize.NOW, allowNull: false },
       updated_at: { type: DATE, defaultValue: Sequelize.NOW, allowNull: false },
     });

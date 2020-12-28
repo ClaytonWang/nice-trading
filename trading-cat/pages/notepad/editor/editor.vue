@@ -105,7 +105,7 @@
 			let $this = this;
 			$this.editorCtx.getContents({
 				success(res) {
-					$this.submitComment({
+					$this.submitNote({
 						title:$this.title,
 						delta:JSON.stringify(res.delta),
 						html:res.html
@@ -114,7 +114,7 @@
 			});
 		},
 		methods: {
-			...mapActions('Trading', ['addComents','getComments']),
+			...mapActions('Trading', ['addUpdateNotePad','getNotePads']),
 			readOnlyChange() {
 				this.readOnly = !this.readOnly
 			},
@@ -122,7 +122,7 @@
 				uni.createSelectorQuery().select('#editor').context((res) => {
 					this.editorCtx = res.context;
 					if(this.isEdit){
-						this.getComments({id:65}).then((res)=>{
+						this.getNotePads({id:65}).then((res)=>{
 							if(res && res.data && res.data.delta){
 								const delta = JSON.parse(res.data.delta);
 								this.title = res.data.title;
@@ -207,7 +207,7 @@
 					}
 				})
 			},
-			async submitComment({title,delta,html}) {
+			async submitNote({title,delta,html}) {
 				try {
 					if (html=="<p><br></p>") {
 						this.$msg('内容不能为空！');
@@ -216,14 +216,14 @@
 					let data={
 						title,
 						delta,
-						comment:html
+						content:html
 					};
 					this.$refs.loading.showLoading();
-					const resp = await this.addComents(data);
+					const resp = await this.addUpdateNotePad(data);
 					if (resp && resp.data) {
 						this.$msg('添加成功！');
 					} else {
-						this.$msg(resp.errMsg);
+						this.$msg(resp);
 					}
 				} catch (e) {
 					console.log(e);

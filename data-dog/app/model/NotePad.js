@@ -7,7 +7,7 @@ module.exports = app => {
     title: { type: STRING, allowNull: true },
     content: { type: TEXT, allowNull: true },
     type: { type: STRING, allowNull: true },
-    delta: { type: STRING, allowNull: true },
+    delta: { type: TEXT, allowNull: true },
     created_at: { type: DATE, defaultValue: moment().utc().format(), allowNull: false },
     updated_at: { type: DATE, defaultValue: moment().utc().format(), allowNull: false },
   });

@@ -20,13 +20,13 @@
 	    uParse
 	  },
 	  onLoad(options) {
-	  	this.comment_id = options.id;
+	  	this.notepad_id = options.id;
 	  },
 	  data () {
 	    return {
 	      //article: '<b>我是HTML代码</b>'
 		  article: '',
-		  comment_id:''
+		  notepad_id:''
 	    }
 	  },
 	  methods: {
@@ -44,15 +44,15 @@
 			const res = await this.getNotePads({id});
 			if (res && res.data) {
 				if(res.data.type=='markdown'){
-					this.article = marked(res.data.comment);
+					this.article = marked(res.data.content);
 				}else{
-					this.article = res.data.comment;
+					this.article = res.data.content;
 				}
 			}
 			this.mescroll.endBySize(1, 1);
 		},
 		async upCallback(page) {
-			await this.getNote(this.comment_id);
+			await this.getNote(this.notepad_id);
 		},
 	  }
 	}
