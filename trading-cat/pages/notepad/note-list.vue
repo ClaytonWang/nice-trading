@@ -5,6 +5,7 @@
 			    <uni-list-item 
 					v-for="(item,index) in note_list" 
 					:title="item.title"
+					:showArrow="true"
 					clickable
 					@click="navTo(item.id)"></uni-list-item>
 			</uni-list>
@@ -36,7 +37,7 @@
 	  		success: function(res) {
 	  			let i = res.tapIndex
 	  			uni.navigateTo({
-	  				url: "/pages/notepad/editor/editor?isEdit=false"
+	  				url: "/pages/notepad/note-detail"
 	  			})
 	  		},
 	  		fail: function(res) {}

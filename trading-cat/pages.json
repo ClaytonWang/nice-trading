@@ -153,27 +153,7 @@
 					"titleNView": {
 						"buttons": [{
 							"fontSrc": "/static/font/uni.ttf",
-							"text": "\ue400",
-							"fontSize": "24",
-							"color": "#FFFFFF",
-							"width": "40px",
-							"background": "rgba(0,0,0,0)"
-						}]
-					}
-				}
-			}
-		},
-		// #ifdef APP-PLUS || MP-WEIXIN || H5
-		{
-			"path": "pages/notepad/editor/editor",
-			"style": {
-				"navigationBarTitleText": "编辑",
-				"app-plus": {
-					"bounce": "none",
-					"titleNView": {
-						"buttons": [{
-							"fontSrc": "/static/font/font_1078604_w4kpxh0rafi.ttf",
-							"text": "\ue61e",
+							"text": "\ue562",
 							"fontSize": "24",
 							"color": "#FFFFFF",
 							"width": "40px",
@@ -183,7 +163,6 @@
 				}
 			}
 		}
-		// #endif
 	],
 	"tabBar": {
 		"color": "#7a7e83",

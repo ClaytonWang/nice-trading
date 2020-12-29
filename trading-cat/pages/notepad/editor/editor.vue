@@ -2,10 +2,10 @@
 	<view class="container">
 		<view class="page-body">
 			<view class="title">
-				<input  type="text" class="cell-input" v-model="title" placeholder="请输标题" />
+				<input  type="text" class="cell-input" v-model="myTitle" placeholder="请输标题" />
 			</view>
 			<view class='wrapper'>
-				<view class='toolbar' @tap="format">
+				<view class='toolbar' @tap="format" v-if="!readOnly">
 					<view :class="formats.bold ? 'ql-active' : ''" class="iconfont icon-zitijiacu" data-name="bold"></view>
 					<view :class="formats.italic ? 'ql-active' : ''" class="iconfont icon-zitixieti" data-name="italic"></view>
 					<view :class="formats.underline ? 'ql-active' : ''" class="iconfont icon-zitixiahuaxian" data-name="underline"></view>
@@ -59,8 +59,11 @@
 					 data-value="rtl"></view>
 					<view class="iconfont icon-shanchu" @tap="clear"></view>
 				</view>
-
-				<editor id="editor" 
+				<view v-if="!readOnly">
+					<br />
+					<hr>
+				</view>
+				<editor id="my_editor" 
 					class="ql-container"
 					placeholder="请输入..."
 					showImgSize
@@ -72,63 +75,55 @@
 				</editor>
 			</view>
 		</view>
-		<wyb-loading ref="loading" />
 	</view>
 </template>
 
 <script>
-	import {
-		mapState,
-		mapActions
-	} from 'vuex';
-	import wybLoading from '@/components/wyb-loading/wyb-loading.vue';
 	import template from '../../../utils/note_template.js'
 	export default {
-		components: {
-			wybLoading,
-		},
-		async onLoad(options) {
-			this.isEdit = options.isEdit;
-		},
-		data() {
-			const date = new Date()
-			const formatDate = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
-			return {
-				title:formatDate+' 股票察觉日记',
-                readOnly: false,
-				isEdit:false,
-				content:{},
-				formats: {}
+		name:"MyEditor",
+		props:{
+			title:{
+				type:String,
+				default:'',
+			},
+			content:{
+				type:String,
+				default:''
+			},
+			readOnly:{
+				type:Boolean,
+				default:false
 			}
 		},
-		onNavigationBarButtonTap(e) {
-			let $this = this;
-			$this.editorCtx.getContents({
-				success(res) {
-					$this.submitNote({
-						title:$this.title,
-						delta:JSON.stringify(res.delta),
-						html:res.html
+		data() {
+			return {
+				formats: {},
+				myTitle:this.title,
+				editorCtx:null
+			}
+		},
+		watch:{
+			content(v){
+				if(!this.editorCtx) return;
+				if(v){
+					const delta = JSON.parse(v);
+					this.editorCtx.setContents({ delta });
+				}else{
+					this.editorCtx.setContents({
+						html:template.note
 					});
 				}
-			});
+			}
 		},
 		methods: {
-			...mapActions('Trading', ['addUpdateNotePad','getNotePads']),
-			readOnlyChange() {
-				this.readOnly = !this.readOnly
-			},
 			onEditorReady() {
-				uni.createSelectorQuery().select('#editor').context((res) => {
+				uni.createSelectorQuery().select('#my_editor').context((res) => {
 					this.editorCtx = res.context;
-					if(this.isEdit){
-						this.getNotePads({id:65}).then((res)=>{
-							if(res && res.data && res.data.delta){
-								const delta = JSON.parse(res.data.delta);
-								this.title = res.data.title;
-								this.editorCtx.setContents({ delta });
-							}
-						});
+					console.log(this.content)
+					if(this.content){
+						const delta = JSON.parse(this.content);
+						this.editorCtx.setContents({ delta });
 					}else{
 						this.editorCtx.setContents({
 							html:template.note
@@ -207,42 +202,17 @@
 					}
 				})
 			},
-			async submitNote({title,delta,html}) {
-				try {
-					if (html=="<p><br></p>") {
-						this.$msg('内容不能为空！');
-						return;
-					}
-					let data={
-						title,
-						delta,
-						content:html
-					};
-					this.$refs.loading.showLoading();
-					const resp = await this.addUpdateNotePad(data);
-					if (resp && resp.data) {
-						this.$msg('添加成功！');
-					} else {
-						this.$msg(resp);
-					}
-				} catch (e) {
-					console.log(e);
-				}
-				this.$refs.loading.hideLoading();
-			},
-		},
-		onLoad() {
-			uni.loadFontFace({
-				family: 'Pacifico',
-				source: 'url("Pacifico.ttf")'
-			})
 		},
 	}
 </script>
 
 <style>
 	@import "./editor-icon.css";
-
+	.container {
+		padding: $page-row-spacing;
+		width: 100%;
+		background: #fff;
+	}
 	.title{
 		margin: 20px 5px;
 		padding-bottom: 10px;
@@ -274,11 +244,8 @@
 		width: 100%;
 		min-height: 30vh;
 		height: auto;
-		background: #fff;
-		margin-top: 20px;
 		font-size: 14px;
 		line-height: 1.5;
-		border-top: 1px solid #C0C4CC;
 	}
 
 	.ql-active {
