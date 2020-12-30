@@ -44,6 +44,13 @@ module.exports = appInfo => {
       origin: '*',
       allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
     },
+    multipart: {
+      mode: 'stream',
+      fileSize: '50mb',
+    },
+    view: {
+      defaultViewEngine: 'nunjucks',
+    },
   };
 
   return {

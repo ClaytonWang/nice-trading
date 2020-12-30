@@ -104,6 +104,9 @@
 			}
 		},
 		watch:{
+			title(v){
+				this.myTitle = v;
+			},
 			content(v){
 				if(!this.editorCtx) return;
 				if(v){
@@ -120,7 +123,6 @@
 			onEditorReady() {
 				uni.createSelectorQuery().select('#my_editor').context((res) => {
 					this.editorCtx = res.context;
-					console.log(this.content)
 					if(this.content){
 						const delta = JSON.parse(this.content);
 						this.editorCtx.setContents({ delta });
@@ -181,23 +183,23 @@
 						uni.showLoading({
 							title: '上传中'
 						})
-						// uni.uploadFile({
-						// 	url: 'xxx', // 接口地址
-						// 	filePath: res.tempFilePaths[0],
-						// 	name: 'xxx',
-						// 	success(res) {
-						// 		resolve(res.data.path) // 返回线上地址
-						// 	},
-						// 	fail: reject,
-						// 	complete: uni.hideLoading
-						// });
-						this.editorCtx.insertImage({
-							src: res.tempFilePaths[0],
-							alt: '图像',
-							success: function() {
-								console.log(res);
-								console.log('insert image success')
-							}
+						uni.uploadFile({
+							url: '/api/file', // 接口地址
+							filePath: res.tempFilePaths[0],
+							name: 'image',
+							success(res) {
+								resolve(res.data.url) // 返回线上地址
+								this.editorCtx.insertImage({
+									src: res.data.url,
+									alt: '图像',
+									success: function() {
+										console.log(res);
+										console.log('insert image success')
+									}
+								});
+							},
+							fail: function(res){},
+							complete: uni.hideLoading
 						});
 					}
 				})

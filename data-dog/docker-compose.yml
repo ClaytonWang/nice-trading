@@ -14,6 +14,13 @@ services:
     restart: always
     ports:
       - 7001:7001
+    volumes:
+      - ../site-backup:/app/public
+
+volumes:
+  site-backup:
+    driver: local
+
 
 networks:
   default:

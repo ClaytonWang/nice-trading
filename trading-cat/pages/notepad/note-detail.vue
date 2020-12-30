@@ -26,6 +26,8 @@
 			this.notepad_id = options.id;
 			if (this.notepad_id) {
 				this.isEdit = false;
+			} else {
+				this.isEdit = true;
 			}
 		},
 		// #ifndef MP
@@ -48,6 +50,10 @@
 									title: $this.$refs.my_editor.myTitle,
 									delta: JSON.stringify(res.delta),
 									html: res.html
+								}).then(() => {
+									uni.reLaunch({
+										url: '/pages/notepad/note-list'
+									});
 								});
 							}
 						});
@@ -60,11 +66,25 @@
 					}
 					//删除
 					if (itemList[i] === '删除') {
-						$this.deleteNotePad($this.notepad_id).then(r => {
-							if (r && r.data == 'OK') {
-								uni.navigateBack({
-									delta: 2
-								});
+						if (!$this.notepad_id) {
+							uni.reLaunch({
+								url: '/pages/notepad/note-list'
+							});
+							return;
+						}
+						uni.showModal({
+							content: `确定删除吗？`,
+							showCancel: true,
+							success: async (res) => {
+								if (res.confirm) {
+									$this.deleteNotePad($this.notepad_id).then(r => {
+										if (r && r.data == 'OK') {
+											uni.reLaunch({
+												url: '/pages/notepad/note-list'
+											});
+										}
+									});
+								}
 							}
 						});
 						return;
