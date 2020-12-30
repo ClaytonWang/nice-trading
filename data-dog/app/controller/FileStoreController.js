@@ -4,7 +4,6 @@ const fs = require('fs');
 const path = require('path');
 const pump = require('mz-modules/pump');
 const moment = require('moment');
-
 const Controller = require('egg').Controller;
 
 class FileStoreController extends Controller {
@@ -19,7 +18,7 @@ class FileStoreController extends Controller {
     const folder = path.join(this.config.baseDir, imgFolder);
     const target = path.join(folder, filename);
     if (!fs.existsSync(folder)) {
-      fs.mkdir(folder, function() {});
+      this.ctx.helper.mkdirsSync(folder);
     }
     const writeStream = fs.createWriteStream(target);
     await pump(stream, writeStream);
