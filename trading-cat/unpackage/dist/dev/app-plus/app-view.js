@@ -11899,9 +11899,9 @@ var render = function() {
                 attrs: {
                   id: "my_editor",
                   placeholder: "请输入...",
-                  showImgSize: true,
-                  showImgToolbar: true,
-                  showImgResize: true,
+                  showImgSize: _vm._$g(41, "a-showImgSize"),
+                  showImgToolbar: _vm._$g(41, "a-showImgToolbar"),
+                  showImgResize: _vm._$g(41, "a-showImgResize"),
                   "read-only": _vm._$g(41, "a-read-only"),
                   _i: 41
                 },

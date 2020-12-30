@@ -66,9 +66,9 @@
 				<editor id="my_editor" 
 					class="ql-container"
 					placeholder="请输入..."
-					showImgSize
-					showImgToolbar
-					showImgResize
+					:showImgSize="!readOnly"
+					:showImgToolbar="!readOnly"
+					:showImgResize="!readOnly"
 					@statuschange="onStatusChange"
 					:read-only="readOnly"
 					@ready="onEditorReady">
@@ -176,24 +176,24 @@
 				})
 			},
 			insertImage() {
+				let $this = this;
 				uni.chooseImage({
 					count: 1,
-					success: (res) => {
+					success: (img) => {
 						/* 实际使用时，这里需要上传到服务器后返回*/
 						uni.showLoading({
 							title: '上传中'
 						})
 						uni.uploadFile({
-							url: '/api/file', // 接口地址
-							filePath: res.tempFilePaths[0],
+							url: 'https://api.moyebuy.com/api/file', // 接口地址
+							filePath: img.tempFilePaths[0],
 							name: 'image',
 							success(res) {
-								resolve(res.data.url) // 返回线上地址
-								this.editorCtx.insertImage({
-									src: res.data.url,
+								const data = JSON.parse(res.data);
+								$this.editorCtx.insertImage({
+									src: 'https://api.moyebuy.com'+data.url,
 									alt: '图像',
 									success: function() {
-										console.log(res);
 										console.log('insert image success')
 									}
 								});
