@@ -13,15 +13,15 @@ ENV NODE_CONFIG_ENV production
 #    && apk del tzdata
 
 # Create Directory for the Container
-RUN mkdir -p /usr/src/app
-
-WORKDIR /usr/src/app
+#RUN mkdir -p /app
+#root folder
+WORKDIR /
 # Only copy the package.json file to work directory
 COPY ./package.json .
 # Install all Packages
 RUN npm install --production
 # Copy all other source code to work directory
-ADD . /usr/src/app
+ADD . /
 # Start
 CMD [ "npm", "start" ]
 
