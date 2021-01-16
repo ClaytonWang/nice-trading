@@ -4,10 +4,10 @@
 
 ----
 
-### admin-template
-前端：是第三方样式组件库，直接拿来做PC前端架子。
+### trading-cat-pc
+前端：是用vue-element-admin第三方样式组件库，直接拿来做PC前端架子。
 
-### trading-dog
+### trading-cat
 前端：uni-app框架做的mobile端
 
 ### data-dog
@@ -38,7 +38,7 @@ cd app/data-dog
 sudo docker-compose up --build -d
 
 #web
-cd app/trading-cat
+cd app/trading-cat-pc
 sudo docker-compose up --build -d
 
 ```

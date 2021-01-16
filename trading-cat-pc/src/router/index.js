@@ -79,7 +79,33 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        meta: { title: '首页', icon: 'dashboard', affix: true }
+      }
+    ]
+  },
+  {
+    path: '/strategy',
+    component: Layout,
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/strategy/list'),
+        name: 'StrategyList',
+        meta: { title: '战法', icon: 'strategy', affix: true }
+      },
+      {
+        path: 'create',
+        component: () => import('@/views/strategy/create'),
+        name: 'CreateStrategy',
+        hidden: true,
+        meta: { title: '新建战法', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id(\\d+)',
+        component: () => import('@/views/strategy/edit'),
+        name: 'EditStrategy',
+        hidden: true,
+        meta: { title: '编辑战法', noCache: true, activeMenu: '/strategy/list' }
       }
     ]
   },
