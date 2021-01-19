@@ -16,6 +16,9 @@ class TradingService extends Service {
       }, {
         attributes: [ 'id', 'trading_plan_id', 'comment', 'created_at' ],
         model: this.ctx.model.Comment,
+      }, {
+        attributes: [ 'id', 'title', 'created_at' ],
+        model: this.ctx.model.Strategy,
       }],
     };
     if (status !== undefined) {
@@ -50,6 +53,8 @@ class TradingService extends Service {
         include: [{
           model: this.ctx.model.Comment,
         }],
+      }, {
+        model: this.ctx.model.Strategy,
       }, {
         model: this.ctx.model.Comment,
       }],

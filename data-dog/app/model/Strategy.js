@@ -9,6 +9,8 @@ module.exports = app => {
     created_at: { type: DATE, defaultValue: moment().utc().format(), allowNull: false },
     updated_at: { type: DATE, defaultValue: moment().utc().format(), allowNull: false },
   });
-
+  Strategy.associate = function() {
+    app.model.Strategy.hasMany(app.model.TradingPlan, { foreignKey: 'strategy_id', constraints: false });
+  };
   return Strategy;
 };
