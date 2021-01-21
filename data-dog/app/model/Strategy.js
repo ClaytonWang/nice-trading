@@ -5,6 +5,7 @@ module.exports = app => {
   const Strategy = app.model.define('strategy', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
     title: { type: STRING, allowNull: true },
+    ecology: { type: STRING, allowNull: true },
     content: { type: TEXT, allowNull: true },
     created_at: { type: DATE, defaultValue: moment().utc().format(), allowNull: false },
     updated_at: { type: DATE, defaultValue: moment().utc().format(), allowNull: false },
