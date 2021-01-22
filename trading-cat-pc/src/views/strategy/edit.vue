@@ -1,13 +1,13 @@
 <template>
-  <article-detail :is-edit="true" />
+  <StrategyDetail :is-edit="true" />
 </template>
 
 <script>
-import ArticleDetail from './components/ArticleDetail'
+import StrategyDetail from './components/StrategyDetail.vue'
 
 export default {
   name: 'EditForm',
-  components: { ArticleDetail }
+  components: { StrategyDetail }
 }
 </script>
 

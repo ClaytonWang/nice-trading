@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 /**
  * Created by PanJiaChen on 16/11/18.
  */
@@ -12,6 +14,7 @@ export function parseTime(time, cFormat) {
   if (arguments.length === 0 || !time) {
     return null
   }
+  time = moment(time).toDate()
   const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
   let date
   if (typeof time === 'object') {

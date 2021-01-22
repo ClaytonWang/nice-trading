@@ -86,19 +86,30 @@ export const constantRoutes = [
   {
     path: '/strategy',
     component: Layout,
+    redirect: '/strategy/list',
+    alwaysShow: true, // will always show the root menu
+    name: 'Strategy',
+    meta: {
+      title: '战法',
+      icon: 'strategy',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
     children: [
       {
         path: 'list',
         component: () => import('@/views/strategy/list'),
         name: 'StrategyList',
-        meta: { title: '战法', icon: 'strategy', affix: true }
+        meta: {
+          title: '战法列表',
+          icon: '红包',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
       },
       {
         path: 'create',
         component: () => import('@/views/strategy/create'),
         name: 'CreateStrategy',
-        hidden: true,
-        meta: { title: '新建战法', icon: 'edit' }
+        meta: { title: '新建战法', icon: '经营策略' }
       },
       {
         path: 'edit/:id(\\d+)',

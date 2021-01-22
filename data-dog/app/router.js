@@ -33,4 +33,6 @@ module.exports = app => {
   router.get('/api/file', controller.fileStoreController.show);
   router.post('/api/file', controller.fileStoreController.upload);
 
+  router.post('/api/user/login', controller.userController.login);
+
 };

@@ -15,8 +15,28 @@ class UserController extends Controller {
 
   // eg: get api/trade/1
   async show() {
+    const users = {
+      'admin-token': {
+        roles: [ 'admin' ],
+        introduction: 'I am a super administrator',
+        avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+        name: 'Super Admin',
+      },
+      'editor-token': {
+        roles: [ 'editor' ],
+        introduction: 'I am an editor',
+        avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+        name: 'Normal Editor',
+      },
+    };
     const ctx = this.ctx;
-    ctx.body = await ctx.service.userService.find(ctx.helper.parseInt(ctx.params.id));
+    const { token } = ctx.query;
+    const info = users[token];
+    // ctx.body = await ctx.service.userService.find(ctx.helper.parseInt(ctx.params.id));
+    ctx.body = {
+      code: 20000,
+      data: info,
+    };
   }
 
   // eg: post api/trade
@@ -42,6 +62,26 @@ class UserController extends Controller {
     const id = ctx.helper.parseInt(ctx.params.id);
     await ctx.service.userService.del(id);
     ctx.status = 200;
+  }
+
+  async login() {
+
+    const tokens = {
+      admin: {
+        token: 'admin-token',
+      },
+      editor: {
+        token: 'editor-token',
+      },
+    };
+
+    const ctx = this.ctx;
+    const { username } = ctx.request.body;
+    const token = tokens[username];
+    ctx.body = {
+      code: 20000,
+      data: token,
+    };
   }
 }
 
