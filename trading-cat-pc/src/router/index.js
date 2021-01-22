@@ -84,6 +84,37 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/trading',
+    component: Layout,
+    redirect: '/trading/plan-list',
+    alwaysShow: true, // will always show the root menu
+    name: 'Trading',
+    meta: {
+      title: '交易',
+      icon: 'trade',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'plan-list',
+        component: () => import('@/views/trading/plan-list'),
+        name: 'TradingPlanList',
+        meta: {
+          title: '交易列表',
+          icon: 'trade-list',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'edit/:id(\\d+)',
+        component: () => import('@/views/strategy/edit'),
+        name: 'EditStrategy',
+        hidden: true,
+        meta: { title: '编辑战法', noCache: true, activeMenu: '/strategy/list' }
+      }
+    ]
+  },
+  {
     path: '/strategy',
     component: Layout,
     redirect: '/strategy/list',

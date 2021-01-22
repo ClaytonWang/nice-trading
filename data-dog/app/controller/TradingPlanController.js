@@ -24,7 +24,8 @@ class TradeController extends Controller {
   async create() {
     const ctx = this.ctx;
     // ctx.validate(createRule, ctx.request.body);
-    const tade = await ctx.service.tradingPlanService.create(ctx.request.body);
+    let tade = await ctx.service.tradingPlanService.create(ctx.request.body);
+    tade = await ctx.service.tradingPlanService.find(tade.id);
     ctx.body = tade;
     ctx.status = 201;
   }
