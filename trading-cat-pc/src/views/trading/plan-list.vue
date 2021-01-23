@@ -36,13 +36,19 @@
           <span>{{ row.updated_at | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="股票名称(代码)" min-width="150px">
+      <el-table-column label="股票名称(代码)" width="150">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.name +' ('+row.code+') ' }}</span>
-          <el-tag>{{ row.strategy.title }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="结果" class-name="status-col" width="100">
+      <el-table-column label="战法" class-name="status-col">
+        <template slot-scope="{row}">
+          <el-tag :type="row.status | statusFilter">
+            {{ row.strategy.title }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="结果" class-name="status-col">
         <template slot-scope="{row}">
           <el-tag :type="row.status | statusFilter">
             {{ row.status }}
@@ -273,6 +279,8 @@ export default {
       this.handleFilter()
     },
     resetTemp() {
+      this.stock = ''
+      this.strategy = ''
       this.temp = {
         id: undefined,
         symbol: '',
