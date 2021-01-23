@@ -3,7 +3,7 @@
     <advance-table
       :columns="columns"
       :data-source="dataSource"
-      title="战法列表"
+      title=" "
       :loading="loading"
       rowKey="id"
       @search="onSearch"
@@ -11,7 +11,7 @@
       :format-conditions="true"
       @reset="onReset"
     >
-      <template slot="operation" slot-scope="{record} ">
+      <template slot="operation" slot-scope="{ record }">
         <a-popconfirm
           v-if="dataSource.length"
           title="确定删除吗?"
@@ -136,6 +136,6 @@ export default {
 <style scoped lang="less">
 .table {
   background-color: @base-bg-color;
-  padding: 24px;
+  padding: 0 20px;
 }
 </style>

@@ -62,7 +62,7 @@ const options = {
           meta: {
             icon: 'dashboard',
           },
-          component: BlankView,
+          component: PageView,
           children: [
             {
               path: 'list',
