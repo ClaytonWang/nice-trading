@@ -6,7 +6,7 @@
 import StrategyDetail from './components/StrategyDetail.vue'
 
 export default {
-  name: 'EditForm',
+  name: 'EditStrategy',
   components: { StrategyDetail }
 }
 </script>

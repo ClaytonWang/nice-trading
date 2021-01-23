@@ -76,9 +76,19 @@ const options = {
               path: 'create',
               name: '新建战法',
               meta: {
-                icon: 'file-ppt'
+                icon: 'file-ppt',
               },
               component: () => import('@/pages/strategy/create'),
+            },
+            {
+              path: 'edit/:id(\\d+)',
+              name: '编辑战法',
+              meta: {
+                icon: 'file-ppt',
+                invisible: true,
+              },
+
+              component: () => import('@/pages/strategy/edit'),
             }
           ]
         },

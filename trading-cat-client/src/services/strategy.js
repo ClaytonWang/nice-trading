@@ -18,7 +18,7 @@ export function update(data) {
 }
 
 export function del(id) {
-  return request(STRATEGY + '/' + id);
+  return request(STRATEGY + '/' + id,METHOD.DELETE);
 }
 
 
