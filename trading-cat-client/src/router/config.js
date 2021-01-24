@@ -47,7 +47,7 @@ const options = {
           meta: {
             icon: 'file'
           },
-          component: PageView,
+          component: BlankView,
           children: [
             {
               path: 'list',
@@ -55,7 +55,7 @@ const options = {
               meta: {
                 icon: 'file-ppt'
               },
-              component: () => import('@/pages/trade/list')
+              component: () => import('@/pages/trade/plan')
             },
             {
               path: 'create',
@@ -81,7 +81,7 @@ const options = {
                 icon: 'file-ppt',
                 invisible: true
               },
-              component: () => import('@/pages/trade/detail')
+              component: () => import('@/pages/trade/detail/index')
             }
           ]
         },

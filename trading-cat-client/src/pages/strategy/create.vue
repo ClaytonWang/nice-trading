@@ -1,5 +1,5 @@
 <template>
-<StrategyDetail :is-edit="false" />
+  <StrategyDetail :is-edit="false" />
 
 </template>
 

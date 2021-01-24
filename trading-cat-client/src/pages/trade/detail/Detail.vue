@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import TradeDetail from './components/TradeDetail.vue'
+import TradeDetail from '../components/TradeDetail.vue'
 export default {
   name: 'PlanDetail',
   components: { TradeDetail }

@@ -11,6 +11,12 @@
       @refresh="onRefresh"
       @reset="onReset"
     >
+      <template slot="add-new">
+        <a-tooltip title="新建">
+          <a-button class="action" type="primary" size="small" @click="addNew">新建</a-button>
+        </a-tooltip>
+      </template>
+
       <template slot="id" slot-scope="{ index }">
         {{ index + 1 }}
       </template>
@@ -50,7 +56,7 @@
     <a-modal
       :centered="true"
       :mask-closable="false"
-      destroy-on-close="true"
+      :destroy-on-close="true"
       :visible="showDlg"
       :title="dlgTitle"
       :confirm-loading="cmfLoading"
@@ -65,7 +71,7 @@
 <script>
 import { list, del, update, create } from '@/services/trading-plan'
 import AdvanceTable from '@/components/table/advance/AdvanceTable'
-import PlanForm from './components/PlanForm'
+import PlanForm from '../components/PlanForm'
 
 export default {
   name: 'PlanList',
@@ -164,6 +170,11 @@ export default {
       this.showDlg = true
       this.isEdit = true
     },
+    addNew() {
+      this.dlgTitle = '新建交易计划'
+      this.showDlg = true
+      this.isEdit = false
+    },
     handleOk() {
       this.$refs.planForm.form.validateFields((err, { plan }) => {
         if (!err) {
@@ -172,7 +183,6 @@ export default {
             this.cmfLoading = true
             update(plan).then(res => {
               this.cmfLoading = false
-              this.dataSource.append(res.data)
               const index = this.dataSource.findIndex(v => v.id === res.data.id)
               this.dataSource.splice(index, 1, res.data)
               this.showDlg = false
@@ -180,7 +190,7 @@ export default {
           } else {
             create(plan).then(res => {
               this.cmfLoading = false
-              this.dataSource.append(res.data)
+              this.dataSource.push(res.data)
               this.showDlg = false
             })
           }

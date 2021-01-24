@@ -1,8 +1,8 @@
 <template>
   <div :class="['detail-list', size === 'small' ? 'small' : 'large', layout === 'vertical' ? 'vertical': 'horizontal']">
-    <div v-if="title" class="title">{{title}}</div>
+    <div v-if="title" class="title">{{ title }}</div>
     <a-row>
-      <slot></slot>
+      <slot />
     </a-row>
   </div>
 </template>
@@ -23,7 +23,7 @@ const Item = {
     }
   },
   methods: {
-    renderTerm (h, term) {
+    renderTerm(h, term) {
       return term ? h(
         'div',
         {
@@ -34,7 +34,7 @@ const Item = {
         [term]
       ) : null
     },
-    renderContent (h, content) {
+    renderContent(h, content) {
       return h(
         'div',
         {
@@ -46,7 +46,7 @@ const Item = {
       )
     }
   },
-  render (h) {
+  render(h) {
     const term = this.renderTerm(h, this.$props.term)
     const content = this.renderContent(h, this.$slots.default)
     return h(
@@ -90,7 +90,7 @@ export default {
       default: 'horizontal'
     }
   },
-  provide () {
+  provide() {
     return {
       col: this.col > 4 ? 4 : this.col
     }
