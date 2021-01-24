@@ -5,12 +5,18 @@
       :data-source="dataSource"
       title=" "
       :loading="loading"
-      rowKey="id"
+      row-key="id"
+      :format-conditions="true"
       @search="onSearch"
       @refresh="onRefresh"
-      :format-conditions="true"
       @reset="onReset"
     >
+      <template slot="id" slot-scope="{ index }">
+        {{ index+1 }}
+      </template>
+      <template slot="c-title" slot-scope="{ record }">
+        <a @click="$openPage('/strategy/edit/'+record.id,'编辑'+record.title)">{{ record.title }}</a>
+      </template>
       <template slot="operation" slot-scope="{ record }">
         <a-popconfirm
           v-if="dataSource.length"
@@ -25,11 +31,11 @@
 </template>
 
 <script>
-import { list, del } from "@/services/strategy";
-import AdvanceTable from "@/components/table/advance/AdvanceTable";
+import { list, del } from '@/services/strategy'
+import AdvanceTable from '@/components/table/advance/AdvanceTable'
 
 export default {
-  name: "StrategyList",
+  name: 'StrategyList',
   components: { AdvanceTable },
   filters: {},
   data() {
@@ -42,30 +48,32 @@ export default {
       conditions: {},
       columns: [
         {
-          title: "序号",
-          dataIndex: "id",
-          key: "id",
+          title: '序号',
+          dataIndex: 'id',
+          key: 'id',
+          scopedSlots: { customRender: 'id' }
         },
         {
-          title: "战法名称",
-          dataIndex: "title",
-          key: "title",
+          title: '战法名称',
+          dataIndex: 'title',
+          key: 'title',
+          scopedSlots: { customRender: 'c-title' }
         },
         {
-          title: "生态环境",
-          dataIndex: "ecology",
-          key: "ecology",
+          title: '生态环境',
+          dataIndex: 'ecology',
+          key: 'ecology'
         },
         {
-          title: "日期",
-          dataIndex: "updated_at",
-          key: "updated_at",
+          title: '日期',
+          dataIndex: 'updated_at',
+          key: 'updated_at'
         },
         {
-          title: "操作",
-          key: "operation",
-          scopedSlots: { customRender: "operation" },
-        },
+          title: '操作',
+          key: 'operation',
+          scopedSlots: { customRender: 'operation' }
+        }
       ],
       pagination: {
         current: this.page,
@@ -77,61 +85,61 @@ export default {
         showTotal: (total, range) =>
           `第 ${range[0]}-${range[1]} 条，总计 ${total} 条`,
         onChange: this.onPageChange,
-        onShowSizeChange: this.onSizeChange,
-      },
-    };
+        onShowSizeChange: this.onSizeChange
+      }
+    }
   },
   created() {
-    this.getList();
+    this.getList()
   },
   methods: {
     getList() {
-      this.loading = true;
-      const { page, pageSize, conditions } = this;
+      this.loading = true
+      const { page, pageSize, conditions } = this
       list({ offset: page, limit: pageSize, ...conditions }).then((res) => {
-        const { count, rows } = res.data;
-        this.dataSource = rows;
-        this.page = page;
-        this.total = count;
-        this.pageSize = pageSize;
-        this.loading = false;
-      });
+        const { count, rows } = res.data
+        this.dataSource = rows
+        this.page = page
+        this.total = count
+        this.pageSize = pageSize
+        this.loading = false
+      })
     },
     remove(id) {
-      console.log(id);
+      console.log(id)
       del(id).then((res) => {
         if (res.data) {
-          const newData = this.dataSource.filter((item) => item.id !== id);
-          this.dataSource = newData;
+          const newData = this.dataSource.filter((item) => item.id !== id)
+          this.dataSource = newData
         }
-      });
+      })
     },
     onSearch(conditions, searchOptions) {
-      console.log(searchOptions);
-      this.page = 1;
-      this.conditions = conditions;
-      this.getList();
+      console.log(searchOptions)
+      this.page = 1
+      this.conditions = conditions
+      this.getList()
     },
     onSizeChange(current, size) {
-      this.page = 1;
-      this.pageSize = size;
-      this.getList();
+      this.page = 1
+      this.pageSize = size
+      this.getList()
     },
     onRefresh(conditions) {
-      this.conditions = conditions;
-      this.getList();
+      this.conditions = conditions
+      this.getList()
     },
     onReset(conditions) {
-      this.conditions = conditions;
-      this.getList();
+      this.conditions = conditions
+      this.getList()
     },
     onPageChange(page, pageSize) {
-      this.page = page;
-      this.pageSize = pageSize;
-      this.getList();
-    },
-  },
-};
+      this.page = page
+      this.pageSize = pageSize
+      this.getList()
+    }
+  }
+}
 </script>
 <style scoped lang="less">
 .table {

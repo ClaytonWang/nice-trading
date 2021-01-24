@@ -9,7 +9,7 @@ module.exports = {
       ecologyInput: '请描述生态环境情况',
       content: '战法内容',
       contentInput: '请输入战法内容',
-      submit:'提交'
-    },
+      submit: '提交'
+    }
   }
 }

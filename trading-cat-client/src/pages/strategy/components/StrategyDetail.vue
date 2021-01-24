@@ -1,10 +1,8 @@
-
 <template>
   <a-card :body-style="{ padding: '24px 32px' }" :bordered="false">
     <a-form :form="form" :label-col="labelCol" :wrapper-col="wrapperCol">
       <a-form-item :label="$t('title')" name="title">
         <a-input
-          :placeholder="$t('titleInput')"
           v-decorator="[
             'strategy.title',
             {
@@ -13,12 +11,11 @@
               ],
             },
           ]"
+          :placeholder="$t('titleInput')"
         />
       </a-form-item>
       <a-form-item :label="$t('ecology')">
         <a-textarea
-          rows="2"
-          :placeholder="$t('ecologyInput')"
           v-decorator="[
             'strategy.ecology',
             {
@@ -31,12 +28,12 @@
               ],
             },
           ]"
+          rows="2"
+          :placeholder="$t('ecologyInput')"
         />
       </a-form-item>
       <a-form-item :label="$t('content')">
         <a-textarea
-          rows="10"
-          :placeholder="$t('contentInput')"
           v-decorator="[
             'strategy.content',
             {
@@ -49,11 +46,13 @@
               ],
             },
           ]"
+          rows="10"
+          :placeholder="$t('contentInput')"
         />
       </a-form-item>
     </a-form>
     <footer-tool-bar>
-      <a-button type="primary" @click="onSubmit" :loading="loading">{{
+      <a-button type="primary" :loading="loading" @click="onSubmit">{{
         $t("submit")
       }}</a-button>
     </footer-tool-bar>
@@ -61,66 +60,70 @@
 </template>
 
 <script>
-import { create, fetch } from "@/services/strategy";
-import FooterToolBar from "@/components/tool/FooterToolBar";
+import { create, fetch } from '@/services/strategy'
+import FooterToolBar from '@/components/tool/FooterToolBar'
 export default {
-  name: "StrategyDetail",
-  i18n: require("./i18n"),
+  name: 'StrategyDetail',
+  i18n: require('./i18n'),
   components: { FooterToolBar },
   props: {
     isEdit: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     return {
       loading: false,
       labelCol: { span: 4 },
       wrapperCol: { span: 14 },
-      form: this.$form.createForm(this),
-    };
+      form: this.$form.createForm(this)
+    }
   },
   created() {
     if (this.isEdit) {
-      const id = this.$route.params && this.$route.params.id;
-      this.fetchData(id);
+      const id = this.$route.params && this.$route.params.id
+      this.fetchData(id)
     }
   },
   methods: {
     fetchData(id) {
       fetch(id)
         .then((res) => {
-          this.strategy = res.data;
-          console.log(this.strategy);
+          this.strategy = res.data
+          console.log(this.strategy)
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
     validate(rule, value, f) {
-      if (value !== undefined && value !== "iczer") {
-        f("输入'iczer'试下？");
+      if (value !== undefined && value !== 'iczer') {
+        f("输入'iczer'试下？")
       }
-      f();
+      f()
     },
     onSubmit() {
-
       this.form.validateFields((err, { strategy }) => {
+        console.log(this.form)
         if (!err) {
-          console.log("Received values of form: ", strategy);
-           this.loading=true;
+          console.log('Received values of form: ', strategy)
+          this.loading = true
           create(strategy).then((res) => {
-            this.loading=false;
+            this.loading = false
             if (res.data) {
-              this.$router.push({ name: "战法列表" });
+              if (this.isEdit) {
+                this.$closePage({ name: '编辑战法' }, { name: '战法列表' })
+              } else {
+                this.$closePage({ name: '新建战法' }, { name: '战法列表' })
+              }
             }
-          });
+          })
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 
 <style scoped>

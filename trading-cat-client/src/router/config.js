@@ -13,12 +13,12 @@ const options = {
     {
       path: '*',
       name: '404',
-      component: () => import('@/pages/exception/404'),
+      component: () => import('@/pages/exception/404')
     },
     {
       path: '/403',
       name: '403',
-      component: () => import('@/pages/exception/403'),
+      component: () => import('@/pages/exception/403')
     },
     {
       path: '/',
@@ -37,7 +37,7 @@ const options = {
             {
               path: 'analysis',
               name: '分析页',
-              component: () => import('@/pages/demo'),
+              component: () => import('@/pages/demo')
             }
           ]
         },
@@ -52,7 +52,36 @@ const options = {
             {
               path: 'list',
               name: '交易列表',
-              component: () => import('@/pages/demo'),
+              meta: {
+                icon: 'file-ppt'
+              },
+              component: () => import('@/pages/trade/list')
+            },
+            {
+              path: 'create',
+              name: '新建交易',
+              meta: {
+                icon: 'file-ppt'
+              },
+              component: () => import('@/pages/trade/create')
+            },
+            {
+              path: 'edit/:id(\\d+)',
+              name: '编辑交易',
+              meta: {
+                icon: 'file-ppt',
+                invisible: true
+              },
+              component: () => import('@/pages/trade/edit')
+            },
+            {
+              path: 'detail/:id(\\d+)',
+              name: '交易详情',
+              meta: {
+                icon: 'file-ppt',
+                invisible: true
+              },
+              component: () => import('@/pages/trade/detail')
             }
           ]
         },
@@ -60,7 +89,7 @@ const options = {
           path: 'strategy',
           name: '战法',
           meta: {
-            icon: 'dashboard',
+            icon: 'dashboard'
           },
           component: PageView,
           children: [
@@ -70,25 +99,25 @@ const options = {
               meta: {
                 icon: 'file-ppt'
               },
-              component: () => import('@/pages/strategy/list'),
+              component: () => import('@/pages/strategy/list')
             },
             {
               path: 'create',
               name: '新建战法',
               meta: {
-                icon: 'file-ppt',
+                icon: 'file-ppt'
               },
-              component: () => import('@/pages/strategy/create'),
+              component: () => import('@/pages/strategy/create')
             },
             {
               path: 'edit/:id(\\d+)',
               name: '编辑战法',
               meta: {
                 icon: 'file-ppt',
-                invisible: true,
+                invisible: true
               },
 
-              component: () => import('@/pages/strategy/edit'),
+              component: () => import('@/pages/strategy/edit')
             }
           ]
         },
@@ -103,7 +132,7 @@ const options = {
             {
               path: 'demo2',
               name: '演示页面2',
-              component: () => import('@/pages/demo'),
+              component: () => import('@/pages/demo')
             }
           ]
         },
@@ -111,7 +140,7 @@ const options = {
           path: 'exception',
           name: '异常页',
           meta: {
-            icon: 'warning',
+            icon: 'warning'
           },
           component: BlankView,
           children: [
