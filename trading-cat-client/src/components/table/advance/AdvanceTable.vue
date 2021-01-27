@@ -1,33 +1,69 @@
 <template>
-  <div :id="id" ref="table" class="advanced-table">
+  <div
+    :id="id"
+    ref="table"
+    class="advanced-table"
+  >
     <a-spin :spinning="loading">
       <div :class="['header-bar', size]">
         <div class="title">
-          <template v-if="title">{{ title }}</template>
-          <slot v-else-if="$slots.title" name="title" />
-          <template v-else>高级表格</template>
+          <template v-if="title">
+            {{ title }}
+          </template>
+          <slot
+            v-else-if="$slots.title"
+            name="title"
+          />
+          <template v-else>
+            高级表格
+          </template>
         </div>
         <div class="search">
-          <search-area :format-conditions="formatConditions" :columns="columns" @change="onSearchChange">
-            <template v-for="slot in slots" :slot="slot">
+          <search-area
+            :format-conditions="formatConditions"
+            :columns="columns"
+            @change="onSearchChange"
+          >
+            <template
+              v-for="slot in slots"
+              :slot="slot"
+            >
               <slot :name="slot" />
             </template>
           </search-area>
         </div>
         <div class="actions">
           <a-tooltip title="刷新">
-            <a-icon class="action" :type="loading ? 'loading' : 'reload'" @click="refresh" />
+            <a-icon
+              class="action"
+              :type="loading ? 'loading' : 'reload'"
+              @click="refresh"
+            />
           </a-tooltip>
-          <action-size v-model="sSize" class="action" />
+          <action-size
+            v-model="sSize"
+            class="action"
+          />
           <a-tooltip title="列配置">
-            <action-columns :columns="columns" class="action" @reset="onColumnsReset">
-              <template v-for="slot in slots" :slot="slot">
+            <action-columns
+              :columns="columns"
+              class="action"
+              @reset="onColumnsReset"
+            >
+              <template
+                v-for="slot in slots"
+                :slot="slot"
+              >
                 <slot :name="slot" />
               </template>
             </action-columns>
           </a-tooltip>
           <a-tooltip title="全屏">
-            <a-icon class="action" :type="fullScreen ? 'fullscreen-exit' : 'fullscreen'" @click="toggleScreen" />
+            <a-icon
+              class="action"
+              :type="fullScreen ? 'fullscreen-exit' : 'fullscreen'"
+              @click="toggleScreen"
+            />
           </a-tooltip>
           <template>
             <slot name="add-new" />
@@ -41,14 +77,30 @@
         @change="onChange"
         @expand="onExpand"
       >
-        <template v-for="slot in scopedSlots " :slot="slot" slot-scope="text, record, index">
-          <slot :name="slot" v-bind="{text, record, index}" />
+        <template
+          v-for="slot in scopedSlots "
+          :slot="slot"
+          slot-scope="text, record, index"
+        >
+          <slot
+            :name="slot"
+            v-bind="{text, record, index}"
+          />
         </template>
-        <template v-for="slot in slots" :slot="slot">
+        <template
+          v-for="slot in slots"
+          :slot="slot"
+        >
           <slot :name="slot" />
         </template>
-        <template :slot="$scopedSlots.expandedRowRender ? 'expandedRowRender' : ''" slot-scope="record, index, indent, expanded">
-          <slot v-bind="{record, index, indent, expanded}" :name="$scopedSlots.expandedRowRender ? 'expandedRowRender' : ''" />
+        <template
+          :slot="$scopedSlots.expandedRowRender ? 'expandedRowRender' : ''"
+          slot-scope="record, index, indent, expanded"
+        >
+          <slot
+            v-bind="{record, index, indent, expanded}"
+            :name="$scopedSlots.expandedRowRender ? 'expandedRowRender' : ''"
+          />
         </template>
       </a-table>
     </a-spin>

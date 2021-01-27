@@ -1,13 +1,19 @@
 <template>
   <div class="mini-progress">
     <a-tooltip :title="'目标值：' + target + '%'">
-      <div class="target" :style="{left: target + '%'}">
+      <div
+        class="target"
+        :style="{left: target + '%'}"
+      >
         <span :style="{backgroundColor: color}" />
         <span :style="{backgroundColor: color}" />
       </div>
     </a-tooltip>
     <div class="wrap">
-      <div class="progress" :style="{backgroundColor: color, width: percent + '%', height: height}" />
+      <div
+        class="progress"
+        :style="{backgroundColor: color, width: percent + '%', height: height}"
+      />
     </div>
   </div>
 </template>

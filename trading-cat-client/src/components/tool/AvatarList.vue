@@ -1,7 +1,6 @@
 <template>
   <div class="avatar-list">
-    <slot>
-    </slot>
+    <slot />
   </div>
 </template>
 
@@ -26,16 +25,16 @@ const Item = {
     }
   },
   methods: {
-    renderAvatar (h, size, src) {
-      return h(AAvatar, {props: {size: size, src: src}}, [])
+    renderAvatar(h, size, src) {
+      return h(AAvatar, { props: { size: size, src: src }}, [])
     }
   },
-  render (h) {
+  render(h) {
     const avatar = this.renderAvatar(h, this.$props.size, this.$props.src)
     return h(
       'li',
-      {class: 'avatar-item'},
-      [this.$props.tips ? h(ATooltip, {props: {title: this.$props.tips}}, [avatar]) : avatar]
+      { class: 'avatar-item' },
+      [this.$props.tips ? h(ATooltip, { props: { title: this.$props.tips }}, [avatar]) : avatar]
     )
   }
 }

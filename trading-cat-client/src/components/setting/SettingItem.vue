@@ -1,7 +1,12 @@
 <template>
   <div class="setting-item">
-    <h3 v-if="title" class="title">{{title}}</h3>
-    <slot></slot>
+    <h3
+      v-if="title"
+      class="title"
+    >
+      {{ title }}
+    </h3>
+    <slot />
   </div>
 </template>
 

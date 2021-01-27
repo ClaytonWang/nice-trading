@@ -1,6 +1,11 @@
 <template>
   <div :class="['detail-list', size === 'small' ? 'small' : 'large', layout === 'vertical' ? 'vertical': 'horizontal']">
-    <div v-if="title" class="title">{{ title }}</div>
+    <div
+      v-if="title"
+      class="title"
+    >
+      {{ title }}
+    </div>
     <a-row>
       <slot />
     </a-row>

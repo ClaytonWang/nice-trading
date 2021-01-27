@@ -1,6 +1,5 @@
 <template>
   <StrategyDetail :is-edit="false" />
-
 </template>
 
 <script>

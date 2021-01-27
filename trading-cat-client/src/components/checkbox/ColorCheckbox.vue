@@ -1,6 +1,13 @@
 <template>
-  <div class="theme-color" :style="{backgroundColor: color}" @click="toggle">
-    <a-icon v-if="sChecked" type="check" />
+  <div
+    class="theme-color"
+    :style="{backgroundColor: color}"
+    @click="toggle"
+  >
+    <a-icon
+      v-if="sChecked"
+      type="check"
+    />
   </div>
 </template>
 
@@ -19,15 +26,15 @@ const Group = {
       default: false
     }
   },
-  data () {
+  data() {
     return {
       values: [],
       options: []
     }
   },
   computed: {
-    colors () {
-      let colors = []
+    colors() {
+      const colors = []
       this.options.forEach(item => {
         if (item.sChecked) {
           colors.push(item.color)
@@ -36,7 +43,7 @@ const Group = {
       return colors
     }
   },
-  provide () {
+  provide() {
     return {
       groupContext: this
     }
@@ -47,7 +54,7 @@ const Group = {
     }
   },
   methods: {
-    handleChange (option) {
+    handleChange(option) {
       if (!option.checked) {
         if (this.values.indexOf(option.value) > -1) {
           this.values = this.values.filter(item => item != option.value)
@@ -66,8 +73,8 @@ const Group = {
       }
     }
   },
-  render (h) {
-    const clear = h('div', {attrs: {style: 'clear: both'}})
+  render(h) {
+    const clear = h('div', { attrs: { style: 'clear: both' }})
     return h(
       'div',
       {},
@@ -94,7 +101,7 @@ export default {
       default: false
     }
   },
-  data () {
+  data() {
     return {
       sChecked: this.initChecked()
     }
@@ -103,7 +110,7 @@ export default {
   },
   inject: ['groupContext'],
   watch: {
-    'sChecked': function () {
+    'sChecked': function() {
       const value = {
         value: this.value,
         color: this.color,
@@ -116,23 +123,23 @@ export default {
       }
     }
   },
-  created () {
+  created() {
     const groupContext = this.groupContext
     if (groupContext) {
       groupContext.options.push(this)
     }
   },
   methods: {
-    toggle () {
+    toggle() {
       if (this.groupContext.multiple || !this.sChecked) {
         this.sChecked = !this.sChecked
       }
     },
     initChecked() {
-      let groupContext = this.groupContext
+      const groupContext = this.groupContext
       if (!groupContext) {
         return this.checked
-      }else if (groupContext.multiple) {
+      } else if (groupContext.multiple) {
         return groupContext.defaultValues.indexOf(this.value) > -1
       } else {
         return groupContext.defaultValues[0] == this.value

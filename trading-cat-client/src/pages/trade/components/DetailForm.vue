@@ -1,7 +1,15 @@
 <template>
-  <a-form :form="form" class="form" @submit="handleSubmit">
+  <a-form
+    :form="form"
+    class="form"
+    @submit="handleSubmit"
+  >
     <a-row class="form-row">
-      <a-col :lg="6" :md="12" :sm="24">
+      <a-col
+        :lg="6"
+        :md="12"
+        :sm="24"
+      >
         <a-form-item :label="$t('trading_price')">
           <a-input-number
             v-decorator="[
@@ -82,7 +90,11 @@
       </a-col>
     </a-row>
     <a-row class="form-row">
-      <a-col :lg="24" :md="24" :sm="24">
+      <a-col
+        :lg="24"
+        :md="24"
+        :sm="24"
+      >
         <a-form-item :label="$t('comment')">
           <a-textarea
             v-decorator="[
@@ -104,7 +116,9 @@
       </a-col>
     </a-row>
     <a-form-item v-if="showSubmit">
-      <a-button html-type="submit">Submit</a-button>
+      <a-button html-type="submit">
+        Submit
+      </a-button>
     </a-form-item>
   </a-form>
 </template>

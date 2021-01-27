@@ -3,11 +3,17 @@
     v-show="visible"
     class="contextmenu"
     :style="style"
-    :selectedKeys="selectedKeys"
+    :selected-keys="selectedKeys"
     @click="handleClick"
   >
-    <a-menu-item :key="item.key" v-for="item in itemList">
-      <a-icon v-if="item.icon" :type="item.icon" />
+    <a-menu-item
+      v-for="item in itemList"
+      :key="item.key"
+    >
+      <a-icon
+        v-if="item.icon"
+        :type="item.icon"
+      />
       <span>{{ item.text }}</span>
     </a-menu-item>
   </a-menu>
@@ -28,7 +34,7 @@ export default {
       default: () => []
     }
   },
-  data () {
+  data() {
     return {
       left: 0,
       top: 0,
@@ -38,14 +44,14 @@ export default {
     }
   },
   computed: {
-    style () {
+    style() {
       return {
         left: this.left + 'px',
         top: this.top + 'px'
       }
     }
   },
-  created () {
+  created() {
     window.addEventListener('click', this.closeMenu)
     window.addEventListener('contextmenu', this.setPosition)
   },
@@ -54,16 +60,16 @@ export default {
     window.removeEventListener('contextmenu', this.setPosition)
   },
   methods: {
-    closeMenu () {
+    closeMenu() {
       this.$emit('update:visible', false)
     },
-    setPosition (e) {
+    setPosition(e) {
       this.left = e.clientX
       this.top = e.clientY
       this.target = e.target
       this.meta = e.meta
     },
-    handleClick ({ key }) {
+    handleClick({ key }) {
       this.$emit('select', key, this.target, this.meta)
       this.closeMenu()
     }

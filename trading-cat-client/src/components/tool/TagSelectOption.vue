@@ -1,6 +1,10 @@
 <template>
-  <a-checkable-tag @change="$emit('click')" class="tag-default" v-model="checked">
-    <slot></slot>
+  <a-checkable-tag
+    v-model="checked"
+    class="tag-default"
+    @change="$emit('click')"
+  >
+    <slot />
   </a-checkable-tag>
 </template>
 
@@ -14,7 +18,7 @@ export default {
       default: 'default'
     }
   },
-  data () {
+  data() {
     return {
       checked: false,
       isTagSelectOption: true

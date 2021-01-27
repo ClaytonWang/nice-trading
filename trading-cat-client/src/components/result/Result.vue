@@ -1,15 +1,28 @@
 <template>
   <div class="result">
-    <div >
-      <a-icon :class="[isSuccess ? 'success' : 'error' ,'icon']" :type="isSuccess ? 'check-circle' : 'close-circle'" />
+    <div>
+      <a-icon
+        :class="[isSuccess ? 'success' : 'error' ,'icon']"
+        :type="isSuccess ? 'check-circle' : 'close-circle'"
+      />
     </div>
-    <div class="title" v-if="title">{{title}}</div>
-    <div class="desc" v-if="description">{{description}}</div>
+    <div
+      v-if="title"
+      class="title"
+    >
+      {{ title }}
+    </div>
+    <div
+      v-if="description"
+      class="desc"
+    >
+      {{ description }}
+    </div>
     <div class="content">
-      <slot></slot>
+      <slot />
     </div>
     <div class="action">
-      <slot name="action"></slot>
+      <slot name="action" />
     </div>
   </div>
 </template>

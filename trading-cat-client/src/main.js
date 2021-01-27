@@ -12,6 +12,7 @@ import { initI18n } from '@/utils/i18n'
 import bootstrap from '@/bootstrap'
 import 'moment/locale/zh-cn'
 import * as filters from './filters' // global filters
+import moment from 'moment'
 
 const router = initRouter(store.state.setting.asyncRoutes)
 const i18n = initI18n('CN', 'US')
@@ -25,6 +26,8 @@ Vue.use(Plugins)
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
+
+Vue.prototype.$moment = moment
 
 bootstrap({ router, store, i18n, message: Vue.prototype.$message })
 

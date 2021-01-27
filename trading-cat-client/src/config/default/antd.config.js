@@ -12,7 +12,7 @@ const ANTD = {
       menuColors: ['#000c17', '#001529', '#002140']
     },
     night: {
-      menuColors: ['#151515', '#1f1f1f', '#1e1e1e'],
+      menuColors: ['#151515', '#1f1f1f', '#1e1e1e']
     }
   },
   theme: {
@@ -35,7 +35,7 @@ const ANTD = {
       'menu-dark-color': 'rgba(254, 254, 254, 0.65)',
       'menu-dark-highlight-color': '#fefefe',
       'menu-dark-arrow-color': '#fefefe',
-      'btn-primary-color': '#fff',
+      'btn-primary-color': '#fff'
     },
     light: {
       'layout-body-background': '#f0f2f5',
@@ -56,7 +56,7 @@ const ANTD = {
       'menu-dark-color': 'rgba(1, 1, 1, 0.65)',
       'menu-dark-highlight-color': '#fefefe',
       'menu-dark-arrow-color': '#fefefe',
-      'btn-primary-color': '#fff',
+      'btn-primary-color': '#fff'
     },
     night: {
       'layout-body-background': '#000',
@@ -77,7 +77,7 @@ const ANTD = {
       'menu-dark-color': 'rgba(254, 254, 254, 0.65)',
       'menu-dark-highlight-color': '#fefefe',
       'menu-dark-arrow-color': '#fefefe',
-      'btn-primary-color': '#141414',
+      'btn-primary-color': '#141414'
     }
   }
 }

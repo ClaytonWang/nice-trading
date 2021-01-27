@@ -1,7 +1,7 @@
 import Mock from 'mockjs'
 
 Mock.mock(`${process.env.VUE_APP_API_BASE_URL}/api/routes`, 'get', () => {
-  let result = {}
+  const result = {}
   result.code = 0
   result.data = [{
     router: 'root',
@@ -15,18 +15,18 @@ Mock.mock(`${process.env.VUE_APP_API_BASE_URL}/api/routes`, 'get', () => {
             permission: 'demo',
             role: 'admin'
           }
-        }],
+        }]
       },
       {
         router: 'parent2',
         children: [{
           router: 'demo',
           name: 'demo2'
-        }],
+        }]
       },
       {
         router: 'exception',
-        children: ['exp404', 'exp403', 'exp500'],
+        children: ['exp404', 'exp403', 'exp500']
       },
       {
         router: 'demo',

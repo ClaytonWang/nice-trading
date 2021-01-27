@@ -1,14 +1,30 @@
 <template>
   <page-layout>
-    <detail-list slot="headerContent" size="small" :col="2">
-      <detail-list-item term="战法">{{ tradingPlan.strategy.title }}</detail-list-item>
-      <detail-list-item term="计划">{{ tradingPlan.plan_price }}</detail-list-item>
-      <detail-list-item term="止损">{{ tradingPlan.stop_loss }}</detail-list-item>
-      <detail-list-item term="止盈">{{ tradingPlan.take_profit }}</detail-list-item>
-      <detail-list-item term="风险额">{{ tradingPlan.risk }}</detail-list-item>
+    <detail-list
+      slot="headerContent"
+      size="small"
+      :col="2"
+    >
+      <detail-list-item term="战法">
+        {{ tradingPlan.strategy.title }}
+      </detail-list-item>
+      <detail-list-item term="计划">
+        {{ tradingPlan.plan_price }}
+      </detail-list-item>
+      <detail-list-item term="止损">
+        {{ tradingPlan.stop_loss }}
+      </detail-list-item>
+      <detail-list-item term="止盈">
+        {{ tradingPlan.take_profit }}
+      </detail-list-item>
+      <detail-list-item term="风险额">
+        {{ tradingPlan.risk }}
+      </detail-list-item>
       <detail-list-item
         term="起止日期"
-      >{{ tradingPlan.exec_start_date | parseTime("{y}-{m}-{d}") }} ~ {{ tradingPlan.exec_end_date | parseTime("{y}-{m}-{d}") }}</detail-list-item>
+      >
+        {{ tradingPlan.exec_start_date | parseTime("{y}-{m}-{d}") }} ~ {{ tradingPlan.exec_end_date | parseTime("{y}-{m}-{d}") }}
+      </detail-list-item>
       <detail-list-item
         term="交易备忘"
         :span="2"
@@ -19,12 +35,27 @@
 
     <template slot="action">
       <a-button-group style="margin-right: 8px">
-        <a-button type="danger" icon="rise" @click="buy">买入</a-button>
-        <a-button type="primary" icon="transaction" @click="sell">卖出</a-button>
+        <a-button
+          type="danger"
+          icon="rise"
+          @click="buy"
+        >
+          买入
+        </a-button>
+        <a-button
+          type="primary"
+          icon="transaction"
+          @click="sell"
+        >
+          卖出
+        </a-button>
       </a-button-group>
     </template>
 
-    <a-card type="inner" title="交易详情">
+    <a-card
+      type="inner"
+      title="交易详情"
+    >
       <a-table
         v-for="(item) in tradingPlan.trading_details"
         :key="item.id"
@@ -36,17 +67,36 @@
         bordered
         size="small"
       >
-        <template slot="trading_date" slot-scope="text">
+        <template
+          slot="trading_date"
+          slot-scope="text"
+        >
           {{ text | parseTime }}
         </template>
-        <template slot="trading_price" slot-scope="text">
+        <template
+          slot="trading_price"
+          slot-scope="text"
+        >
           {{ text | numberFormatter(2) }}
         </template>
-        <template slot="trading_total" slot-scope="{trading_price,trading_volume}">
+        <template
+          slot="trading_total"
+          slot-scope="{trading_price,trading_volume}"
+        >
           {{ totoal(trading_price,trading_volume) }}
         </template>
-        <template slot="title" slot-scope="record"> {{ record[0].trading_type }} </template>
-        <template slot="footer" slot-scope="record"> {{ record[0].comments[0].comment }} </template>
+        <template
+          slot="title"
+          slot-scope="record"
+        >
+          {{ record[0].trading_type }}
+        </template>
+        <template
+          slot="footer"
+          slot-scope="record"
+        >
+          {{ record[0].comments[0].comment }}
+        </template>
       </a-table>
     </a-card>
     <a-modal
@@ -59,7 +109,10 @@
       @ok="handleOk"
       @cancel="showDlg=false"
     >
-      <DetailForm ref="dataForm" :is-edit="isEdit" />
+      <DetailForm
+        ref="dataForm"
+        :is-edit="isEdit"
+      />
     </a-modal>
   </page-layout>
 </template>

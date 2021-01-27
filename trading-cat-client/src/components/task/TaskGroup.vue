@@ -1,15 +1,28 @@
 <template>
   <div class="task-group">
     <div class="task-head">
-      <h3 class="title"><span v-if="count">{{count}}</span>{{title}}</h3>
-      <div class="actions" style="float: right">
-        <a-icon class="add" type="plus" draggable="true"/>
-        <a-icon class="more" style="margin-left: 8px" type="ellipsis" />
+      <h3 class="title">
+        <span v-if="count">{{ count }}</span>{{ title }}
+      </h3>
+      <div
+        class="actions"
+        style="float: right"
+      >
+        <a-icon
+          class="add"
+          type="plus"
+          draggable="true"
+        />
+        <a-icon
+          class="more"
+          style="margin-left: 8px"
+          type="ellipsis"
+        />
       </div>
     </div>
     <div class="task-content">
       <draggable :options="dragOptions">
-        <slot></slot>
+        <slot />
       </draggable>
     </div>
   </div>
@@ -30,15 +43,15 @@ const dragOptions = {
 
 export default {
   name: 'TaskGroup',
-  components: {Draggable},
+  components: { Draggable },
   props: ['title', 'group'],
-  data () {
+  data() {
     return {
-      dragOptions: {...dragOptions, group: this.group}
+      dragOptions: { ...dragOptions, group: this.group }
     }
   },
   computed: {
-    count () {
+    count() {
       return this.$slots.default.length
     }
   }

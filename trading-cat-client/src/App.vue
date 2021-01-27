@@ -1,14 +1,17 @@
 <template>
-  <a-config-provider :locale="locale" :get-popup-container="popContainer">
-    <router-view/>
+  <a-config-provider
+    :locale="locale"
+    :get-popup-container="popContainer"
+  >
+    <router-view />
   </a-config-provider>
 </template>
 
 <script>
-import {enquireScreen} from './utils/util'
-import {mapState, mapMutations} from 'vuex'
-import themeUtil from '@/utils/themeUtil';
-import {getI18nKey} from '@/utils/routerUtil'
+import { enquireScreen } from './utils/util'
+import { mapState, mapMutations } from 'vuex'
+import themeUtil from '@/utils/themeUtil'
+import { getI18nKey } from '@/utils/routerUtil'
 
 export default {
   name: 'App',
@@ -16,14 +19,6 @@ export default {
     return {
       locale: {}
     }
-  },
-  created () {
-    this.setHtmlTitle()
-    this.setLanguage(this.lang)
-    enquireScreen(isMobile => this.setDevice(isMobile))
-  },
-  mounted() {
-   this.setWeekModeTheme(this.weekMode)
   },
   watch: {
     weekMode(val) {
@@ -37,16 +32,24 @@ export default {
       this.setHtmlTitle()
     },
     'theme.mode': function(val) {
-      let closeMessage = this.$message.loading(`您选择了主题模式 ${val}, 正在切换...`)
+      const closeMessage = this.$message.loading(`您选择了主题模式 ${val}, 正在切换...`)
       themeUtil.changeThemeColor(this.theme.color, val).then(closeMessage)
     },
     'theme.color': function(val) {
-      let closeMessage = this.$message.loading(`您选择了主题色 ${val}, 正在切换...`)
+      const closeMessage = this.$message.loading(`您选择了主题色 ${val}, 正在切换...`)
       themeUtil.changeThemeColor(val, this.theme.mode).then(closeMessage)
     },
     'layout': function() {
       window.dispatchEvent(new Event('resize'))
     }
+  },
+  created() {
+    this.setHtmlTitle()
+    this.setLanguage(this.lang)
+    enquireScreen(isMobile => this.setDevice(isMobile))
+  },
+  mounted() {
+    this.setWeekModeTheme(this.weekMode)
   },
   computed: {
     ...mapState('setting', ['layout', 'theme', 'weekMode', 'lang'])
@@ -81,7 +84,7 @@ export default {
       document.title = process.env.VUE_APP_NAME + ' | ' + this.$t(key)
     },
     popContainer() {
-      return document.getElementById("popContainer")
+      return document.getElementById('popContainer')
     }
   }
 }

@@ -1,11 +1,22 @@
 <template>
-  <a-card :body-style="{ padding: '24px 32px' }" :bordered="false">
-    <a-form :form="form" :label-col="labelCol" :wrapper-col="wrapperCol">
-      <a-form-item :label="$t('title')" name="title">
+  <a-card
+    :body-style="{ padding: '24px 32px' }"
+    :bordered="false"
+  >
+    <a-form
+      :form="form"
+      :label-col="labelCol"
+      :wrapper-col="wrapperCol"
+    >
+      <a-form-item
+        :label="$t('title')"
+        name="title"
+      >
         <a-input
           v-decorator="[
             'strategy.title',
             {
+              initialValue: strategy.title,
               rules: [
                 { required: true, message: $t('titleInput'), whitespace: true },
               ],
@@ -19,6 +30,7 @@
           v-decorator="[
             'strategy.ecology',
             {
+              initialValue: strategy.ecology,
               rules: [
                 {
                   required: true,
@@ -37,6 +49,7 @@
           v-decorator="[
             'strategy.content',
             {
+              initialValue: strategy.content,
               rules: [
                 {
                   required: true,
@@ -52,9 +65,15 @@
       </a-form-item>
     </a-form>
     <footer-tool-bar>
-      <a-button type="primary" :loading="loading" @click="onSubmit">{{
-        $t("submit")
-      }}</a-button>
+      <a-button
+        type="primary"
+        :loading="loading"
+        @click="onSubmit"
+      >
+        {{
+          $t("submit")
+        }}
+      </a-button>
     </footer-tool-bar>
   </a-card>
 </template>
@@ -74,6 +93,7 @@ export default {
   },
   data() {
     return {
+      strategy: {},
       loading: false,
       labelCol: { span: 4 },
       wrapperCol: { span: 14 },

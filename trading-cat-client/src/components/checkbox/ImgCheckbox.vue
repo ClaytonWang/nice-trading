@@ -1,8 +1,17 @@
 <template>
-  <a-tooltip :title="title" :overlayStyle="{zIndex: 2001}">
-    <div class="img-check-box" @click="toggle">
-      <img :src="img" />
-      <div v-if="sChecked" class="check-item">
+  <a-tooltip
+    :title="title"
+    :overlay-style="{zIndex: 2001}"
+  >
+    <div
+      class="img-check-box"
+      @click="toggle"
+    >
+      <img :src="img">
+      <div
+        v-if="sChecked"
+        class="check-item"
+      >
         <a-icon type="check" />
       </div>
     </div>
@@ -24,19 +33,19 @@ const Group = {
       default: () => []
     }
   },
-  data () {
+  data() {
     return {
       values: [],
       options: []
     }
   },
-  provide () {
+  provide() {
     return {
       groupContext: this
     }
   },
   watch: {
-    'values': function (value) {
+    'values': function(value) {
       this.$emit('change', value)
       // // 此条件是为解决单选时，触发两次chang事件问题
       // if (!(newVal.length === 1 && oldVal.length === 1 && newVal[0] === oldVal[0])) {
@@ -45,7 +54,7 @@ const Group = {
     }
   },
   methods: {
-    handleChange (option) {
+    handleChange(option) {
       if (!option.checked) {
         if (this.values.indexOf(option.value) > -1) {
           this.values = this.values.filter(item => item != option.value)
@@ -64,11 +73,11 @@ const Group = {
       }
     }
   },
-  render (h) {
+  render(h) {
     return h(
       'div',
       {
-        attrs: {style: 'display: flex'}
+        attrs: { style: 'display: flex' }
       },
       [this.$slots.default]
     )
@@ -93,14 +102,14 @@ export default {
     },
     title: String
   },
-  data () {
+  data() {
     return {
       sChecked: this.initChecked()
     }
   },
   inject: ['groupContext'],
   watch: {
-    'sChecked': function () {
+    'sChecked': function() {
       const option = {
         value: this.value,
         checked: this.sChecked
@@ -112,7 +121,7 @@ export default {
       }
     }
   },
-  created () {
+  created() {
     const groupContext = this.groupContext
     if (groupContext) {
       this.sChecked = groupContext.defaultValues.length > 0 ? groupContext.defaultValues.indexOf(this.value) >= 0 : this.sChecked
@@ -120,16 +129,16 @@ export default {
     }
   },
   methods: {
-    toggle () {
+    toggle() {
       if (this.groupContext.multiple || !this.sChecked) {
         this.sChecked = !this.sChecked
       }
     },
     initChecked() {
-      let groupContext = this.groupContext
+      const groupContext = this.groupContext
       if (!groupContext) {
         return this.checked
-      }else if (groupContext.multiple) {
+      } else if (groupContext.multiple) {
         return groupContext.defaultValues.indexOf(this.value) > -1
       } else {
         return groupContext.defaultValues[0] == this.value

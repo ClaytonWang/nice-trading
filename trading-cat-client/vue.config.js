@@ -45,6 +45,16 @@ module.exports = {
     //     }
     //   }
     // }
+    proxy: {
+      '/suggest': {
+        target: 'https://suggest3.sinajs.cn',
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/suggest': '/suggest'
+        }
+      }
+    }
   },
   pluginOptions: {
     'style-resources-loader': {

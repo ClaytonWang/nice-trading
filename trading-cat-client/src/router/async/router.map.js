@@ -39,12 +39,12 @@ const routerMap = {
     redirect: '/login',
     component: view.tabs
   },
-  createStrategy:{
+  createStrategy: {
     name: '新建战法',
     meta: {
-      icon: 'file-ppt',
+      icon: 'file-ppt'
     },
-    component: () => import('@/pages/strategy/create'),
+    component: () => import('@/pages/strategy/create')
   },
   parent1: {
     name: '父级路由1',

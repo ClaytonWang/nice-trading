@@ -1,10 +1,10 @@
 <template>
   <div class="form-row">
     <div class="label">
-      <span>{{label}}</span>
+      <span>{{ label }}</span>
     </div>
     <div class="content">
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>

@@ -1,21 +1,27 @@
 <template>
-  <a-card :loading="loading" :body-style="{padding: '20px 24px 8px'}" :bordered="false">
+  <a-card
+    :loading="loading"
+    :body-style="{padding: '20px 24px 8px'}"
+    :bordered="false"
+  >
     <div class="chart-card-header">
       <div class="meta">
-        <span class="chart-card-title">{{title}}</span>
+        <span class="chart-card-title">{{ title }}</span>
         <span class="chart-card-action">
-        <slot name="action"></slot>
-      </span>
+          <slot name="action" />
+        </span>
       </div>
-      <div class="total"><span>{{total}}</span></div>
+      <div class="total">
+        <span>{{ total }}</span>
+      </div>
     </div>
     <div class="chart-card-content">
       <div class="content-fix">
-        <slot></slot>
+        <slot />
       </div>
     </div>
     <div class="chart-card-footer">
-      <slot name="footer"></slot>
+      <slot name="footer" />
     </div>
   </a-card>
 </template>

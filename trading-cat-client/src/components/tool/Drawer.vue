@@ -1,14 +1,31 @@
 <template>
-  <div >
-    <div :class="['mask', visible ? 'open' : 'close']" @click="close"></div>
+  <div>
+    <div
+      :class="['mask', visible ? 'open' : 'close']"
+      @click="close"
+    />
     <div :class="['drawer', placement, visible ? 'open' : 'close']">
-      <div ref="drawer" class="content beauty-scroll">
-        <slot></slot>
+      <div
+        ref="drawer"
+        class="content beauty-scroll"
+      >
+        <slot />
       </div>
-      <div v-if="showHandler" :class="['handler-container', placement, visible ? 'open' : 'close']" ref="handler" @click="toggle">
-        <slot v-if="$slots.handler" name="handler"></slot>
-        <div v-else class="handler">
-          <a-icon :type="visible ? 'close'  : 'bars'" />
+      <div
+        v-if="showHandler"
+        ref="handler"
+        :class="['handler-container', placement, visible ? 'open' : 'close']"
+        @click="toggle"
+      >
+        <slot
+          v-if="$slots.handler"
+          name="handler"
+        />
+        <div
+          v-else
+          class="handler"
+        >
+          <a-icon :type="visible ? 'close' : 'bars'" />
         </div>
       </div>
     </div>
@@ -18,10 +35,6 @@
 <script>
 export default {
   name: 'Drawer',
-  data () {
-    return {
-    }
-  },
   model: {
     prop: 'visible',
     event: 'change'
@@ -43,14 +56,18 @@ export default {
       default: true
     }
   },
+  data() {
+    return {
+    }
+  },
   methods: {
-    open () {
+    open() {
       this.$emit('change', true)
     },
-    close () {
+    close() {
       this.$emit('change', false)
     },
-    toggle () {
+    toggle() {
       this.$emit('change', !this.visible)
     }
   }

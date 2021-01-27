@@ -1,13 +1,13 @@
-import {isDef, isRegExp, remove} from '@/utils/util'
+import { isDef, isRegExp, remove } from '@/utils/util'
 
 const patternTypes = [String, RegExp, Array]
 
-function matches (pattern, name) {
+function matches(pattern, name) {
   if (Array.isArray(pattern)) {
     if (pattern.indexOf(name) > -1) {
       return true
     } else {
-      for (let item of pattern) {
+      for (const item of pattern) {
         if (isRegExp(item) && item.test(name)) {
           return true
         }
@@ -23,18 +23,18 @@ function matches (pattern, name) {
   return false
 }
 
-function getComponentName (opts) {
+function getComponentName(opts) {
   return opts && (opts.Ctor.options.name || opts.tag)
 }
 
-function getComponentKey (vnode) {
-  const {componentOptions, key} = vnode
+function getComponentKey(vnode) {
+  const { componentOptions, key } = vnode
   return key == null
     ? componentOptions.Ctor.cid + (componentOptions.tag ? `::${componentOptions.tag}` : '')
     : key + componentOptions.Ctor.cid
 }
 
-function getFirstComponentChild (children) {
+function getFirstComponentChild(children) {
   if (Array.isArray(children)) {
     for (let i = 0; i < children.length; i++) {
       const c = children[i]
@@ -45,7 +45,7 @@ function getFirstComponentChild (children) {
   }
 }
 
-function pruneCache (keepAliveInstance, filter) {
+function pruneCache(keepAliveInstance, filter) {
   const { cache, keys, _vnode } = keepAliveInstance
   for (const key in cache) {
     const cachedNode = cache[key]
@@ -68,7 +68,7 @@ function pruneCacheEntry2(cache, key, keys) {
   remove(keys, key)
 }
 
-function pruneCacheEntry (cache, key, keys, current) {
+function pruneCacheEntry(cache, key, keys, current) {
   const cached = cache[key]
   if (cached && (!current || cached.tag !== current.tag)) {
     cached.componentInstance.$destroy()
@@ -82,7 +82,7 @@ export default {
   abstract: true,
   model: {
     prop: 'clearCaches',
-    event: 'clear',
+    event: 'clear'
   },
   props: {
     include: patternTypes,
@@ -94,7 +94,7 @@ export default {
   watch: {
     clearCaches: function(val) {
       if (val && val.length > 0) {
-        const {cache, keys} = this
+        const { cache, keys } = this
         val.forEach(key => {
           pruneCacheEntry2(cache, key, keys)
         })
@@ -108,13 +108,13 @@ export default {
     this.keys = []
   },
 
-  destroyed () {
+  destroyed() {
     for (const key in this.cache) {
       pruneCacheEntry(this.cache, key, this.keys)
     }
   },
 
-  mounted () {
+  mounted() {
     this.$watch('include', val => {
       pruneCache(this, (name) => matches(val, name))
     })
@@ -126,7 +126,7 @@ export default {
     })
   },
 
-  render () {
+  render() {
     const slot = this.$slots.default
     const vnode = getFirstComponentChild(slot)
     const componentOptions = vnode && vnode.componentOptions

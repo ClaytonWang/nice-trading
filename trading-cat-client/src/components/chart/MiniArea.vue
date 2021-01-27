@@ -1,7 +1,15 @@
 <template>
   <div class="mini-chart">
-    <div class="chart-content" :style="{height: 46}">
-      <v-chart :force-fit="true" :height="height" :data="data" :padding="[36, 5, 18, 5]">
+    <div
+      class="chart-content"
+      :style="{height: 46}"
+    >
+      <v-chart
+        :force-fit="true"
+        :height="height"
+        :data="data"
+        :padding="[36, 5, 18, 5]"
+      >
         <v-tooltip />
         <v-smooth-area position="x*y" />
       </v-chart>
@@ -10,7 +18,7 @@
 </template>
 
 <script>
-import {format} from 'date-fns'
+import { format } from 'date-fns'
 
 const data = []
 const beginDay = new Date().getTime()
@@ -43,7 +51,7 @@ const scale = [{
 
 export default {
   name: 'MiniArea',
-  data () {
+  data() {
     return {
       data,
       scale,

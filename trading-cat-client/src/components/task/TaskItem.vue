@@ -1,6 +1,9 @@
 <template>
-  <a-card class="task-item" type="inner">
-    {{content}}
+  <a-card
+    class="task-item"
+    type="inner"
+  >
+    {{ content }}
   </a-card>
 </template>
 

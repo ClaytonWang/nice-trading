@@ -8,7 +8,7 @@ const resp401 = {
    * @returns {*}
    */
   onFulfilled(response, options) {
-    const {message} = options
+    const { message } = options
     if (response.code === 401) {
       message.error('无此权限')
     }
@@ -21,8 +21,8 @@ const resp401 = {
    * @returns {Promise<never>}
    */
   onRejected(error, options) {
-    const {message} = options
-    const {response} = error
+    const { message } = options
+    const { response } = error
     if (response.status === 401) {
       message.error('无此权限')
     }
@@ -32,15 +32,15 @@ const resp401 = {
 
 const resp403 = {
   onFulfilled(response, options) {
-    const {message} = options
+    const { message } = options
     if (response.code === 403) {
       message.error('请求被拒绝')
     }
     return response
   },
   onRejected(error, options) {
-    const {message} = options
-    const {response} = error
+    const { message } = options
+    const { response } = error
     if (response.status === 403) {
       message.error('请求被拒绝')
     }
@@ -56,8 +56,8 @@ const reqCommon = {
    * @returns {*}
    */
   onFulfilled(config, options) {
-    const {message} = options
-    const {url, xsrfCookieName} = config
+    const { message } = options
+    const { url, xsrfCookieName } = config
     if (url.indexOf('login') === -1 && xsrfCookieName && !Cookie.get(xsrfCookieName)) {
       message.warning('认证 token 已过期，请重新登录')
     }
@@ -70,7 +70,7 @@ const reqCommon = {
    * @returns {Promise<never>}
    */
   onRejected(error, options) {
-    const {message} = options
+    const { message } = options
     message.error(error.message)
     return Promise.reject(error)
   }

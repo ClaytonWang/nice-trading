@@ -1,11 +1,16 @@
 <template>
   <div class="bar">
-    <h4>{{title}}</h4>
+    <h4>{{ title }}</h4>
     <div class="chart">
-      <v-chart :force-fit="true" height="312" :data="data" :padding="[24, 0, 0, 0]">
+      <v-chart
+        :force-fit="true"
+        height="312"
+        :data="data"
+        :padding="[24, 0, 0, 0]"
+      >
         <v-tooltip />
         <v-axis />
-        <v-bar position="x*y"/>
+        <v-bar position="x*y" />
       </v-chart>
     </div>
   </div>
@@ -40,7 +45,7 @@ const scale = [{
 export default {
   name: 'Bar',
   props: ['title'],
-  data () {
+  data() {
     return {
       data,
       scale,

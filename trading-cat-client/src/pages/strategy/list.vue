@@ -11,13 +11,22 @@
       @refresh="onRefresh"
       @reset="onReset"
     >
-      <template slot="id" slot-scope="{ index }">
+      <template
+        slot="id"
+        slot-scope="{ index }"
+      >
         {{ index+1 }}
       </template>
-      <template slot="c-title" slot-scope="{ record }">
+      <template
+        slot="c-title"
+        slot-scope="{ record }"
+      >
         <a @click="$openPage('/strategy/edit/'+record.id,'编辑'+record.title)">{{ record.title }}</a>
       </template>
-      <template slot="operation" slot-scope="{ record }">
+      <template
+        slot="operation"
+        slot-scope="{ record }"
+      >
         <a-popconfirm
           v-if="dataSource.length"
           title="确定删除吗?"

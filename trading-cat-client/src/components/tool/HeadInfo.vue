@@ -1,7 +1,7 @@
 <template>
   <div class="head-info">
-    <span>{{title}}</span>
-    <p>{{content}}</p>
+    <span>{{ title }}</span>
+    <p>{{ content }}</p>
   </div>
 </template>
 
