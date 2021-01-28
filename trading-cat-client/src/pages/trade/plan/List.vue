@@ -7,6 +7,7 @@
       :loading="loading"
       row-key="id"
       :format-conditions="true"
+      bordered
       @search="onSearch"
       @refresh="onRefresh"
       @reset="onReset"
@@ -135,6 +136,11 @@ export default {
           key: "risk",
         },
         {
+          title: "计划量",
+          dataIndex: "plan_volume",
+          key: "plan_volume",
+        },
+        {
           title: "起止日期",
           dataIndex: "exec_start_date",
           key: "exec_start_date",
@@ -187,11 +193,20 @@ export default {
       });
     },
     edit(plan) {
-      const { id, name, code } = plan;
+      const { id, name, code,symbol,strategy } = plan;
       if (!id) return;
-      this.dlgTitle = name + "(" + code + ")";
+      const label = name + " (" + code + ")";
+      this.dlgTitle = label
       this.showDlg = true;
       this.isEdit = true;
+      plan.stock={
+        key:symbol,
+        label
+      };
+      plan.strategy={
+        key:strategy.id,
+        label:strategy.title
+      };
       this.plan = plan;
     },
     addNew() {
@@ -200,10 +215,21 @@ export default {
       this.isEdit = false;
       this.plan = newPlan();
     },
+    plan_volume(plan) {
+      const { plan_price, stop_loss, risk } = plan;
+      if (plan_price && stop_loss && risk) {
+        return (risk / Math.abs(plan_price - stop_loss)).toFixed(2);
+      }
+      return 0;
+    },
     handleOk() {
       this.$refs.planForm.form.validateFields((err, { plan }) => {
         if (!err) {
           console.log("Received values of form: ", { plan });
+          let label = String.prototype.trim.call(plan.stock.label);
+          plan.name=label.split(' ')[0];
+          plan.code=label.split(' ')[1].replace('(','').replace(')','');
+          plan.symbol = plan.stock.key;
           plan.strategy_id = plan.strategy.key;
           plan.strategy = {
             id:plan.strategy.key,
@@ -211,7 +237,7 @@ export default {
           };
           plan.exec_start_date = plan.date[0];
           plan.exec_end_date = plan.date[1];
-          plan.plan_volume = plan.risk / plan.plan_price;
+          plan.plan_volume = this.plan_volume(plan);
           if (this.isEdit) {
             this.cmfLoading = true;
             plan.id = this.plan.id;

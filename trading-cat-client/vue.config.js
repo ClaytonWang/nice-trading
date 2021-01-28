@@ -47,7 +47,7 @@ module.exports = {
     // }
     proxy: {
       '/suggest': {
-        target: 'https://suggest3.sinajs.cn',
+        target: process.env.VUE_APP_API_STOCK_URL,
         changeOrigin: true,
         ws: true,
         pathRewrite: {

@@ -1,27 +1,43 @@
 <template>
   <a-form :form="form" class="form" @submit="handleSubmit">
-    <a-row class="form-row">
-      <a-col :lg="8" :md="12" :sm="24">
+    <a-row class="form-row" :gutter="[0,0]">
+      <a-col :lg="12" :md="12" :sm="24">
         <a-form-item :label="$t('name')">
-          <a-input
+          <a-select
             v-decorator="[
-              'plan.name',
+              'plan.stock',
               {
-                initialValue: plan.name,
+                initialValue: plan.stock,
                 rules: [
                   {
-                    required: true,
-                    message: $ta('input|name'),
-                    whitespace: true,
+                    required: false,
+                    message: $ta('select|name'),
                   },
                 ],
               },
             ]"
-            :placeholder="$ta('input|name')"
-          />
+            showSearch
+            showArrow
+            label-in-value
+            :placeholder="$ta('select|name')"
+            :filter-option="false"
+            :not-found-content="fetching ? undefined : null"
+            @search="fetchStock"
+          >
+            >
+            <a-icon slot="suffixIcon" type="dollar" />
+            <a-spin v-if="fetching" slot="notFoundContent" size="small" />
+            <a-select-option
+              v-for="d in stocks"
+              :key="d.code"
+              :value="d.symbol"
+            >
+              {{ d.label }}
+            </a-select-option>
+          </a-select>
         </a-form-item>
       </a-col>
-      <a-col :lg="{ span: 8 }" :md="{ span: 12 }" :sm="24">
+      <a-col :lg="12" :md="12" :sm="24">
         <a-form-item :label="$t('strategy')">
           <a-select
             v-decorator="[
@@ -43,10 +59,10 @@
             :filter-option="false"
             :not-found-content="fetching ? undefined : null"
             @search="fetchStrategy"
-            @change="strategyChange"
             @focus="fetchStrategy"
           >
             >
+            <a-icon slot="suffixIcon" type="edit" />
             <a-spin v-if="fetching" slot="notFoundContent" size="small" />
             <a-select-option v-for="d in strategies" :key="d.value">
               {{ d.title }}
@@ -54,7 +70,9 @@
           </a-select>
         </a-form-item>
       </a-col>
-      <a-col :xl="{ span: 8 }" :lg="{ span: 12 }" :md="{ span: 24 }" :sm="24">
+    </a-row>
+    <a-row class="form-row">
+      <a-col :lg="6" :md="6" :sm="24">
         <a-form-item :label="$t('plan_price')">
           <a-input-number
             v-decorator="[
@@ -79,9 +97,7 @@
           />
         </a-form-item>
       </a-col>
-    </a-row>
-    <a-row class="form-row">
-      <a-col :lg="8" :md="12" :sm="24">
+      <a-col :lg="6" :md="6" :sm="24">
         <a-form-item :label="$t('stop_loss')">
           <a-input-number
             v-decorator="[
@@ -106,7 +122,7 @@
           />
         </a-form-item>
       </a-col>
-      <a-col :lg="{ span: 8 }" :md="{ span: 12 }" :sm="24">
+      <a-col :lg="6" :md="6" :sm="24">
         <a-form-item :label="$t('take_profit')">
           <a-input-number
             v-decorator="[
@@ -131,7 +147,7 @@
           />
         </a-form-item>
       </a-col>
-      <a-col :lg="{ span: 8 }" :md="{ span: 12 }" :sm="24">
+      <a-col :lg="6" :md="6" :sm="24">
         <a-form-item :label="$t('risk')">
           <a-input-number
             v-decorator="[
@@ -154,6 +170,24 @@
               (value) => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
             "
           />
+        </a-form-item>
+      </a-col>
+    </a-row>
+    <a-row>
+      <a-col :lg="6" :md="6" :sm="24">
+        <a-form-item label="计划量">
+        </a-form-item>
+      </a-col>
+      <a-col :lg="6" :md="6" :sm="24">
+        <a-form-item label="止损比">
+        </a-form-item>
+      </a-col>
+      <a-col :lg="6" :md="6" :sm="24">
+        <a-form-item label="止盈比">
+        </a-form-item>
+      </a-col>
+      <a-col :lg="6" :md="6" :sm="24">
+        <a-form-item label="损益比">
         </a-form-item>
       </a-col>
     </a-row>
@@ -219,6 +253,7 @@
 <script>
 import debounce from "lodash/debounce";
 import { fetch as getStrategy } from "@/services/strategy";
+import { search } from "@/services/stock";
 export default {
   name: "PlanForm",
   props: {
@@ -238,13 +273,52 @@ export default {
   i18n: require("./i18n-plan"),
   data() {
     this.fetchStrategy = debounce(this.fetchStrategy, 800);
+    this.fetchStock = debounce(this.fetchStock, 800);
     return {
       form: this.$form.createForm(this),
       fetching: false,
       strategies: [],
+      stocks: [],
     };
   },
-  created() {},
+  computed: {
+    profitLostRate() {
+      const { plan_price, stop_loss, take_profit } = this.form;
+      if (plan_price && stop_loss && take_profit) {
+        return (
+          (Math.abs(take_profit - plan_price) /
+            Math.abs(plan_price - stop_loss)) *
+          100
+        ).toFixed(2);
+      }
+      return 0;
+    },
+    plan_totoal() {
+      if (this.form.plan_price && this.plan_volume) {
+        return (this.plan_volume * this.form.plan_price).toFixed(2);
+      }
+      return 0;
+    },
+    stop_loss_rate() {
+      const { plan_price, stop_loss } = this.form;
+      if (plan_price && stop_loss) {
+        return ((Math.abs(plan_price - stop_loss) / plan_price) * 100).toFixed(
+          2
+        );
+      }
+      return 0;
+    },
+    take_profit_rate() {
+      const { plan_price, take_profit } = this.form;
+      if (plan_price && take_profit) {
+        return (
+          (Math.abs(take_profit - plan_price) / plan_price) *
+          100
+        ).toFixed(2);
+      }
+      return 0;
+    },
+  },
   methods: {
     fetchStrategy(value) {
       this.fetching = true;
@@ -259,12 +333,13 @@ export default {
         this.fetching = false;
       });
     },
-    strategyChange(value) {
-      console.log(value);
-      Object.assign(this, {
-        value,
-        data: [],
-        fetching: false,
+    fetchStock(value) {
+      if (!value) return;
+      this.fetching = true;
+      search(value).then((list) => {
+        console.log(list);
+        this.stocks = list;
+        this.fetching = false;
       });
     },
     selectDate(date, dateString) {

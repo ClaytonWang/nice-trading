@@ -47,23 +47,17 @@ const options = {
           meta: {
             icon: 'file'
           },
+          redirect: '/trade/list',
           component: BlankView,
           children: [
             {
               path: 'list',
               name: '交易列表',
               meta: {
-                icon: 'file-ppt'
+                icon: 'file-ppt',
+                invisible: true
               },
               component: () => import('@/pages/trade/plan')
-            },
-            {
-              path: 'create',
-              name: '新建交易',
-              meta: {
-                icon: 'file-ppt'
-              },
-              component: () => import('@/pages/trade/create')
             },
             {
               path: 'edit/:id(\\d+)',
