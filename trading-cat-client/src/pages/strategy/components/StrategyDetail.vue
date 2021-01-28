@@ -1,95 +1,46 @@
 <template>
-  <a-card
-    :body-style="{ padding: '24px 32px' }"
-    :bordered="false"
-  >
+  <a-card :body-style="{ padding: '24px 32px' }" :bordered="false">
     <a-form
-      :form="form"
+      :model="strategy"
+      :rules="rules"
       :label-col="labelCol"
       :wrapper-col="wrapperCol"
     >
-      <a-form-item
-        :label="$t('title')"
-        name="title"
-      >
-        <a-input
-          v-decorator="[
-            'strategy.title',
-            {
-              initialValue: strategy.title,
-              rules: [
-                { required: true, message: $t('titleInput'), whitespace: true },
-              ],
-            },
-          ]"
-          :placeholder="$t('titleInput')"
-        />
+      <a-form-item :label="$t('title')" prop="title">
+        <a-input v-model="strategy.title" :placeholder="$t('titleInput')" />
       </a-form-item>
-      <a-form-item :label="$t('ecology')">
+      <a-form-item :label="$t('ecology')" prop="ecology">
         <a-textarea
-          v-decorator="[
-            'strategy.ecology',
-            {
-              initialValue: strategy.ecology,
-              rules: [
-                {
-                  required: true,
-                  message: $t('ecologyInput'),
-                  whitespace: true,
-                },
-              ],
-            },
-          ]"
+          v-model="strategy.ecology"
           rows="2"
           :placeholder="$t('ecologyInput')"
         />
       </a-form-item>
-      <a-form-item :label="$t('content')">
-        <a-textarea
-          v-decorator="[
-            'strategy.content',
-            {
-              initialValue: strategy.content,
-              rules: [
-                {
-                  required: true,
-                  message: $t('contentInput'),
-                  whitespace: true,
-                },
-              ],
-            },
-          ]"
-          rows="10"
-          :placeholder="$t('contentInput')"
-        />
+      <a-form-item :label="$t('content')" prop="content">
+        <Tinymce ref="editor" v-model="strategy.content" />
       </a-form-item>
     </a-form>
     <footer-tool-bar>
-      <a-button
-        type="primary"
-        :loading="loading"
-        @click="onSubmit"
-      >
-        {{
-          $t("submit")
-        }}
+      <a-button type="primary" :loading="loading" @click="onSubmit">
+        {{ $t("submit") }}
       </a-button>
     </footer-tool-bar>
   </a-card>
 </template>
 
 <script>
-import { create, fetch } from '@/services/strategy'
-import FooterToolBar from '@/components/tool/FooterToolBar'
+import { create, fetch, update } from "@/services/strategy";
+import FooterToolBar from "@/components/tool/FooterToolBar";
+import Tinymce from "@/components/Tinymce";
 export default {
-  name: 'StrategyDetail',
-  i18n: require('./i18n'),
-  components: { FooterToolBar },
+  name: "StrategyDetail",
+  i18n: require("./i18n"),
+  components: { FooterToolBar, Tinymce },
   props: {
     isEdit: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -97,53 +48,65 @@ export default {
       loading: false,
       labelCol: { span: 4 },
       wrapperCol: { span: 14 },
-      form: this.$form.createForm(this)
-    }
+      rules: {
+        title: [
+          {
+            required: true,
+            message: this.$t("titleInput"),
+            trigger: "blur",
+          },
+        ],
+        ecology: [
+          {
+            required: true,
+            message: this.$t("ecologyInput"),
+            trigger: "blur",
+          },
+        ],
+        content: [
+          {
+            required: true,
+            message: this.$t("content"),
+            trigger: "blur",
+          },
+        ],
+      },
+    };
   },
   created() {
     if (this.isEdit) {
-      const id = this.$route.params && this.$route.params.id
-      this.fetchData(id)
+      const id = this.$route.params && this.$route.params.id;
+      this.fetchData(id);
     }
   },
   methods: {
     fetchData(id) {
       fetch(id)
         .then((res) => {
-          this.strategy = res.data
-          console.log(this.strategy)
+          this.strategy = res.data;
+          console.log(this.strategy);
         })
         .catch((err) => {
-          console.log(err)
-        })
-    },
-    validate(rule, value, f) {
-      if (value !== undefined && value !== 'iczer') {
-        f("输入'iczer'试下？")
-      }
-      f()
+          console.log(err);
+        });
     },
     onSubmit() {
-      this.form.validateFields((err, { strategy }) => {
-        console.log(this.form)
-        if (!err) {
-          console.log('Received values of form: ', strategy)
-          this.loading = true
-          create(strategy).then((res) => {
-            this.loading = false
-            if (res.data) {
-              if (this.isEdit) {
-                this.$closePage({ name: '编辑战法' }, { name: '战法列表' })
-              } else {
-                this.$closePage({ name: '新建战法' }, { name: '战法列表' })
-              }
-            }
-          })
-        }
-      })
-    }
-  }
-}
+      console.log(this.strategy);
+      this.loading = true;
+      if (this.isEdit) {
+        update(this.strategy).then(() => {
+          this.loading = false;
+          this.$closePage({ name: "编辑战法" }, { name: "战法列表" });
+        });
+      } else {
+        create(this.strategy).then(() => {
+          this.loading = false;
+          this.$closePage({ name: "新建战法" }, { name: "战法列表" });
+        });
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
