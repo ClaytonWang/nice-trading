@@ -1,25 +1,26 @@
 <template>
   <a-card :body-style="{ padding: '24px 32px' }" :bordered="false">
-    <a-form
+    <a-form-model
+      ref="ruleForm"
       :model="strategy"
       :rules="rules"
       :label-col="labelCol"
       :wrapper-col="wrapperCol"
     >
-      <a-form-item :label="$t('title')" prop="title">
+      <a-form-model-item :label="$t('title')" prop="title">
         <a-input v-model="strategy.title" :placeholder="$t('titleInput')" />
-      </a-form-item>
-      <a-form-item :label="$t('ecology')" prop="ecology">
+      </a-form-model-item>
+      <a-form-model-item :label="$t('ecology')" prop="ecology">
         <a-textarea
           v-model="strategy.ecology"
           rows="2"
           :placeholder="$t('ecologyInput')"
         />
-      </a-form-item>
-      <a-form-item :label="$t('content')" prop="content">
+      </a-form-model-item>
+      <a-form-model-item :label="$t('content')" prop="content">
         <Tinymce ref="editor" v-model="strategy.content" />
-      </a-form-item>
-    </a-form>
+      </a-form-model-item>
+    </a-form-model>
     <footer-tool-bar>
       <a-button type="primary" :loading="loading" @click="onSubmit">
         {{ $t("submit") }}
@@ -91,19 +92,23 @@ export default {
         });
     },
     onSubmit() {
-      console.log(this.strategy);
-      this.loading = true;
-      if (this.isEdit) {
-        update(this.strategy).then(() => {
-          this.loading = false;
-          this.$closePage({ name: "编辑战法" }, { name: "战法列表" });
-        });
-      } else {
-        create(this.strategy).then(() => {
-          this.loading = false;
-          this.$closePage({ name: "新建战法" }, { name: "战法列表" });
-        });
-      }
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          console.log(this.strategy);
+          this.loading = true;
+          if (this.isEdit) {
+            update(this.strategy).then(() => {
+              this.loading = false;
+              this.$closePage({ name: "编辑战法" }, { name: "战法列表" });
+            });
+          } else {
+            create(this.strategy).then(() => {
+              this.loading = false;
+              this.$closePage({ name: "新建战法" }, { name: "战法列表" });
+            });
+          }
+        }
+      });
     },
   },
 };
