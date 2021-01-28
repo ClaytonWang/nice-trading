@@ -1,7 +1,6 @@
 {
-  "name": "vue-antd-admin",
+  "name": "trading-cat",
   "version": "0.7.2",
-  "homepage": "https://iczer.github.io/vue-antd-admin",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

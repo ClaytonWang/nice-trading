@@ -28,7 +28,7 @@ const options = {
       children: [
         {
           path: 'dashboard',
-          name: 'Dashboard',
+          name: '总控台',
           meta: {
             icon: 'dashboard'
           },
@@ -60,15 +60,6 @@ const options = {
               component: () => import('@/pages/trade/plan')
             },
             {
-              path: 'edit/:id(\\d+)',
-              name: '编辑交易',
-              meta: {
-                icon: 'file-ppt',
-                invisible: true
-              },
-              component: () => import('@/pages/trade/edit')
-            },
-            {
               path: 'detail/:id(\\d+)',
               name: '交易详情',
               meta: {
@@ -76,6 +67,44 @@ const options = {
                 invisible: true
               },
               component: () => import('@/pages/trade/detail/index')
+            }
+          ]
+        },
+        {
+          path: 'diary',
+          name: '复盘',
+          meta: {
+            icon: 'file'
+          },
+          redirect: '/diary/list',
+          component: BlankView,
+          children: [
+            {
+              path: 'list',
+              name: '复盘列表',
+              meta: {
+                icon: 'file-ppt',
+                invisible: true
+              },
+              component: () => import('@/pages/diary/list')
+            },
+            {
+              path: 'edit/:id(\\d+)',
+              name: '新建复盘',
+              meta: {
+                icon: 'file-ppt',
+                invisible: true
+              },
+              component: () => import('@/pages/diary/create')
+            },
+            {
+              path: 'detail/:id(\\d+)',
+              name: '复盘详情',
+              meta: {
+                icon: 'file-ppt',
+                invisible: true
+              },
+              component: () => import('@/pages/diary/detail')
             }
           ]
         },
@@ -116,25 +145,11 @@ const options = {
           ]
         },
         {
-          path: 'parent2',
-          name: '父级路由2',
-          meta: {
-            icon: 'form'
-          },
-          component: PageView,
-          children: [
-            {
-              path: 'demo2',
-              name: '演示页面2',
-              component: () => import('@/pages/demo')
-            }
-          ]
-        },
-        {
           path: 'exception',
           name: '异常页',
           meta: {
-            icon: 'warning'
+            icon: 'warning',
+            invisible: true
           },
           component: BlankView,
           children: [
