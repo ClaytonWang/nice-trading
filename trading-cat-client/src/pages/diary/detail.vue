@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'EditPlan',
+  name: 'DiaryDetail',
   components: { }
 }
 </script>

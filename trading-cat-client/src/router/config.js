@@ -89,13 +89,22 @@ const options = {
               component: () => import('@/pages/diary/list')
             },
             {
-              path: 'edit/:id(\\d+)',
+              path: 'create',
               name: '新建复盘',
               meta: {
                 icon: 'file-ppt',
                 invisible: true
               },
               component: () => import('@/pages/diary/create')
+            },
+            {
+              path: 'edit/:id(\\d+)',
+              name: '编辑复盘',
+              meta: {
+                icon: 'file-ppt',
+                invisible: true
+              },
+              component: () => import('@/pages/diary/edit')
             },
             {
               path: 'detail/:id(\\d+)',
@@ -143,8 +152,7 @@ const options = {
               component: () => import('@/pages/strategy/edit')
             }
           ]
-        },
-        {
+        },        {
           path: 'exception',
           name: '异常页',
           meta: {

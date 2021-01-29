@@ -12,5 +12,6 @@ module.exports = {
     PLAN: `${BASE_URL}/trading-plan`,
     DETAIL: `${BASE_URL}/trading-detail`
   },
-  STOCK:STOCK_URL+'/suggest/type=&name=suggestdata&key='
+  STOCK: `${STOCK_URL}/suggest/type=&name=suggestdata&key=`,
+  DIARY:`${BASE_URL}/notepad`,
 }

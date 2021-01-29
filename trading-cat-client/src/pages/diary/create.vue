@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'CreatePlan',
+  name: 'CreateDiary',
   components: { }
 }
 </script>
