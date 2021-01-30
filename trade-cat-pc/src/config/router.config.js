@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 import { UserLayout, BasicLayout, BlankLayout } from '@/layouts'
-import { bxAnaalyse } from '@/core/icons'
+import { bxAnaalyse, trade } from '@/core/icons'
 
 const RouteView = {
   name: 'RouteView',
@@ -48,7 +48,8 @@ export const asyncRouterMap = [
         name: 'trade',
         redirect: '/trade/list',
         component: RouteView,
-        meta: { title: 'menu.trade', keepAlive: true, icon: bxAnaalyse, permission: ['dashboard'] },
+        hideChildrenInMenu: true,
+        meta: { title: 'menu.trade', keepAlive: true, icon: trade, permission: ['dashboard'] },
         children: [
           {
             path: '/trade/list',
@@ -58,9 +59,9 @@ export const asyncRouterMap = [
           },
           {
             path: '/trade/detail/:id(\\d+)',
-            name: 'TradeList',
+            name: 'TradeDetail',
             component: () => import('@/views/trade/Detail'),
-            meta: { title: 'menu.trade.detail', keepAlive: false, permission: ['dashboard'] }
+            meta: { title: 'menu.trade.detail', hidden: true, keepAlive: false, permission: ['dashboard'] }
           }
         ]
       },

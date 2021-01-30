@@ -1,154 +1,97 @@
 <template>
-  <a-form
-    :form="form"
-    class="form"
-    @submit="handleSubmit"
-  >
+  <a-form-model ref="ruleForm" :model="detail" :rules="rules" class="form" @submit="handleSubmit">
     <a-row class="form-row">
-      <a-col
-        :lg="6"
-        :md="12"
-        :sm="24"
-      >
-        <a-form-item :label="$t('trading_price')">
+      <a-col :lg="6" :md="12" :sm="24">
+        <a-form-model-item label="成交价" prop="trading_price">
           <a-input-number
-            v-decorator="[
-              'detail.trading_price',
-              {
-                rules: [
-                  {
-                    type: 'number',
-                    required: true,
-                    message: $ta('input|trading_price'),
-                    whitespace: true,
-                  },
-                ],
-              },
-            ]"
+            v-model="detail.trading_price"
             style="width: 100%"
-            :placeholder="$t('input')"
-            :formatter="
-              (value) => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-            "
+            placeholder="请输入"
+            :formatter="(value) => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
           />
-        </a-form-item>
+        </a-form-model-item>
       </a-col>
-      <a-col
-        :xl="{ span: 6, offset: 2 }"
-        :lg="{ span: 8 }"
-        :md="{ span: 12 }"
-        :sm="24"
-      >
-        <a-form-item :label="$t('trading_volume')">
+      <a-col :xl="{ span: 6, offset: 2 }" :lg="{ span: 8 }" :md="{ span: 12 }" :sm="24">
+        <a-form-model-item label="成交量" prop="trading_volume">
           <a-input-number
-            v-decorator="[
-              'detail.trading_volume',
-              {
-                rules: [
-                  {
-                    type: 'number',
-                    required: true,
-                    message: $ta('input|trading_volume'),
-                    whitespace: true,
-                  },
-                ],
-              },
-            ]"
+            v-model="detail.trading_volume"
             style="width: 100%"
-            :placeholder="$t('input')"
-            :formatter="
-              (value) => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-            "
+            placeholder="请输入"
+            :formatter="(value) => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
           />
-        </a-form-item>
+        </a-form-model-item>
       </a-col>
-      <a-col
-        :xl="{ span: 8, offset: 2 }"
-        :lg="{ span: 10 }"
-        :md="{ span: 24 }"
-        :sm="24"
-      >
-        <a-form-item :label="$t('trading_date')">
-          <a-date-picker
-            v-decorator="[
-              'detail.trading_date',
-              {
-                rules: [
-                  {
-                    type: 'date',
-                    required: true,
-                    message: $ta('input|trading_date'),
-                    whitespace: true,
-                  },
-                ],
-              },
-            ]"
-            style="width: 100%"
-            placeholder="请输入更新日期"
-          />
-        </a-form-item>
+      <a-col :xl="{ span: 8, offset: 2 }" :lg="{ span: 10 }" :md="{ span: 24 }" :sm="24">
+        <a-form-model-item label="成交时间" prop="trading_date">
+          <a-date-picker v-model="detail.trading_date" style="width: 100%" placeholder="请输入日期" />
+        </a-form-model-item>
       </a-col>
     </a-row>
     <a-row class="form-row">
-      <a-col
-        :lg="24"
-        :md="24"
-        :sm="24"
-      >
-        <a-form-item :label="$t('comment')">
-          <a-textarea
-            v-decorator="[
-              'detail.comment',
-              {
-                rules: [
-                  {
-                    required: false,
-                    message: $ta('input|comment'),
-                    whitespace: true,
-                  },
-                ],
-              },
-            ]"
-            rows="5"
-            :placeholder="$ta('input|comment')"
-          />
-        </a-form-item>
+      <a-col :lg="24" :md="24" :sm="24">
+        <a-form-model-item label="反省点" prop="comment">
+          <a-textarea v-model="detail.comment" rows="5" placeholder="请输入反省点" />
+        </a-form-model-item>
       </a-col>
     </a-row>
-    <a-form-item v-if="showSubmit">
-      <a-button html-type="submit">
-        Submit
-      </a-button>
-    </a-form-item>
-  </a-form>
+    <a-form-model-item v-if="showSubmit">
+      <a-button html-type="submit"> Submit </a-button>
+    </a-form-model-item>
+  </a-form-model>
 </template>
 
 <script>
 export default {
   name: 'DetailForm',
   props: {
-    isEdit: {
-      type: Boolean,
-      default: false
+    detail: {
+      type: Object,
+      default: null
     },
     showSubmit: {
       type: Boolean,
       default: false
     }
   },
-  i18n: require('./i18n-detail'),
-  data() {
+  data () {
     return {
-      form: this.$form.createForm(this)
+      rules: {
+        trading_price: [
+          {
+            required: true,
+            message: '请输入成交价',
+            trigger: 'blur'
+          }
+        ],
+        trading_date: [
+          {
+            required: true,
+            message: '请输入成交时间',
+            trigger: 'blur'
+          }
+        ],
+        trading_volume: [
+          {
+            required: true,
+            message: '请输入成交量',
+            trigger: 'blur'
+          }
+        ],
+        comment: [
+          {
+            required: true,
+            message: '请输入反省点',
+            trigger: 'blur'
+          }
+        ]
+      }
     }
   },
   methods: {
-    handleSubmit(e) {
-      e.preventDefault()
-      this.form.validateFields((err, { detail }) => {
-        if (!err) {
-          console.log('Received values of form: ', detail)
-          this.$emit('submit', detail)
+    handleSubmit () {
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          this.$emit('submit', this.detail)
         }
       })
     }
