@@ -66,10 +66,15 @@ class TradingService extends Service {
   }
 
   async update({ id, updates }) {
+    console.log(updates);
     const trading = await this.ctx.model.TradingPlan.findByPk(id);
     if (!trading) {
       this.ctx.throw(404, 'trading not found');
     }
+
+    const comment = await this.ctx.model.Comment.findByPk(updates.comments[0].id);
+    comment.update(updates.comments[0]);
+
     return trading.update(updates);
   }
 

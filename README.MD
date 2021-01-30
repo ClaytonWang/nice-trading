@@ -4,10 +4,10 @@
 
 ----
 
-### trading-cat-pc
-前端：是用vue-element-admin第三方样式组件库，直接拿来做PC前端架子。
+### fortune-cat-client
+前端：是用ant-vue-admin第三方样式组件库，直接拿来做PC前端架子。
 
-### trading-cat
+### fortune-cat-app
 前端：uni-app框架做的mobile端
 
 ### data-dog
@@ -38,7 +38,7 @@ cd app/data-dog
 sudo docker-compose up --build -d
 
 #web
-cd app/trading-cat-pc
+cd app/fortune-cat-client
 sudo docker-compose up --build -d
 
 ```
