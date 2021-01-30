@@ -5,7 +5,7 @@
       :data-source="dataSource"
       :loading="loading"
       row-key="id"
-      title="战法列表"
+      title="每日复盘"
       :format-conditions="true"
       @search="onSearch"
       @refresh="onRefresh"
@@ -37,7 +37,7 @@
         slot="c-title"
         slot-scope="{ record }"
       >
-        <a @click="$openPage('/strategy/edit/'+record.id,'编辑'+record.title)">{{ record.title }}</a>
+        <a @click="$openPage('/diary/edit/'+record.id,'编辑'+record.title)">{{ record.title }}</a>
       </template>
       <template
         slot="c-updated_at"
@@ -62,11 +62,11 @@
 </template>
 
 <script>
-import { list, del } from '@/api/strategy'
+import { list, del } from '@/api/diary'
 import AdvanceTable from '@/components/Table/advance/AdvanceTable'
 
 export default {
-  name: 'StrategyList',
+  name: 'DiaryList',
   components: { AdvanceTable },
   filters: {},
   data () {
@@ -85,15 +85,10 @@ export default {
           scopedSlots: { customRender: 'id' }
         },
         {
-          title: '战法名称',
+          title: '标题',
           dataIndex: 'title',
           key: 'title',
           scopedSlots: { customRender: 'c-title' }
-        },
-        {
-          title: '生态环境',
-          dataIndex: 'ecology',
-          key: 'ecology'
         },
         {
           title: '日期',
@@ -148,7 +143,7 @@ export default {
       })
     },
     addNew () {
-      this.$router.push({ name: 'CreateStrategy' })
+      this.$router.push({ name: 'CreateDiary' })
     },
     onSearch (conditions, searchOptions) {
       console.log(searchOptions)

@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 import { UserLayout, BasicLayout, BlankLayout } from '@/layouts'
-import { bxAnaalyse, trade, strategy } from '@/core/icons'
+import { bxAnaalyse, trade, strategy, diary } from '@/core/icons'
 
 const RouteView = {
   name: 'RouteView',
@@ -90,6 +90,34 @@ export const asyncRouterMap = [
             name: 'EditStrategy',
             component: () => import('@/views/strategy/Edit'),
             meta: { title: 'menu.strategy.edit', hidden: true, keepAlive: false, permission: ['dashboard'] }
+          }
+        ]
+      },
+      {
+        path: '/diary',
+        name: 'diary',
+        redirect: '/diary/list',
+        component: BlankLayout,
+        hideChildrenInMenu: true,
+        meta: { title: 'menu.diary', keepAlive: true, icon: diary, permission: ['dashboard'] },
+        children: [
+          {
+            path: '/diary/list',
+            name: 'DiaryList',
+            component: () => import('@/views/diary/List'),
+            meta: { title: 'menu.diary.list', keepAlive: false, permission: ['dashboard'] }
+          },
+          {
+            path: '/diary/create',
+            name: 'CreateDiary',
+            component: () => import('@/views/diary/Create'),
+            meta: { title: 'menu.diary.create', hidden: false, keepAlive: false, permission: ['dashboard'] }
+          },
+          {
+            path: '/diary/edit/:id(\\d+)',
+            name: 'EditDiary',
+            component: () => import('@/views/diary/Edit'),
+            meta: { title: 'menu.diary.edit', hidden: true, keepAlive: false, permission: ['dashboard'] }
           }
         ]
       },

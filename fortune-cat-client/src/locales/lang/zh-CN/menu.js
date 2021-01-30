@@ -41,5 +41,9 @@ export default {
   'menu.strategy': '战法',
   'menu.strategy.list': '战法列表',
   'menu.strategy.create': '新建战法',
-  'menu.strategy.edit': '编辑战法'
+  'menu.strategy.edit': '编辑战法',
+  'menu.diary': '复盘',
+  'menu.diary.list': '复盘列表',
+  'menu.diary.create': '新建复盘',
+  'menu.diary.edit': '编辑复盘'
 }
