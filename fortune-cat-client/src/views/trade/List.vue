@@ -1,81 +1,87 @@
 <template>
-  <div class="table">
-    <advance-table
-      :columns="columns"
-      :data-source="dataSource"
-      title=" "
-      :loading="loading"
-      row-key="id"
-      :format-conditions="true"
-      bordered
-      @search="onSearch"
-      @refresh="onRefresh"
-      @reset="onReset"
-      :pagination="{
-        current: page,
-        pageSize: pageSize,
-        total: total,
-        showSizeChanger: true,
-        showLessItems: true,
-        showQuickJumper: true,
-        showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条，总计 ${total} 条`,
-        onChange: onPageChange,
-        onShowSizeChange: onSizeChange,
-      }"
-    >
-      <template slot="add-new">
-        <a-tooltip title="新建">
-          <a-button class="action" type="primary" size="small" @click="addNew"> 新建 </a-button>
-        </a-tooltip>
-      </template>
+  <page-header-wrapper title=" ">
+    <template v-slot:content>
+      <div class="table">
+        <advance-table
+          :columns="columns"
+          :data-source="dataSource"
+          title=" "
+          :loading="loading"
+          row-key="id"
+          :format-conditions="true"
+          bordered
+          @search="onSearch"
+          @refresh="onRefresh"
+          @reset="onReset"
+          :pagination="{
+            current: page,
+            pageSize: pageSize,
+            total: total,
+            showSizeChanger: true,
+            showLessItems: true,
+            showQuickJumper: true,
+            showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条，总计 ${total} 条`,
+            onChange: onPageChange,
+            onShowSizeChange: onSizeChange,
+          }"
+        >
+          <template slot="add-new">
+            <a-tooltip title="新建">
+              <a-button class="action" type="primary" size="small" @click="addNew"> 新建 </a-button>
+            </a-tooltip>
+          </template>
 
-      <template slot="id" slot-scope="{ index }">
-        {{ index + 1 }}
-      </template>
+          <template slot="id" slot-scope="{ index }">
+            {{ index + 1 }}
+          </template>
 
-      <template slot="c-title" slot-scope="{ record }">
-        <a @click="$openPage('/trade/detail/' + record.id, record.name + ' (' + record.code + ')')">{{
-          record.name + ' (' + record.code + ')'
-        }}</a>
-      </template>
+          <template slot="c-title" slot-scope="{ record }">
+            <a @click="$openPage('/trade/detail/' + record.id, record.name + ' (' + record.code + ')')">{{
+              record.name + ' (' + record.code + ')'
+            }}</a>
+          </template>
 
-      <template slot="strategy-title" slot-scope="{ record }">
-        <a @click="$openPage('/strategy/edit/'+record.id)">{{ record.strategy.title }}</a>
-      </template>
+          <template slot="strategy-title" slot-scope="{ record }">
+            <a @click="$openPage('/strategy/edit/'+record.id)">{{ record.strategy.title }}</a>
+          </template>
 
-      <template slot="c-risk" slot-scope="{ record }">
-        {{ record.risk | NumberFormat }}
-      </template>
-      <template slot="c-plan_volume" slot-scope="{ record }">
-        {{ record.plan_volume | NumberFormat }}
-      </template>
+          <template slot="c-risk" slot-scope="{ record }">
+            {{ record.risk | NumberFormat }}
+          </template>
+          <template slot="c-plan_volume" slot-scope="{ record }">
+            {{ record.plan_volume | NumberFormat }}
+          </template>
 
-      <template slot="date" slot-scope="{ record }">
-        {{ record.exec_start_date | parseTime('{y}-{m}-{d}') }}
-        --
-        {{ record.exec_end_date | parseTime('{y}-{m}-{d}') }}
-      </template>
+          <template slot="date" slot-scope="{ record }">
+            {{ record.exec_start_date | parseTime('{y}-{m}-{d}') }}
+            --
+            {{ record.exec_end_date | parseTime('{y}-{m}-{d}') }}
+          </template>
 
-      <template slot="operation" slot-scope="{ record }">
-        <a style="margin-right: 15px" @click="edit(record)">编辑</a>
-        <a-popconfirm v-if="dataSource.length" title="确定删除吗?" @confirm="remove(record.id)">
-          <a href="#">删除</a>
-        </a-popconfirm>
-      </template>
-    </advance-table>
-    <a-modal
-      :centered="true"
-      :mask-closable="false"
-      :destroy-on-close="true"
-      :visible="showDlg"
-      :title="dlgTitle"
-      :confirm-loading="cmfLoading"
-      @ok="handleOk"
-      @cancel="showDlg = false"
-    >
-      <PlanForm ref="dataForm" :is-edit="isEdit" :plan="plan" />
-    </a-modal>
-  </div>
+          <template slot="operation" slot-scope="{ record }">
+            <a style="margin-right: 15px" @click="edit(record)">编辑</a>
+            <a-popconfirm v-if="dataSource.length" title="确定删除吗?" @confirm="remove(record.id)">
+              <a href="#">删除</a>
+            </a-popconfirm>
+          </template>
+        </advance-table>
+        <a-modal
+          :centered="true"
+          :mask-closable="false"
+          :destroy-on-close="true"
+          :visible="showDlg"
+          :title="dlgTitle"
+          :confirm-loading="cmfLoading"
+          @ok="handleOk"
+          @cancel="showDlg = false"
+        >
+          <PlanForm ref="dataForm" :is-edit="isEdit" :plan="plan" />
+        </a-modal>
+      </div>
+    </template>
+
+  </page-header-wrapper>
+
 </template>
 
 <script>
