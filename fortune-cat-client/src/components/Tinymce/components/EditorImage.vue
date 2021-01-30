@@ -53,20 +53,20 @@ export default {
       dialogVisible: false,
       previewImage: '',
       fileList: [
-        {
-          uid: '-1',
-          name: 'image.png',
-          status: 'done',
-          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-        },
-        {
-          uid: '-2',
-          name: 'image.png',
-          status: 'done',
-          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-        }
+        // {
+        //   uid: '-1',
+        //   name: 'image.png',
+        //   status: 'done',
+        //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+        // },
+        // {
+        //   uid: '-2',
+        //   name: 'image.png',
+        //   status: 'done',
+        //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+        // }
       ],
-      upLoadImgUrl: process.env.VUE_APP_BASE_API_UPLOAD
+      upLoadImgUrl: process.env.VUE_APP_BASE_API_UPLOAD + '/api/file'
     }
   },
   methods: {

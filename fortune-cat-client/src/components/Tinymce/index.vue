@@ -18,7 +18,8 @@ import toolbar from './toolbar'
 import load from './dynamicLoadScript'
 
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
-const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js'
+// const tinymceCDN = '//cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js'
+const tinymceCDN = 'https://cdn.bootcdn.net/ajax/libs/tinymce/4.9.6/tinymce.min.js'
 
 export default {
   name: 'Tinymce',
@@ -204,10 +205,11 @@ export default {
     imageSuccessCBK (arr) {
       // 此处可根据实际接口返回数据去处理图片拼接
       const _this = this
+      const baseUrl = process.env.VUE_APP_API_BASE_URL
       arr.forEach((v) => {
         let src = ''
-        if (v.url) {
-          src = v.url
+        if (v.response.url) {
+          src = baseUrl + v.response.url
         } else {
           src = v.response.files.file
         }

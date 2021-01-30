@@ -756,5 +756,5 @@ const userNav = (options) => {
   return json
 }
 
-Mock.mock(/\/api\/user\/info/, 'get', info)
+Mock.mock('http://localhost:7001/user/info', 'get', info)
 Mock.mock(/\/api\/user\/nav/, 'get', userNav)

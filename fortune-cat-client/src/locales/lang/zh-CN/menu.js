@@ -38,5 +38,8 @@ export default {
   'menu.account.logout': '退出登录',
   'menu.trade.list': '交易列表',
   'menu.trade': '交易',
-  'menu.trade.detail': '交易详情'
+  'menu.strategy': '战法',
+  'menu.strategy.list': '战法列表',
+  'menu.strategy.create': '新建战法',
+  'menu.strategy.edit': '编辑战法'
 }

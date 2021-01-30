@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 import { UserLayout, BasicLayout, BlankLayout } from '@/layouts'
-import { bxAnaalyse, trade } from '@/core/icons'
+import { bxAnaalyse, trade, strategy } from '@/core/icons'
 
 const RouteView = {
   name: 'RouteView',
@@ -47,7 +47,7 @@ export const asyncRouterMap = [
         path: '/trade',
         name: 'trade',
         redirect: '/trade/list',
-        component: RouteView,
+        component: BlankLayout,
         hideChildrenInMenu: true,
         meta: { title: 'menu.trade', keepAlive: true, icon: trade, permission: ['dashboard'] },
         children: [
@@ -62,6 +62,34 @@ export const asyncRouterMap = [
             name: 'TradeDetail',
             component: () => import('@/views/trade/Detail'),
             meta: { title: 'menu.trade.detail', hidden: true, keepAlive: false, permission: ['dashboard'] }
+          }
+        ]
+      },
+      {
+        path: '/strategy',
+        name: 'strategy',
+        redirect: '/strategy/list',
+        component: BlankLayout,
+        hideChildrenInMenu: true,
+        meta: { title: 'menu.strategy', keepAlive: true, icon: strategy, permission: ['dashboard'] },
+        children: [
+          {
+            path: '/strategy/list',
+            name: 'StrategyList',
+            component: () => import('@/views/strategy/List'),
+            meta: { title: 'menu.strategy.list', keepAlive: false, permission: ['dashboard'] }
+          },
+          {
+            path: '/strategy/create',
+            name: 'CreateStrategy',
+            component: () => import('@/views/strategy/Create'),
+            meta: { title: 'menu.strategy.create', hidden: false, keepAlive: false, permission: ['dashboard'] }
+          },
+          {
+            path: '/strategy/edit/:id(\\d+)',
+            name: 'EditStrategy',
+            component: () => import('@/views/strategy/Edit'),
+            meta: { title: 'menu.strategy.edit', hidden: true, keepAlive: false, permission: ['dashboard'] }
           }
         ]
       },

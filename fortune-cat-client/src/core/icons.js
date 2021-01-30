@@ -8,4 +8,5 @@
  */
 import bxAnaalyse from '@/assets/icons/bx-analyse.svg?inline' // path to your '*.svg?inline' file.
 import trade from '@/assets/icons/trade.svg?inline'
-export { bxAnaalyse, trade }
+import strategy from '@/assets/icons/strategy.svg?inline'
+export { bxAnaalyse, trade, strategy }
