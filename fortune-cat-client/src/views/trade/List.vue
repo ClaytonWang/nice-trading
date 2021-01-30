@@ -40,7 +40,14 @@
       </template>
 
       <template slot="strategy-title" slot-scope="{ record }">
-        <a-tag>{{ record.strategy.title }}</a-tag>
+        <a @click="$openPage('/strategy/edit/'+record.id)">{{ record.strategy.title }}</a>
+      </template>
+
+      <template slot="c-risk" slot-scope="{ record }">
+        {{ record.risk | NumberFormat }}
+      </template>
+      <template slot="c-plan_volume" slot-scope="{ record }">
+        {{ record.plan_volume | NumberFormat }}
       </template>
 
       <template slot="date" slot-scope="{ record }">
@@ -134,12 +141,14 @@ export default {
         {
           title: '风险额',
           dataIndex: 'risk',
-          key: 'risk'
+          key: 'risk',
+          scopedSlots: { customRender: 'c-risk' }
         },
         {
           title: '计划量',
           dataIndex: 'plan_volume',
-          key: 'plan_volume'
+          key: 'plan_volume',
+          scopedSlots: { customRender: 'c-plan_volume' }
         },
         {
           title: '起止日期',
