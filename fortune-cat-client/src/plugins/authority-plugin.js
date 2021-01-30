@@ -31,7 +31,7 @@ const hasInjected = (method) => method.toString().indexOf('//--auth-inject') !==
  * @param roles
  * @returns {boolean}
  */
-const auth = function(authConfig, permission, role, permissions, roles) {
+const auth = function (authConfig, permission, role, permissions, roles) {
   const { check, type } = authConfig
   if (check && typeof check === 'function') {
     return check.apply(this, [permission, role, permissions, roles])
@@ -51,7 +51,7 @@ const auth = function(authConfig, permission, role, permissions, roles) {
  * @param permission 权限
  * @returns {boolean}
  */
-const checkFromPermission = function(check, permission) {
+const checkFromPermission = function (check, permission) {
   return permission && permission.operation && permission.operation.indexOf(check) !== -1
 }
 
@@ -61,7 +61,7 @@ const checkFromPermission = function(check, permission) {
  * @param roles 角色数组
  * @returns {boolean}
  */
-const checkFromRoles = function(check, roles) {
+const checkFromRoles = function (check, roles) {
   if (!roles) {
     return false
   }
@@ -74,7 +74,7 @@ const checkFromRoles = function(check, roles) {
   return false
 }
 
-const checkInject = function(el, binding, vnode) {
+const checkInject = function (el, binding, vnode) {
   const type = binding.arg
   const check = binding.value
   const instance = vnode.context
@@ -86,7 +86,7 @@ const checkInject = function(el, binding, vnode) {
   }
 }
 
-const addDisabled = function(el) {
+const addDisabled = function (el) {
   if (el.tagName === 'BUTTON') {
     el.disabled = true
   } else {
@@ -95,27 +95,27 @@ const addDisabled = function(el) {
   el.setAttribute('title', '无此权限')
 }
 
-const removeDisabled = function(el) {
+const removeDisabled = function (el) {
   el.disabled = false
   el.classList.remove('disabled')
   el.removeAttribute('title')
 }
 
 const AuthorityPlugin = {
-  install(Vue) {
+  install (Vue) {
     Vue.directive('auth', {
-      bind(el, binding, vnode) {
+      bind (el, binding, vnode) {
         setTimeout(() => checkInject(el, binding, vnode), 10)
       },
-      componentUpdated(el, binding, vnode) {
+      componentUpdated (el, binding, vnode) {
         setTimeout(() => checkInject(el, binding, vnode), 10)
       },
-      unbind(el) {
+      unbind (el) {
         removeDisabled(el)
       }
     })
     Vue.mixin({
-      beforeCreate() {
+      beforeCreate () {
         if (this.$options.authorize) {
           const authorize = this.$options.authorize
           Object.keys(authorize).forEach(key => {
@@ -125,7 +125,7 @@ const AuthorityPlugin = {
                 let authConfig = authorize[key]
                 authConfig = (typeof authConfig === 'string') ? { check: authConfig } : authConfig
                 const { check, type, onFailure } = authConfig
-                this.$options.methods[key] = function() {
+                this.$options.methods[key] = function () {
                   // --auth-inject
                   if (this.$auth(check, type)) {
                     return method.apply(this, arguments)
@@ -152,7 +152,7 @@ const AuthorityPlugin = {
          * 如未设置，则自动识别，如匹配到当前路由 permission 则 type = permission，否则 type = role
          * @returns {boolean} 是否校验通过
          */
-        $auth(check, type) {
+        $auth (check, type) {
           const permissions = this.$store.getters['account/permissions']
           const roles = this.$store.getters['account/roles']
           const permission = getRoutePermission(permissions, this.$route)

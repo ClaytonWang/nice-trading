@@ -9,4 +9,3 @@ export default {
   components: { StrategyDetail }
 }
 </script>
-

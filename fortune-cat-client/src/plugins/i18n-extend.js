@@ -5,10 +5,10 @@ const MODE = {
 }
 
 const VueI18nPlugin = {
-  install: function(Vue) {
+  install: function (Vue) {
     Vue.mixin({
       methods: {
-        $ta(syntaxKey, mode) {
+        $ta (syntaxKey, mode) {
           const _mode = mode || MODE.STATEMENTS
           const keys = syntaxKey.split('|')
           const _this = this

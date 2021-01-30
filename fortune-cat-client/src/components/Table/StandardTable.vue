@@ -87,20 +87,20 @@ export default {
     expandedRowKeys: Array,
     expandedRowRender: Function
   },
-  data() {
+  data () {
     return {
       needTotalList: []
     }
   },
   computed: {
-    selectedRowKeys() {
+    selectedRowKeys () {
       return this.selectedRows.map(record => {
         return (typeof this.rowKey === 'function') ? this.rowKey(record) : record[this.rowKey]
       })
     }
   },
   watch: {
-    selectedRows(selectedRows) {
+    selectedRows (selectedRows) {
       this.needTotalList = this.needTotalList.map(item => {
         return {
           ...item,
@@ -118,15 +118,15 @@ export default {
       })
     }
   },
-  created() {
+  created () {
     this.needTotalList = this.initTotalList(this.columns)
   },
   methods: {
-    updateSelect(selectedRowKeys, selectedRows) {
+    updateSelect (selectedRowKeys, selectedRows) {
       this.$emit('update:selectedRows', selectedRows)
       this.$emit('selectedRowChange', selectedRowKeys, selectedRows)
     },
-    initTotalList(columns) {
+    initTotalList (columns) {
       const totalList = columns.filter(item => item.needTotal)
         .map(item => {
           return {
@@ -136,11 +136,11 @@ export default {
         })
       return totalList
     },
-    onClear() {
+    onClear () {
       this.updateSelect([], [])
       this.$emit('clear')
     },
-    onChange(pagination, filters, sorter, { currentDataSource }) {
+    onChange (pagination, filters, sorter, { currentDataSource }) {
       this.$emit('change', pagination, filters, sorter, { currentDataSource })
     }
   }

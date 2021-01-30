@@ -38,13 +38,13 @@ export default {
   name: 'ActionSize',
   props: ['value'],
   inject: ['table'],
-  data() {
+  data () {
     return {
       selectedKeys: ['middle']
     }
   },
   methods: {
-    onClick({ key }) {
+    onClick ({ key }) {
       this.$emit('input', key)
     }
   }
