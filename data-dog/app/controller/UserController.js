@@ -1,6 +1,7 @@
 'use strict';
 
 const Controller = require('egg').Controller;
+const { builder } = require('../utils/util');
 
 class UserController extends Controller {
 
@@ -15,28 +16,8 @@ class UserController extends Controller {
 
   // eg: get api/trade/1
   async show() {
-    const users = {
-      'admin-token': {
-        roles: [ 'admin' ],
-        introduction: 'I am a super administrator',
-        avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-        name: 'Super Admin',
-      },
-      'editor-token': {
-        roles: [ 'editor' ],
-        introduction: 'I am an editor',
-        avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-        name: 'Normal Editor',
-      },
-    };
     const ctx = this.ctx;
-    const { token } = ctx.query;
-    const info = users[token];
-    // ctx.body = await ctx.service.userService.find(ctx.helper.parseInt(ctx.params.id));
-    ctx.body = {
-      code: 20000,
-      data: info,
-    };
+    ctx.body = await ctx.service.userService.find(ctx.helper.parseInt(ctx.params.id));
   }
 
   // eg: post api/trade
@@ -64,24 +45,66 @@ class UserController extends Controller {
     ctx.status = 200;
   }
 
-  async login() {
-
-    const tokens = {
-      admin: {
-        token: 'admin-token',
-      },
-      editor: {
-        token: 'editor-token',
-      },
-    };
-
+  async info() {
     const ctx = this.ctx;
-    const { username } = ctx.request.body;
-    const token = tokens[username];
-    ctx.body = {
-      code: 20000,
-      data: token,
+    const userInfo = {
+      id: '4291d7da9005377ec9aec4a71ea837f',
+      name: '穿越牛熊',
+      username: 'admin',
+      password: '',
+      avatar: '/avatar2.jpg',
+      status: 1,
+      telephone: '',
+      lastLoginIp: '27.154.74.117',
+      lastLoginTime: 1534837621348,
+      creatorId: 'admin',
+      createTime: 1497160610259,
+      merchantCode: 'TLif2btpzg079h15bk',
+      deleted: 0,
+      roleId: 'admin',
+      role:
+      {
+        id: 'admin',
+        name: '管理员',
+        describe: '拥有所有权限',
+        status: 1,
+        creatorId: 'system',
+        createTime: 1497160610259,
+        deleted: 0,
+        permissions: [
+          {
+            roleId: 'admin',
+            permissionId: 'dashboard',
+            permissionName: '仪表盘',
+            actions: '[{"action":"add","defaultCheck":false,"describe":"新增"},{"action":"query","defaultCheck":false,"describe":"查询"},{"action":"get","defaultCheck":false,"describe":"详情"},{"action":"update","defaultCheck":false,"describe":"修改"},{"action":"delete","defaultCheck":false,"describe":"删除"}]',
+            actionEntitySet: [{
+              action: 'add',
+              describe: '新增',
+              defaultCheck: false,
+            }, {
+              action: 'query',
+              describe: '查询',
+              defaultCheck: false,
+            }, {
+              action: 'get',
+              describe: '详情',
+              defaultCheck: false,
+            }, {
+              action: 'update',
+              describe: '修改',
+              defaultCheck: false,
+            }, {
+              action: 'delete',
+              describe: '删除',
+              defaultCheck: false,
+            }],
+            actionList: null,
+            dataAccess: null,
+          },
+        ],
+      },
     };
+    ctx.body = builder(userInfo);
   }
 }
 
