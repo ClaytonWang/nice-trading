@@ -6,8 +6,6 @@ ENV EGG_SERVER_ENV production
 ENV NODE_ENV production
 ENV NODE_CONFIG_ENV production
 
-RUN npm install yarn -g
-
 WORKDIR /app
 COPY . .
 
