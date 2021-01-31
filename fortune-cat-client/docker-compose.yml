@@ -1,0 +1,20 @@
+version: "3"
+services:
+  fortune-cat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fortune-cat
+    environment:
+      - ENV_NAME=production
+      - VIRTUAL_HOST=cat.moyebuy.com
+      - VIRTUAL_PORT=8080
+      - LETSENCRYPT_HOST=cat.moyebuy.com
+      - LETSENCRYPT_EMAIL=lovejunlic@qq.com
+    restart: always
+    ports:
+      - 8080:80
+networks:
+  default:
+    external:
+      name: webproxy
