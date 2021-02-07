@@ -260,7 +260,7 @@ export default {
           plan.exec_start_date = plan.date[0]
           plan.exec_end_date = plan.date[1]
           plan.plan_volume = this.plan_volume(plan)
-          plan.comments[0].comment = plan.comment
+          // plan.comments[0].comment = plan.comment
           console.log(plan)
           if (this.isEdit) {
             this.cmfLoading = true
