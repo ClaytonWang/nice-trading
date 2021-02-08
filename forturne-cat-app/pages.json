@@ -117,7 +117,24 @@
 					}
 				}
 			}
-		}, 
+		},
+		{
+			"path": "pages/public/strategy-list",
+			"style": {
+				"app-plus": {
+					"titleNView": {
+						//"type": "transparent",//透明渐变导航栏 App-nvue 2.4.4+ 支持
+						"searchInput": {
+							"align": "left",
+							"backgroundColor": "rgba(231, 231, 231,.7)",
+							"borderRadius": "16px",
+							"placeholder": "搜索",
+							"placeholderColor": "#606266"
+						}
+					}
+				}
+			}
+		},
 		{
 			"path": "pages/setting/setting",
 			"style": {

@@ -1,6 +1,6 @@
 <template>
 	<mescroll-body ref="mescrollRef" @init="mescrollInit" @up="upCallback" @down="downCallback">
-		<MyEditor ref="my_editor" :title="title" :content="article" :readOnly="!isEdit" />
+		<MyEditor ref="my_editor" :title="title" :content="article" :readOnly="!isEdit" :useHtml="true" />
 		<wyb-loading ref="loading" />
 	</mescroll-body>
 </template>
@@ -123,7 +123,8 @@
 					id
 				});
 				if (res && res.data) {
-					this.article = res.data.delta;
+					this.article = res.data.content;
+					
 					if (res.data.title) {
 						this.title = res.data.title;
 						uni.setNavigationBarTitle({

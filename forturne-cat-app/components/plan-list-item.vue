@@ -50,7 +50,12 @@
 				<view class="col">{{item.priority | formatPriority}}</view>
 				<view class="col">{{item.created_at | moment("MM/DD HH:mm")}}</view>
 			</view>
-
+			<view class="s-row row-title">
+				<view class="col">适用战法</view>
+			</view>
+			<view class="s-row row-amount">
+				<view class="col">{{item.strategy && item.strategy.title}}</view>
+			</view>
 		</view>
 		<view class="bottom">
 			<view class="s-row row-title">
@@ -59,6 +64,7 @@
 					<uni-icons type="plusempty" color="blue" size="20" @click="addComment(item.id)" style="margin-left: 15px;"></uni-icons>
 				</view>
 			</view>
+			
 			<template v-for="(cItem,cIndex) in item.comments">
 				<view class="s-row row-title" :key="cIndex">
 					<view class="col">

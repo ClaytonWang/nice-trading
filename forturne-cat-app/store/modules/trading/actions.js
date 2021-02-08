@@ -10,6 +10,8 @@ import * as comment from '@/api/comment.js';
 
 import * as notepad from '@/api/notepad.js';
 
+import * as strategy from '@/api/strategy.js';
+
 export default {
 	async searchStock({commit},keyword){
 		try{
@@ -173,6 +175,14 @@ export default {
 			return await notepad.get(param);
 		}catch(e){
 			console.log(e);
+		}
+	},
+	
+	async getStrategy({commit},id){
+		try{
+			return await strategy.get({id});
+		}catch(e){
+			console.log(e)
 		}
 	},
 };

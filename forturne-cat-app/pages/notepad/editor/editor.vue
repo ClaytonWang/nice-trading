@@ -94,6 +94,10 @@
 			readOnly:{
 				type:Boolean,
 				default:false
+			},
+			useHtml:{
+				type:Boolean,
+				default:true
 			}
 		},
 		data() {
@@ -110,8 +114,14 @@
 			content(v){
 				if(!this.editorCtx) return;
 				if(v){
-					const delta = JSON.parse(v);
-					this.editorCtx.setContents({ delta });
+					if(this.useHtml){
+						this.editorCtx.setContents({
+							html:v
+						});
+					}else{
+						const delta = JSON.parse(v);
+						this.editorCtx.setContents({ delta });
+					}
 				}else{
 					this.editorCtx.setContents({
 						html:template.note
@@ -124,8 +134,14 @@
 				uni.createSelectorQuery().select('#my_editor').context((res) => {
 					this.editorCtx = res.context;
 					if(this.content){
-						const delta = JSON.parse(this.content);
-						this.editorCtx.setContents({ delta });
+						if(this.useHtml){
+							this.editorCtx.setContents({
+								html:this.content
+							});
+						}else{
+							const delta = JSON.parse(this.content);
+							this.editorCtx.setContents({ delta });
+						}
 					}else{
 						this.editorCtx.setContents({
 							html:template.note

@@ -5,6 +5,10 @@
 			<text v-if="!plan_id" class="cell-more" @click="navTo('/pages/public/stock-list')">请选择</text>
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
+			<text class="cell-tit">{{strategyLabel}}</text>
+			<text class="cell-more" @click="navTo('/pages/public/strategy-list')">请选择</text>			
+		</view>
+		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">计划价</text>
 			<input v-model="form.plan_price" type="number" class="cell-input" placeholder="请输价格" />
 		</view>
@@ -86,6 +90,7 @@
 				format: true
 			})
 			return {
+				strategyLabel:'战法',
 				searchRslt: [],
 				stockLabel: '股票',
 				plan_id:'',
@@ -164,15 +169,20 @@
 					this.form = res.data;
 					this.stockLabel = this.form.name+'('+this.form.code+')';
 				}
+				let strategy = await this.getStrategy(this.form.strategy_id);
+				if(strategy && strategy.data){
+					this.strategyLabel = strategy.data.title+'('+strategy.data.id+')';
+				}
 			}
 			uni.$on('selectStock', this.selectStock)
+			uni.$on('selectStrategy', this.selectStrategy)
 		},
 		onUnload() {
 			uni.$off('selectStock', this.selectStock)
 		},
 		methods: {
-			...mapActions('Trading', ['addPlan','getPlan']),
-			select() {},
+			...mapActions('Trading', ['addPlan','getPlan','getStrategy']),
+			
 			selectStock({
 				stock
 			}) {
@@ -181,6 +191,13 @@
 					this.form.name = this.stockLabel.split(" (")[0];
 					this.form.code = this.stockLabel.split(" (")[1].replace(")", "");
 					this.form.symbol = stock.item.key;
+				}
+			},
+			selectStrategy({strategy}){
+				this.strategyLabel = strategy.item.name;
+				if (this.strategyLabel) {
+					this.form.strategy_id = this.strategyLabel.split(" (")[1].replace(")", "");
+					console.log(this.form.strategy_id)
 				}
 			},
 			async submit() {
