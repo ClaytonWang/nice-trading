@@ -23,7 +23,7 @@
 	</view>
 </template>
 <script>
-	import API from '../api/api.js'
+	import API from '../utils/global.js'
 	export default {
 		props:{
 			planId:{
@@ -60,7 +60,7 @@
 								title: '上传中...'
 							});
 							uni.uploadFile({
-								url: API.BASE_URL+'/api/file', // 接口地址
+								url: API.REQUEST_URL+'/api/file', // 接口地址
 								filePath: img,
 								name: 'image',
 								formData:{
@@ -69,7 +69,7 @@
 								},
 								success(res) {
 									const data = JSON.parse(res.data);
-									let img_url = API.BASE_URL+data.url;
+									let img_url = API.REQUEST_URL+data.url;
 								},
 								fail: function(res){
 									console.log(res)

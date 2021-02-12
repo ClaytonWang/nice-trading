@@ -12,8 +12,12 @@
 			<view class="label">添加备注:</view>
 			<view class="comments">
 				<uni-forms border>
-					<uni-easyinput type="textarea" autoHeight :maxlength="-1" :trim="true" :clearable="false" v-model="cmt.comment"
-					 placeholder="请输入内容"></uni-easyinput>
+					 <textarea v-model="cmt.comment" 
+						placeholder-style="color:#F76260" 
+						placeholder="请输入内容" 
+						:maxlength="-1" 
+						auto-height
+						style="width: 100%; font-size: 28upx;"></textarea>
 				</uni-forms>
 			</view>
 		</view>

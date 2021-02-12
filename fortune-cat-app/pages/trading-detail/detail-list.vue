@@ -31,7 +31,7 @@
 	import DetailItem from '@/components/detail-list-item.vue';
 	import StockImage from '@/components/stock-image.vue';
 	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
-	import API from '../../api/api.js'
+	import API from '../../utils/global.js'
 	export default {
 		components: {
 			uniPopup,
@@ -94,7 +94,7 @@
 					this.planInfo = res.data;
 					if(this.planInfo.images && this.planInfo.images.length > 0){
 						this.imageList = this.planInfo.images.map((i)=>{
-							return i.image_url = API.BASE_URL+i.image_url;
+							return i.image_url = API.REQUEST_URL+i.image_url;
 						});
 						console.log(this.imageList)
 					}

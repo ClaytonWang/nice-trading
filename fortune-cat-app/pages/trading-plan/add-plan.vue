@@ -53,7 +53,13 @@
 			<text @click="selectPriority" class="cell-more">请选择</text>
 		</view>
 		<view class="list-cell" hover-class="cell-hover" :hover-stay-time="50" v-if="!plan_id">
-			<textarea v-model="form.comment" placeholder="备忘,理由" style="width: 100%; font-size: 28upx;"></textarea>
+			<textarea 
+				v-model="form.comment" 
+				placeholder="备忘,理由" 
+				placeholder-style="color:#F76260"
+				:maxlength="-1" 
+				auto-height
+				style="width: 100%; font-size: 28upx;"></textarea>
 		</view>
 		<button class="submit" @click="submit">确认</button>
 		<wyb-loading ref="loading" />
