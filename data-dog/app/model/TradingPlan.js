@@ -25,6 +25,7 @@ module.exports = app => {
     app.model.TradingPlan.hasMany(app.model.TradingDetail, { foreignKey: 'trading_plan_id', constraints: false });
     app.model.TradingPlan.hasMany(app.model.Comment, { foreignKey: 'trading_plan_id', constraints: false });
     app.model.TradingPlan.belongsTo(app.model.Strategy, { foreignKey: 'strategy_id', constraints: false });
+    app.model.TradingPlan.hasMany(app.model.Image, { foreignKey: 'trading_plan_id', constraints: false });
   };
 
   return TradingPlan;

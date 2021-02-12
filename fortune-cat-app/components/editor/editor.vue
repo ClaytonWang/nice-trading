@@ -79,7 +79,7 @@
 </template>
 
 <script>
-	import template from '../../../utils/note_template.js'
+	import template from '../../utils/note_template.js'
 	export default {
 		name:"MyEditor",
 		props:{

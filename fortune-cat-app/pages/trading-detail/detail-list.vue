@@ -3,6 +3,7 @@
 		<mescroll-body ref="mescrollRef" @init="mescrollInit" @up="upCallback" @down="downCallback">
 			<!-- 列表 -->
 			<PlanItem :item="planInfo" @delPlan="delelePlan"></PlanItem>
+			<StockImage :planId="planInfo.id" :imageList="imageList" />
 			<view class="coin-section m-t">
 				<template v-for="(item,index) in planInfo.trading_details">
 					<DetailItem :item="item" :name="planInfo.name" :code="planInfo.code" @delDetail="deleteDetail" :key="index"></DetailItem>
@@ -28,14 +29,17 @@
 	import wybLoading from '@/components/wyb-loading/wyb-loading.vue';
 	import PlanItem from '@/components/plan-list-item.vue';
 	import DetailItem from '@/components/detail-list-item.vue';
+	import StockImage from '@/components/stock-image.vue';
 	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
+	import API from '../../api/api.js'
 	export default {
 		components: {
 			uniPopup,
 			uniIcons,
 			wybLoading,
 			PlanItem,
-			DetailItem
+			DetailItem,
+			StockImage
 		},
 		mixins: [commonMixin,MescrollMixin],
 		filters: {
@@ -52,6 +56,7 @@
 				mescroll: null,
 				planInfo: {},
 				plan_id: '',
+				imageList:[]
 			};
 		},
 		onLoad(options) {
@@ -87,6 +92,13 @@
 				const res = await this.getPlan(id);
 				if (res && res.data) {
 					this.planInfo = res.data;
+					if(this.planInfo.images && this.planInfo.images.length > 0){
+						this.imageList = this.planInfo.images.map((i)=>{
+							return i.image_url = API.BASE_URL+i.image_url;
+						});
+						console.log(this.imageList)
+					}
+					
 				}
 				this.mescroll.endBySize(1, 1);
 			},

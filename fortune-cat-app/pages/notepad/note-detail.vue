@@ -15,7 +15,7 @@
 	} from '@/common/mixin/mixin.js';
 	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
 	import wybLoading from '@/components/wyb-loading/wyb-loading.vue';
-	import MyEditor from './editor/editor.vue';
+	import MyEditor from '../../components/editor/editor.vue';
 	export default {
 		mixins: [commonMixin, MescrollMixin],
 		components: {

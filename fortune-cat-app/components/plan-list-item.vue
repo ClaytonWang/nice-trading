@@ -31,14 +31,14 @@
 				</view>
 			</view>
 			<view class="s-row row-title">
-				<view class="col">数量(股)</view>
+				<view class="col">总额/股数</view>
 				<view class="col">益损比</view>
 				<view class="col">风险额</view>
 			</view>
 			<view class="s-row row-amount">
-				<view class="col">{{item.plan_volume | fixed}}</view>
+				<view class="col">{{plan_totoal(item.plan_price,item.plan_volume) | fixed }}/{{item.plan_volume | fixed}}</view>
 				<view class="col red">{{profitLostRate(item) | fixed(2,'%')}}</view>
-				<view class="col">{{item.risk | fixed}}￥</view>
+				<view class="col">{{item.risk | fixed}}</view>
 			</view>
 			<view class="s-row row-title">
 				<view class="col">入场时间</view>
@@ -265,6 +265,11 @@
 				} = item;
 				if (plan_price && stop_loss && take_profit) {
 					return (Math.abs(take_profit - plan_price) / Math.abs(plan_price - stop_loss) * 100).toFixed(2);
+				}
+			},
+			plan_totoal(plan_price,plan_volume) {
+				if (plan_price && plan_volume) {
+					return (plan_price * plan_volume).toFixed(2);
 				}
 			},
 			async changeStatus(e, item) {

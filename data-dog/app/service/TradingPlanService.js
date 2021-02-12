@@ -19,6 +19,9 @@ class TradingService extends Service {
       }, {
         attributes: [ 'id', 'title', 'created_at' ],
         model: this.ctx.model.Strategy,
+      }, {
+        attributes: [ 'id', 'image_url', 'created_at' ],
+        model: this.ctx.model.Image,
       }],
     };
     if (status !== undefined) {
@@ -57,6 +60,8 @@ class TradingService extends Service {
         model: this.ctx.model.Strategy,
       }, {
         model: this.ctx.model.Comment,
+      }, {
+        model: this.ctx.model.Image,
       }],
     });
     if (!trading) {
@@ -85,6 +90,8 @@ class TradingService extends Service {
           model: this.ctx.model.TradingDetail,
         }, {
           model: this.ctx.model.Comment,
+        }, {
+          model: this.ctx.model.Image,
         }],
       });
 
@@ -96,6 +103,9 @@ class TradingService extends Service {
       }
       for (const comment of plan.comments) {
         comment.destroy();
+      }
+      for (const image of plan.images) {
+        image.destroy();
       }
       plan.destroy();
     } catch (err) {

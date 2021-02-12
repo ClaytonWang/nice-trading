@@ -134,7 +134,10 @@
 					risk
 				} = this.form;
 				if (plan_price && stop_loss && risk) {
-					return (risk / Math.abs(plan_price - stop_loss)).toFixed(2);
+					let tmp = (risk / Math.abs(plan_price - stop_loss)).toFixed(2);
+					return Math.floor(tmp / 100) * 100;
+				}else{
+					return 0;
 				}
 			},
 			plan_totoal() {
