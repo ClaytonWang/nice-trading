@@ -13,6 +13,7 @@ class AuthController extends Controller {
     const body = this.ctx.request.body;
     if (!username.includes(body.username) || !password.includes(body.password)) {
       this.ctx.body = builder({ isLogin: true }, '账户或密码错误', 401);
+      this.ctx.status = 401;
     } else {
       this.ctx.body = builder({
         id: '1',
@@ -31,6 +32,7 @@ class AuthController extends Controller {
         lang: 'zh-CN',
         token: '4291d7da9005377ec9aec4a71ea837f',
       }, '', 200, { 'Custom-Header': '8914de686ab28dc22f30d3d8e107ff6c' });
+      this.ctx.status = 200;
     }
   }
 

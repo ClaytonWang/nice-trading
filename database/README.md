@@ -1,5 +1,12 @@
 # data-dog
 
+### 本地创建mysql
+``` sh
+
+docker run --name mysql -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MYSQL_USER=nice_trading -e MYSQL_PASSWORD=Password1 -e MYSQL_ROOT_USER=root -e MYSQL_ROOT_PASSWORD=Password1 -e MYSQL_DATABASE=my_trading -e MYSQL_AUTHENTICATION_PLUGIN=mysql_native_password bitnami/mysql:5.7
+
+```
+
 ### sequelize
 ``` javascript
 //安装 sequelize-cli
