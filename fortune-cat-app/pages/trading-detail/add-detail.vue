@@ -37,7 +37,7 @@
 			<text class="cell-tit">{{stamp_tax}}</text>
 		</view>
 		<view class="list-cell" hover-class="cell-hover" :hover-stay-time="50" v-if="!form.id">
-			<textarea placeholder="心得感悟" style="width: 100%; font-size: 28upx;" v-model="form.comment"></textarea>
+			<textarea placeholder="心得感悟" :maxlength="-1" style="width: 100%; font-size: 28upx;" v-model="form.comment"></textarea>
 		</view>
 		<button class="submit" @click="submit">确认</button>
 		<wyb-loading ref="loading" />

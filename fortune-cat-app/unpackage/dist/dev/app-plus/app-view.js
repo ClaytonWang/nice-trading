@@ -10026,7 +10026,11 @@ var render = function() {
             [
               _c("v-uni-textarea", {
                 staticStyle: { width: "100%", "font-size": "28upx" },
-                attrs: { placeholder: "心得感悟", _i: 29 },
+                attrs: {
+                  placeholder: "心得感悟",
+                  maxlength: _vm._$g(29, "a-maxlength"),
+                  _i: 29
+                },
                 model: {
                   value: _vm._$g(29, "v-model"),
                   callback: function($$v) {
