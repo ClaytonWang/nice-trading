@@ -198,7 +198,7 @@ export default {
     }),
     currentUser () {
       return {
-        name: 'Serati Ma',
+        name: '穿越牛熊99',
         avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
       }
     },

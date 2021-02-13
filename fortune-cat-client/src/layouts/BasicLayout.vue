@@ -31,7 +31,7 @@
     <template v-slot:headerContentRender>
       <div>
         <a-tooltip title="刷新页面">
-          <a-icon type="reload" style="font-size: 18px;cursor: pointer;" @click="() => { $message.info('只是一个DEMO') }" />
+          <a-icon type="reload" style="font-size: 18px;cursor: pointer;" @click="() => { reload() }" />
         </a-tooltip>
       </div>
     </template>
@@ -66,6 +66,7 @@ import LogoSvg from '../assets/logo.svg?inline'
 
 export default {
   name: 'BasicLayout',
+  inject: ['reload'],
   components: {
     SettingDrawer,
     RightContent,
@@ -82,7 +83,7 @@ export default {
       // base
       menus: [],
       // 侧栏收起状态
-      collapsed: false,
+      collapsed: true,
       title: defaultSettings.title,
       settings: {
         // 布局类型

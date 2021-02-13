@@ -26,6 +26,26 @@
           </a-list>
         </a-descriptions-item>
       </a-descriptions>
+      <div class="clearfix">
+        <a-upload
+          :action="uploadAction"
+          :data="{trading_plan_id:tradingPlan.id}"
+          list-type="picture-card"
+          :file-list="fileList"
+          @preview="handlePreview"
+          @change="handleChange"
+        >
+          <div v-if="fileList.length < 8">
+            <a-icon type="plus" />
+            <div class="ant-upload-text">
+              Upload
+            </div>
+          </div>
+        </a-upload>
+        <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+          <img alt="example" style="width: 100%" :src="previewImage" />
+        </a-modal>
+      </div>
     </template>
 
     <!-- actions -->
@@ -40,11 +60,11 @@
       <a-row class="status-list">
         <a-col :xs="12" :sm="12">
           <div class="text">状态</div>
-          <div class="heading">持仓中</div>
+          <div class="heading">{{ currentPositions.status }}</div>
         </a-col>
         <a-col :xs="12" :sm="12">
           <div class="text">盈利</div>
-          <div class="heading">¥ 568.08</div>
+          <div class="heading">{{ currentPositions.total | NumberFormat }}</div>
         </a-col>
       </a-row>
     </template>
@@ -118,6 +138,16 @@ import { baseMixin } from '@/store/app-mixin'
 import DetailForm from './DetailForm.vue'
 import { create, update, del } from '@/api/trading-detail'
 import { fetch } from '@/api/trading-plan'
+import { UPLOAD as UPLOAD_URL } from '@/api/api'
+
+function getBase64 (file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = error => reject(error)
+  })
+}
 
 export default {
   name: 'TradeDetail',
@@ -133,7 +163,17 @@ export default {
       tradingType: '',
       cmfLoading: false,
       dlgTitle: '',
-      showDlg: false
+      showDlg: false,
+      currentPositions: {
+          volume: 0,
+          total: 0,
+          status: ''
+        },
+      uploadAction: process.env.VUE_APP_API_BASE_URL + UPLOAD_URL,
+      previewVisible: false,
+      previewImage: '',
+      fileList: [
+      ]
     }
   },
   created () {
@@ -157,6 +197,19 @@ export default {
     }
   },
   methods: {
+    handleCancel () {
+      this.previewVisible = false
+    },
+    async handlePreview (file) {
+      if (!file.url && !file.preview) {
+        file.preview = await getBase64(file.originFileObj)
+      }
+      this.previewImage = file.url || file.preview
+      this.previewVisible = true
+    },
+    handleChange ({ fileList }) {
+      this.fileList = fileList
+    },
     handleTabChange (key) {
       console.log('')
       this.tabActiveKey = key
@@ -165,6 +218,13 @@ export default {
       fetch(id)
         .then((data) => {
           this.tradingPlan = data
+          this.calPositions(data.trading_details)
+          this.fileList = data.images.map(x => {
+            return { url: x.image_url,
+            uid: x.id,
+            name: 'image.png',
+            status: 'done' }
+          })
           console.log(this.tradingPlan)
         })
         .catch((err) => {
@@ -245,6 +305,32 @@ export default {
         this.tradingPlan.trading_details.splice(index, 1)
         this.$message.success('删除成功')
       })
+    },
+    calPositions (details) {
+      if (details && details.length > 0) {
+        const buy = details.filter(x => { return x.trading_type === 'BUY' })
+        const sell = details.filter(x => { return x.trading_type === 'SELL' })
+
+        let buyVolume = 0
+        let buyTotal = 0
+        for (const b of buy) {
+          buyVolume = buyVolume + b.trading_volume
+          buyTotal = buyTotal + buyVolume * parseFloat(b.trading_price)
+        }
+
+        let sellVolume = 0
+        let sellTotal = 0
+        for (const s of sell) {
+          sellVolume = sellVolume + s.trading_volume
+          sellTotal = sellTotal + sellVolume * parseFloat(s.trading_price)
+        }
+
+        this.currentPositions = {
+          volume: buyVolume - sellVolume,
+          total: sellTotal - buyTotal,
+          status: (buyVolume - sellVolume) <= 0 ? '已清仓' : '持仓中'
+        }
+      }
     }
   }
 }

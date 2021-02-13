@@ -49,7 +49,7 @@
             {{ record.risk | NumberFormat }}
           </template>
           <template slot="c-plan_volume" slot-scope="{ record }">
-            {{ record.plan_volume | NumberFormat }}
+            {{ record.plan_volume }}
           </template>
 
           <template slot="date" slot-scope="{ record }">
