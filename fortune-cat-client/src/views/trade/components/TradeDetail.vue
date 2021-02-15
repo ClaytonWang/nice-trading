@@ -236,14 +236,18 @@ export default {
       this.tradingType = 'BUY'
       this.showDlg = true
       this.dlgTitle = '买入'
-      this.tradingDetail = {}
+      this.tradingDetail = {
+        trading_date: this.$moment()
+      }
     },
     sell () {
       this.isEdit = false
       this.tradingType = 'SELL'
       this.showDlg = true
       this.dlgTitle = '卖出'
-      this.tradingDetail = {}
+      this.tradingDetail = {
+        trading_date: this.$moment()
+      }
     },
     totoal (price, volume) {
       return parseFloat(price) * parseFloat(volume)

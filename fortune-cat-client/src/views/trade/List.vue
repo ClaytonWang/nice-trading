@@ -13,17 +13,7 @@
           @search="onSearch"
           @refresh="onRefresh"
           @reset="onReset"
-          :pagination="{
-            current: page,
-            pageSize: pageSize,
-            total: total,
-            showSizeChanger: true,
-            showLessItems: true,
-            showQuickJumper: true,
-            showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条，总计 ${total} 条`,
-            onChange: onPageChange,
-            onShowSizeChange: onSizeChange,
-          }"
+          :pagination="pagination"
         >
           <template slot="add-new">
             <a-tooltip title="新建">

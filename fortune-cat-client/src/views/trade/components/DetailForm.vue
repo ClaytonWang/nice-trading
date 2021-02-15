@@ -23,7 +23,10 @@
       </a-col>
       <a-col :xl="{ span: 8, offset: 2 }" :lg="{ span: 10 }" :md="{ span: 24 }" :sm="24">
         <a-form-model-item label="成交时间" prop="trading_date">
-          <a-date-picker v-model="detail.trading_date" style="width: 100%" placeholder="请输入日期" />
+          <a-date-picker
+            v-model="detail.trading_date"
+            style="width: 100%"
+            placeholder="请输入日期" />
         </a-form-model-item>
       </a-col>
     </a-row>
