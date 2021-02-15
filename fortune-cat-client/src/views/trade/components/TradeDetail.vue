@@ -26,7 +26,7 @@
           </a-list>
         </a-descriptions-item>
       </a-descriptions>
-      <div class="clearfix">
+      <div class="clearfix" style="margin-top:20px">
         <a-upload
           :action="uploadAction"
           :data="{trading_plan_id:tradingPlan.id}"

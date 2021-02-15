@@ -236,9 +236,10 @@ export default {
       this.plan = newPlan()
     },
     plan_volume (plan) {
-      const { plan_price, stop_loss, risk } = plan
+      let { plan_price, stop_loss, risk } = plan
+      risk = parseFloat(risk)
       if (plan_price && stop_loss && risk) {
-        return (risk / Math.abs(plan_price - stop_loss)).toFixed(2)
+        return (parseFloat(risk) / Math.abs(parseFloat(plan_price) - parseFloat(stop_loss))).toFixed(2)
       }
       return 0
     },

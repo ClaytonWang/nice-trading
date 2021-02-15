@@ -29,6 +29,7 @@ module.exports = app => {
   router.resources('user', '/api/user', controller.userController);
   router.resources('notepad', '/api/notepad', controller.notePadController);
   router.resources('strategy', '/api/strategy', controller.strategyController);
+  router.resources('analysis', '/api/analysis', controller.analysisController);
 
   router.get('/api/file', controller.fileStoreController.show);
   router.post('/api/file', controller.fileStoreController.upload);

@@ -8,5 +8,6 @@ module.exports = {
   },
   STOCK: `${process.env.VUE_APP_PUBLIC_PATH}/suggest/type=&name=suggestdata&key=`,
   DIARY: `/api/notepad`,
-  UPLOAD: `/api/file`
+  UPLOAD: `/api/file`,
+  ANALYSIS: `/api/analysis`
 }
