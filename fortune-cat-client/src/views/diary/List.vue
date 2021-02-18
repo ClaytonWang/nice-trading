@@ -101,19 +101,7 @@ export default {
           key: 'operation',
           scopedSlots: { customRender: 'operation' }
         }
-      ],
-      pagination: {
-        current: this.page,
-        pageSize: this.pageSize,
-        total: this.total,
-        showSizeChanger: true,
-        showLessItems: true,
-        showQuickJumper: true,
-        showTotal: (total, range) =>
-          `第 ${range[0]}-${range[1]} 条，总计 ${total} 条`,
-        onChange: this.onPageChange,
-        onShowSizeChange: this.onSizeChange
-      }
+      ]
     }
   },
   created () {

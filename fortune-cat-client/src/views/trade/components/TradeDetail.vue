@@ -220,7 +220,7 @@ export default {
           this.tradingPlan = data
           this.calPositions(data.trading_details)
           this.fileList = data.images.map(x => {
-            return { url: x.image_url,
+            return { url: process.env.VUE_APP_API_BASE_URL + x.image_url,
             uid: x.id,
             name: 'image.png',
             status: 'done' }

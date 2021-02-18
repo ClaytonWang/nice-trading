@@ -13,7 +13,17 @@
           @search="onSearch"
           @refresh="onRefresh"
           @reset="onReset"
-          :pagination="pagination"
+          :pagination="{
+            current: page,
+            pageSize: pageSize,
+            total: total,
+            showSizeChanger: true,
+            showLessItems: true,
+            showQuickJumper: true,
+            showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条，总计 ${total} 条`,
+            onChange: onPageChange,
+            onShowSizeChange: onSizeChange
+          }"
         >
           <template slot="add-new">
             <a-tooltip title="新建">
@@ -158,17 +168,6 @@ export default {
           scopedSlots: { customRender: 'operation' }
         }
       ],
-      pagination: {
-        current: this.page,
-        pageSize: this.pageSize,
-        total: this.total,
-        showSizeChanger: true,
-        showLessItems: true,
-        showQuickJumper: true,
-        showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条，总计 ${total} 条`,
-        onChange: this.onPageChange,
-        onShowSizeChange: this.onSizeChange
-      },
       plan: newPlan()
     }
   },
