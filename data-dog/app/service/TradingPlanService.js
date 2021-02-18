@@ -2,9 +2,10 @@
 
 const Service = require('egg').Service;
 const moment = require('moment');
+const { Op } = require('sequelize');
 
 class TradingService extends Service {
-  async list({ offset = 0, limit = 10, status }) {
+  async list({ offset = 0, limit = 10, status, start, end }) {
 
     const options = {
       offset,
@@ -25,6 +26,14 @@ class TradingService extends Service {
         model: this.ctx.model.Image,
       }],
     };
+    if (start && end) {
+      options.where = {
+        exec_end_date: {
+          [Op.gte]: start,
+          [Op.lte]: end,
+        },
+      };
+    }
     if (status !== undefined) {
       options.where = {
         status,

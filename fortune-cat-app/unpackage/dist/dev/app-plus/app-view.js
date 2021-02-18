@@ -4311,40 +4311,82 @@ var render = function() {
         { staticClass: _vm._$g(1, "sc"), attrs: { _i: 1 } },
         [
           _c(
-            "v-uni-text",
-            { staticClass: _vm._$g(2, "sc"), attrs: { _i: 2 } },
+            "v-uni-checkbox-group",
+            {
+              attrs: { _i: 2 },
+              on: {
+                change: function($event) {
+                  return _vm.$handleViewEvent($event)
+                }
+              }
+            },
             [
-              _vm._v("盈利"),
               _c(
-                "v-uni-text",
-                { staticClass: _vm._$g(3, "sc"), attrs: { _i: 3 } },
-                [_vm._v("共 0 个")]
+                "v-uni-label",
+                { attrs: { _i: 3 } },
+                [
+                  _c("v-uni-checkbox", {
+                    staticStyle: { transform: "scale(0.8)" },
+                    attrs: {
+                      value: "cb",
+                      checked: "true",
+                      color: "#FFCC33",
+                      _i: 4
+                    }
+                  }),
+                  _vm._v("过滤")
+                ],
+                1
               )
             ],
             1
           ),
           _c(
-            "v-uni-text",
-            { staticClass: _vm._$g(4, "sc"), attrs: { _i: 4 } },
+            "v-uni-picker",
+            {
+              attrs: {
+                mode: "date",
+                value: _vm._$g(5, "a-value"),
+                start: _vm._$g(5, "a-start"),
+                end: _vm._$g(5, "a-end"),
+                _i: 5
+              },
+              on: {
+                change: function($event) {
+                  return _vm.$handleViewEvent($event)
+                }
+              }
+            },
             [
-              _vm._v("亏损"),
               _c(
-                "v-uni-text",
-                { staticClass: _vm._$g(5, "sc"), attrs: { _i: 5 } },
-                [_vm._v("共 0 个")]
+                "v-uni-view",
+                { staticClass: _vm._$g(6, "sc"), attrs: { _i: 6 } },
+                [_vm._v(_vm._$g(6, "t0-0"))]
               )
             ],
             1
           ),
           _c(
-            "v-uni-text",
-            { staticClass: _vm._$g(6, "sc"), attrs: { _i: 6 } },
+            "v-uni-picker",
+            {
+              attrs: {
+                mode: "date",
+                value: _vm._$g(7, "a-value"),
+                start: _vm._$g(7, "a-start"),
+                end: _vm._$g(7, "a-end"),
+                _i: 7
+              },
+              on: {
+                change: function($event) {
+                  return _vm.$handleViewEvent($event)
+                }
+              }
+            },
             [
-              _vm._v("风险"),
               _c(
-                "v-uni-text",
-                { staticClass: _vm._$g(7, "sc"), attrs: { _i: 7 } },
-                [_vm._v("共 4%")]
+                "v-uni-view",
+                { staticClass: _vm._$g(8, "sc"), attrs: { _i: 8 } },
+                [_vm._v(_vm._$g(8, "t0-0"))]
               )
             ],
             1
@@ -4356,7 +4398,7 @@ var render = function() {
         "mescroll-body",
         {
           ref: "mescrollRef",
-          attrs: { _i: 8 },
+          attrs: { _i: 9 },
           on: {
             init: function($event) {
               return _vm.$handleViewEvent($event)
@@ -4372,12 +4414,12 @@ var render = function() {
         [
           _c(
             "uni-list",
-            { attrs: { _i: 9 } },
-            _vm._l(_vm._$g(10, "f"), function(item, index, $20, $30) {
+            { attrs: { _i: 10 } },
+            _vm._l(_vm._$g(11, "f"), function(item, index, $20, $30) {
               return _c("uni-list-item", {
                 key: item,
-                staticClass: _vm._$g("10-" + $30, "sc"),
-                attrs: { _i: "10-" + $30 },
+                staticClass: _vm._$g("11-" + $30, "sc"),
+                attrs: { _i: "11-" + $30 },
                 on: {
                   click: function($event) {
                     return _vm.$handleViewEvent($event)

@@ -10,6 +10,8 @@ class TradeController extends Controller {
       limit: ctx.helper.parseInt(ctx.query.limit),
       offset: ctx.helper.parseInt(ctx.query.offset),
       status: ctx.query.status ? ctx.helper.parseInt(ctx.query.status) : undefined,
+      start: ctx.query.start ? ctx.query.start : undefined,
+      end: ctx.query.end ? ctx.query.end : undefined,
     };
     ctx.body = await ctx.service.tradingPlanService.list(query);
   }

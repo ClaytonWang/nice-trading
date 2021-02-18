@@ -1,9 +1,17 @@
 <template>
 	<view class="container">
 		<view class="header">
-			<text class="title">盈利<text class="count">共 0 个</text></text>
-			<text class="title">亏损<text class="count">共 0 个</text></text>
-			<text class="title">风险<text class="count">共 4% </text></text>
+			<checkbox-group @change="checkboxChange">
+				<label>
+					<checkbox value="cb" checked="true" color="#FFCC33" style="transform:scale(0.8)" />过滤
+				</label>
+			</checkbox-group>
+			<picker mode="date" :value="form.exec_start_date" :start="startDate" :end="endDate" @change="bindStartDateChange">
+				<view class="uni-input">{{form.exec_start_date | moment("YYYY-MM-DD")}}</view>
+			</picker>
+			<picker mode="date" :value="form.exec_end_date" :start="startDate" :end="endDate" @change="bindEndDateChange">
+				<view class="uni-input">{{form.exec_end_date | moment("YYYY-MM-DD")}}</view>
+			</picker>
 		</view>
 		<mescroll-body ref="mescrollRef" @init="mescrollInit" @up="upCallback" @down="downCallback">
 			<uni-list :border="true">
@@ -30,9 +38,16 @@
 			PlanItem,
 		},
 		data() {
+			const currentDate = this.getDate({
+				format: true
+			})
 			return {
 				mescroll: null,
 				plan_list: [],
+				form: {
+					exec_start_date: currentDate,
+					exec_end_date: currentDate,
+				},
 			}
 		},
 
@@ -51,10 +66,47 @@
 			});
 		},
 		// #endif
+		computed:{
+			startDate() {
+				return this.getDate('start');
+			},
+			endDate() {
+				return this.getDate('end');
+			},
+		},
 		methods: {
 			...mapActions('Trading', ['getPlanList']),
 			mescrollInit(mescroll) {
 				this.mescroll = mescroll;
+			},
+			async checkboxChange(e) {
+				if(e.detail.value.length > 0){
+					//checked
+					await this.getList({
+						offset:0,
+						limit:20,
+						start:this.form.exec_start_date,
+						end:this.form.exec_end_date
+					});
+				}
+			},
+			async bindStartDateChange(e) {
+				this.form.exec_start_date = e.target.value;
+				await this.getList({
+					offset:0,
+					limit:20,
+					start:e.target.value,
+					end:this.form.exec_end_date
+				});
+			},
+			async bindEndDateChange(e) {
+				this.form.exec_end_date = e.target.value;
+				await this.getList({
+					offset:0,
+					limit:20,
+					start:this.form.exec_start_date,
+					end:e.target.value
+				});
 			},
 			async getList(params) {
 				const res = await this.getPlanList(params);
@@ -78,7 +130,7 @@
 			async upCallback(page) {
 				let offset = page.num; // 页码, 默认从1开始
 				let limit = page.size; // 页长, 默认每页10条
-				offset = (offset-1) * limit;
+				offset = (offset - 1) * limit;
 				await this.getList({
 					offset,
 					limit
@@ -105,7 +157,22 @@
 				} else {
 					return '0.00'
 				}
-			}
+			},
+			getDate(type) {
+				const date = new Date();
+				let year = date.getFullYear();
+				let month = date.getMonth() + 1;
+				let day = date.getDate();
+			
+				if (type === 'start') {
+					year = year - 60;
+				} else if (type === 'end') {
+					year = year + 2;
+				}
+				month = month > 9 ? month : '0' + month;;
+				day = day > 9 ? day : '0' + day;
+				return `${year}-${month}-${day}`;
+			},
 		}
 	}
 </script>
