@@ -10,6 +10,7 @@ class StrategyService extends Service {
     const options = {
       offset,
       limit,
+      distinct: true,
       order: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]],
     };
     return this.ctx.model.Strategy.findAndCountAll(options);

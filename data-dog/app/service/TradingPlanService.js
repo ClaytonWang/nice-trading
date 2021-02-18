@@ -9,7 +9,8 @@ class TradingService extends Service {
     const options = {
       offset,
       limit,
-      order: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]],
+      distinct: true,
+      order: [[ 'exec_end_date', 'desc' ]],
       include: [{
         // association: this.ctx.model.TradingPlan.hasMany(this.ctx.model.TradingDetail, { foreignKey: 'trading_plan_id', constraints: false }),
         model: this.ctx.model.TradingDetail,

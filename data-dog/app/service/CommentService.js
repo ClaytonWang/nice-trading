@@ -10,6 +10,7 @@ class CommentService extends Service {
     const options = {
       offset,
       limit,
+      distinct: true,
       order: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]],
     };
     if (trading_plan_id) {

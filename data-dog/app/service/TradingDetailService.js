@@ -8,8 +8,9 @@ class TradingDetailService extends Service {
     const options = {
       offset,
       limit,
+      distinct: true,
       // attributes: [ 'id', 'trading_plan_id', 'created_at', 'updated_at' ],
-      order: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]],
+      order: [[ 'created_at', 'desc' ]],
       include: [{
         model: this.ctx.model.TradingPlan,
         // attributes: [ 'id', 'code', 'symbol', 'name', 'created_at', 'updated_at' ],

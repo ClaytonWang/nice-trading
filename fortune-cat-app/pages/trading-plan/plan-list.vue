@@ -7,16 +7,8 @@
 		</view>
 		<mescroll-body ref="mescrollRef" @init="mescrollInit" @up="upCallback" @down="downCallback">
 			<uni-list :border="true">
-			    <uni-list-item
-				v-for="(item,index) in plan_list"
-				class="list-item"
-				:showArrow="true"
-				:ellipsis="1" 
-				:key="index" 
-				:title="item.name+'('+item.code+')'"
-				:note="noteLable(item)"
-				clickable
-				@click="navTo(item.id,item.name,item.code,item.symbol)"></uni-list-item>
+				<uni-list-item v-for="(item,index) in plan_list" class="list-item" :showArrow="true" :ellipsis="1" :key="index"
+				 :title="item.name+'('+item.code+')'" :note="noteLable(item)" clickable @click="navTo(item.id,item.name,item.code,item.symbol)"></uni-list-item>
 			</uni-list>
 		</mescroll-body>
 	</view>
@@ -84,8 +76,9 @@
 				this.mescroll.resetUpScroll();
 			},
 			async upCallback(page) {
-				let offset = page.num - 1; // 页码, 默认从1开始
+				let offset = page.num; // 页码, 默认从1开始
 				let limit = page.size; // 页长, 默认每页10条
+				offset = (offset-1) * limit;
 				await this.getList({
 					offset,
 					limit
@@ -96,21 +89,22 @@
 					url: `/pages/trading-detail/detail-list?plan_id=${id}&name=${name}&code=${code}&symbol=${symbol}`
 				})
 			},
-			noteLable(item){
-				return "止损:"+this.fixed(item.stop_loss)+"  止赢:"+this.fixed(item.take_profit)+' 日期:' + moment.parseZone(item.exec_start_date).local().format('YYYY-MM-DD');
+			noteLable(item) {
+				return "止损:" + this.fixed(item.stop_loss) + "  止赢:" + this.fixed(item.take_profit) + ' 日期:' + moment.parseZone(item
+					.exec_start_date).local().format('YYYY-MM-DD');
 			},
-			fixed(v, scale,unit){
-					  if(v){
-						  if(!scale){
-							  scale = 2
-						  }
-						  if(!unit){
-							  unit = "";
-						  }
-						  return parseFloat(v).toFixed(scale) +unit;
-					  }else{
-						  return '0.00'
-					  }
+			fixed(v, scale, unit) {
+				if (v) {
+					if (!scale) {
+						scale = 2
+					}
+					if (!unit) {
+						unit = "";
+					}
+					return parseFloat(v).toFixed(scale) + unit;
+				} else {
+					return '0.00'
+				}
 			}
 		}
 	}
@@ -119,16 +113,18 @@
 	.container {
 		padding: $page-row-spacing;
 		width: 100%;
+
 		.header {
 			display: flex;
 			flex-direction: row;
 			justify-content: space-between;
-		
+
 			.title {
 				font-size: $font-md;
 			}
 		}
-		.list-item{
+
+		.list-item {
 			margin-top: 5px;
 		}
 	}
