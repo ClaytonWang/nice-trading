@@ -7,6 +7,18 @@ docker run --name mysql -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MYSQL_USER=n
 
 ```
 
+### 手动备份一次
+```sh
+  docker run --network webproxy \
+    -v '/home/azureuser/nice-trading/database/data/backup:/backup' \
+    -e DBHOST=trading-db \
+    -e DBNAMES=my_trading \
+    -e USERNAME=root \
+    -e PASSWORD=Password1 \
+    database_mysql-auto-backup
+
+```
+
 ### sequelize
 ``` javascript
 //安装 sequelize-cli
