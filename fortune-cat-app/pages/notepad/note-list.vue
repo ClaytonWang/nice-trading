@@ -71,7 +71,7 @@
 			this.mescroll.resetUpScroll();
 		},
 		async upCallback(page) {
-			let offset = page.num - 1; // 页码, 默认从1开始
+			let offset = page.num; // 页码, 默认从1开始
 			let limit = page.size; // 页长, 默认每页10条
 			offset = (offset-1) * limit;
 			await this.getList({
