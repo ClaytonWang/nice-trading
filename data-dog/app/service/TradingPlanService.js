@@ -11,7 +11,7 @@ class TradingService extends Service {
       offset,
       limit,
       distinct: true,
-      order: [[ 'exec_end_date', 'desc' ]],
+      order: [[ 'id', 'desc' ]],
       include: [{
         // association: this.ctx.model.TradingPlan.hasMany(this.ctx.model.TradingDetail, { foreignKey: 'trading_plan_id', constraints: false }),
         model: this.ctx.model.TradingDetail,

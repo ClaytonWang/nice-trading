@@ -2,16 +2,18 @@
 
 const Subscription = require('egg').Subscription;
 
-const sqlstr1 = `SELECT t.id,
-t.risk,
-td.trading_type,
-td.trading_date,
+const sqlstr1 = `
+SELECT t.id,
 td.trading_price,
-td.trading_volume
+td.trading_volume,
+td.commission,
+td.stamp_tax,
+td.trading_type,
+td.trading_date
 from trading_plan t
 INNER JOIN trading_detail td on t.id = td.trading_plan_id
 where t.id not in (select plan_id FROM analysis_report)
-ORDER BY t.id DESC,td.updated_at DESC;
+ORDER BY t.id DESC,td.trading_date DESC;
 `;
 
 const sqlstr2 = `SELECT DISTINCT t.id from trading_plan t
@@ -23,7 +25,7 @@ ORDER BY t.id DESC;`;
 class CalcAnalyst extends Subscription {
   static get schedule() {
     return {
-      interval: '10m', // 任务的间隔时间, 这个定义的10秒执行一次
+      interval: '60m', // 任务的间隔时间, 这个定义的10秒执行一次
       type: 'all', // 指定所有的 worker都需要执行
       immediate: true, // 项目启动就执行一次定时任务
     };
@@ -36,16 +38,14 @@ class CalcAnalyst extends Subscription {
 
         let mountBuy = 0;
         let volumeBuy = 0;
-        let risk = 0;
         let start_date = '';
         const dataBuy = dataPlans.filter(x => {
           return x.id === idItem.id && x.trading_type === 'BUY';
         });
         if (dataBuy && dataBuy.length > 0) {
           for (const buy of dataBuy) {
-            risk = buy.risk;
             start_date = buy.trading_date;// 因为DESC 所以 开始时间为买入的最后一条记录
-            mountBuy = mountBuy + parseFloat(buy.trading_price) * parseFloat(buy.trading_volume);
+            mountBuy = mountBuy + parseFloat(buy.commission) + parseFloat(buy.trading_price) * parseFloat(buy.trading_volume);
             volumeBuy = volumeBuy + parseFloat(buy.trading_volume);
           }
         }
@@ -61,7 +61,7 @@ class CalcAnalyst extends Subscription {
           if (!end_date) {
             end_date = sell.trading_date;
           }
-          mountSell = mountSell + parseFloat(sell.trading_price) * parseFloat(sell.trading_volume);
+          mountSell = mountSell - parseFloat(sell.commission) - parseFloat(sell.stamp_tax) + parseFloat(sell.trading_price) * parseFloat(sell.trading_volume);
           volumeSell = volumeSell + parseFloat(sell.trading_volume);
         }
 
@@ -79,7 +79,6 @@ class CalcAnalyst extends Subscription {
           start_date,
           end_date,
         };
-        console.log(model);
         await this.ctx.service.analysisReportService.create(model);
 
       }

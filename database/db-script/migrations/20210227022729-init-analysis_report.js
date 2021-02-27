@@ -11,7 +11,6 @@ module.exports = {
       profit: { type: DECIMAL(12, 4), allowNull: true },//收益
       start_date: { type: DATE, allowNull: true },//建仓日期
       end_date: { type: DATE, allowNull: true },//清仓日期
-      total_comment: { type: TEXT, allowNull: true }, //所有的备忘
       created_at: { type: DATE, defaultValue: Sequelize.NOW, allowNull: false },
       updated_at: { type: DATE, defaultValue: Sequelize.NOW, allowNull: false },
     });

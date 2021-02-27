@@ -2,17 +2,38 @@
 
 const Service = require('egg').Service;
 const moment = require('moment');
+const { Op } = require('sequelize');
 
 class AnalysisReportService extends Service {
 
-  async list({ offset = 0, limit = 10 }) {
+  async list({ offset = 0, limit = 10, start, end }) {
 
     const options = {
       offset,
       limit,
       distinct: true,
-      order: [[ 'id', 'desc' ]],
+      order: [[ 'plan_id', 'asc' ]],
+      attributes: [ 'id', 'total_amount', 'total_volume', 'profit', 'start_date', 'end_date' ],
+      include: [{
+        attributes: [ 'name', 'code', 'risk' ],
+        model: this.ctx.model.TradingPlan,
+        include: [{
+          attributes: [ 'title' ],
+          model: this.ctx.model.Strategy,
+        }, {
+          attributes: [ 'comment' ],
+          model: this.ctx.model.Comment,
+        }],
+      }],
     };
+    if (start && end) {
+      options.where = {
+        end_date: {
+          [Op.gte]: start,
+          [Op.lte]: end,
+        },
+      };
+    }
     return this.ctx.model.AnalysisReport.findAndCountAll(options);
   }
 

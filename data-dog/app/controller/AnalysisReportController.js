@@ -8,6 +8,8 @@ class AnalysisReportController extends Controller {
     const query = {
       limit: ctx.helper.parseInt(ctx.query.limit),
       offset: ctx.helper.parseInt(ctx.query.offset),
+      start: ctx.query.start ? ctx.query.start : undefined,
+      end: ctx.query.end ? ctx.query.end : undefined,
     };
     ctx.body = await ctx.service.analysisReportService.list(query);
     ctx.status = 200;
