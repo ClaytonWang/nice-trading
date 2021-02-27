@@ -1,11 +1,12 @@
 'use strict';
 
 const Service = require('egg').Service;
+const moment = require('moment');
 
 const sqlstr = `SELECT tp.name,tp.code,td.trading_volume,trading_price,trading_type,strategy.title FROM trading_plan tp INNER JOIN trading_detail td on tp.id = td.trading_plan_id
-INNER JOIN strategy on tp.strategy_id = strategy.id;`;
+INNER JOIN strategy on tp.strategy_id = strategy.id ORDER BY tp.name;`;
 
-const sqlstr2 = 'SELECT DISTINCT tp.name,tp.code,strategy.title FROM trading_plan tp INNER JOIN trading_detail td on tp.id = td.trading_plan_id INNER Join strategy on strategy.id = tp.strategy_id';
+const sqlstr2 = 'SELECT DISTINCT tp.name,tp.code,strategy.title FROM trading_plan tp INNER JOIN trading_detail td on tp.id = td.trading_plan_id INNER Join strategy on strategy.id = tp.strategy_id ORDER BY tp.name';
 class AnalysisService extends Service {
 
   async totalAnalysis() {
@@ -78,6 +79,37 @@ class AnalysisService extends Service {
       winMount,
       strategyUse,
     };
+  }
+
+  async create(model) {
+    const ctx = this.ctx;
+    model.updated_at = moment().utc().format();
+    const data = await ctx.model.Analysis.create(model);
+    return data;
+  }
+
+  async find(id) {
+    const model = await this.ctx.model.Analysis.findByPk(id);
+    if (!model) {
+      this.ctx.throw(404, 'Analysis not found');
+    }
+    return model;
+  }
+
+  async update({ id, updates }) {
+    const model = await this.ctx.model.Analysis.findByPk(id);
+    if (!model) {
+      this.ctx.throw(404, 'Analysis not found');
+    }
+    return model.update(updates);
+  }
+
+  async del(id) {
+    const model = await this.ctx.model.Analysis.findByPk(id);
+    if (!model) {
+      this.ctx.throw(404, 'Analysis not found');
+    }
+    return model.destroy();
   }
 
 }

@@ -44,6 +44,39 @@ class AnalysisController extends Controller {
     ctx.status = 200;
   }
 
+  // eg: get api/trade/1
+  async show() {
+    const ctx = this.ctx;
+    ctx.body = await ctx.service.analysisService.find(ctx.helper.parseInt(ctx.params.id));
+    ctx.status = 200;
+  }
+
+  // eg: post api/trade
+  async create() {
+    const ctx = this.ctx;
+    // ctx.validate(createRule, ctx.request.body);
+    const commment = await ctx.service.analysisService.create(ctx.request.body);
+    ctx.body = commment;
+    ctx.status = 201;
+  }
+
+  // eg: put api/trade/1
+  async update() {
+    const ctx = this.ctx;
+    const id = ctx.helper.parseInt(ctx.params.id);
+    const body = ctx.request.body;
+    ctx.body = await ctx.service.analysisService.update({ id, updates: body });
+    ctx.status = 200;
+  }
+
+  // eg: delete api/trade/1
+  async destroy() {
+    const ctx = this.ctx;
+    const id = ctx.helper.parseInt(ctx.params.id);
+    await ctx.service.analysisService.del(id);
+    ctx.status = 200;
+  }
+
 }
 
 module.exports = AnalysisController;
