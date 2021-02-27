@@ -24,8 +24,8 @@ class AnalysisReportController extends Controller {
   async create() {
     const ctx = this.ctx;
     // ctx.validate(createRule, ctx.request.body);
-    const commment = await ctx.service.analysisReportService.create(ctx.request.body);
-    ctx.body = commment;
+    const data = await ctx.service.analysisReportService.create(ctx.request.body);
+    ctx.body = data;
     ctx.status = 201;
   }
 

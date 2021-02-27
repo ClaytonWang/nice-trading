@@ -8,7 +8,6 @@ module.exports = {
       plan_id: { type: INTEGER, allowNull: false },
       total_amount: { type: DECIMAL(12, 4), allowNull: true },//总持仓成本
       total_volume: { type: INTEGER, allowNull: true },//总持仓量
-      risk: { type: DECIMAL(12, 4), allowNull: true },//风险额
       profit: { type: DECIMAL(12, 4), allowNull: true },//收益
       start_date: { type: DATE, allowNull: true },//建仓日期
       end_date: { type: DATE, allowNull: true },//清仓日期
