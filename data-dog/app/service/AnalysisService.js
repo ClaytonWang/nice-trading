@@ -27,7 +27,7 @@ class AnalysisService extends Service {
         let montBuy = 0;
         let volumeBuy = 0;
         for (const buy of dataBuy) {
-          montBuy = montBuy + parseFloat(buy.trading_price) * parseFloat(buy.trading_volume);
+          montBuy = montBuy + parseFloat(buy.commission) + parseFloat(buy.trading_price) * parseFloat(buy.trading_volume);
           volumeBuy = volumeBuy + parseFloat(buy.trading_volume);
         }
 
@@ -37,36 +37,39 @@ class AnalysisService extends Service {
         let montSell = 0;
         let volumeSell = 0;
         for (const sell of dataSell) {
-          montSell = montSell + parseFloat(sell.trading_price) * parseFloat(sell.trading_volume);
+          montSell = montSell - parseFloat(sell.commission) - parseFloat(sell.stamp_tax) + parseFloat(sell.trading_price) * parseFloat(sell.trading_volume);
           volumeSell = volumeSell + parseFloat(sell.trading_volume);
         }
 
-        // 清仓的才计算
-        if ((volumeBuy - volumeSell) <= 0) {
-          const profit = montSell - montBuy; // 负数为亏损，正数为盈利
-          strategyUse[stock.title] = {};
-          if (profit >= 0) {
-            succCount = succCount + 1;
-            winMount = profit + winMount;
-            strategyUse[stock.title] = {
-              total: !strategyUse[stock.title].total ? 1 : strategyUse[stock.title].total + 1,
-              win: !strategyUse[stock.title].win ? 1 : strategyUse[stock.title].win + 1,
-            };
-            strategyUse[stock.title].fail = strategyUse[stock.title].total - strategyUse[stock.title].win;
-          } else {
-            failCount = failCount + 1;
-            lostMount = profit + lostMount;
-            strategyUse[stock.title] = {
-              total: !strategyUse[stock.title].total ? 1 : strategyUse[stock.title].total + 1,
-              fail: !strategyUse[stock.title].fail ? 1 : strategyUse[stock.title].fail + 1,
-            };
-            strategyUse[stock.title].win = strategyUse[stock.title].total - strategyUse[stock.title].fail;
-          }
-          result.push({
-            ...stock,
-            profit,
-          });
+
+        // 没有清仓的票不计算
+        if ((volumeBuy - volumeSell) > 0) {
+          continue;
         }
+
+        const profit = montSell - montBuy; // 负数为亏损，正数为盈利
+        strategyUse[stock.title] = {};
+        if (profit >= 0) {
+          succCount = succCount + 1;
+          winMount = profit + winMount;
+          strategyUse[stock.title] = {
+            total: !strategyUse[stock.title].total ? 1 : strategyUse[stock.title].total + 1,
+            win: !strategyUse[stock.title].win ? 1 : strategyUse[stock.title].win + 1,
+          };
+          strategyUse[stock.title].fail = strategyUse[stock.title].total - strategyUse[stock.title].win;
+        } else {
+          failCount = failCount + 1;
+          lostMount = profit + lostMount;
+          strategyUse[stock.title] = {
+            total: !strategyUse[stock.title].total ? 1 : strategyUse[stock.title].total + 1,
+            fail: !strategyUse[stock.title].fail ? 1 : strategyUse[stock.title].fail + 1,
+          };
+          strategyUse[stock.title].win = strategyUse[stock.title].total - strategyUse[stock.title].fail;
+        }
+        result.push({
+          ...stock,
+          profit,
+        });
       }
     }
     return {

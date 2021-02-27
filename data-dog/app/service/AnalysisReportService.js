@@ -47,7 +47,7 @@ class AnalysisReportService extends Service {
   async find(id) {
     const model = await this.ctx.model.AnalysisReport.findByPk(id);
     if (!model) {
-      this.ctx.throw(404, 'Analysis not found');
+      this.ctx.throw(404, 'Analysis report not found');
     }
     return model;
   }
@@ -55,7 +55,7 @@ class AnalysisReportService extends Service {
   async update({ id, updates }) {
     const model = await this.ctx.model.AnalysisReport.findByPk(id);
     if (!model) {
-      this.ctx.throw(404, 'Analysis not found');
+      this.ctx.throw(404, 'Analysis report not found');
     }
     return model.update(updates);
   }
@@ -63,7 +63,7 @@ class AnalysisReportService extends Service {
   async del(id) {
     const model = await this.ctx.model.AnalysisReport.findByPk(id);
     if (!model) {
-      this.ctx.throw(404, 'Analysis not found');
+      this.ctx.throw(404, 'Analysis report not found');
     }
     return model.destroy();
   }
