@@ -4,6 +4,7 @@ const Service = require('egg').Service;
 const moment = require('moment');
 const { Op } = require('sequelize');
 
+const sqlstr2 = '';
 class AnalysisReportService extends Service {
 
   async list({ offset = 0, limit = 10, start, end }) {
@@ -66,6 +67,16 @@ class AnalysisReportService extends Service {
       this.ctx.throw(404, 'Analysis report not found');
     }
     return model.destroy();
+  }
+
+  async delByPlanId(plan_id) {
+    await this.ctx.model.AnalysisReport.destroy(
+      {
+        where: {
+          plan_id,
+        },
+      }
+    );
   }
 
 }

@@ -22,6 +22,11 @@ class TradeDetailController extends Controller {
     const ctx = this.ctx;
     // ctx.validate(createRule, ctx.request.body);
     const tadeDetail = await ctx.service.tradingDetailService.create(ctx.request.body);
+
+    // 删除AnalysisReport表里的数据，因为增加记录后，得重新算
+    const plan_id = ctx.request.body.trading_plan_id;
+    await ctx.service.analysisReportService.delByPlanId(plan_id);
+
     ctx.body = tadeDetail;
     ctx.status = 201;
   }
