@@ -18,11 +18,21 @@
 						</div>
 					</refresh>
 					<cell>
-						<uni-section title="基础卡片" type="line"></uni-section>
-						<uni-list :border="true">
-							<uni-list-item v-for="(item,index) in tab.data" class="list-item" :showArrow="true" :ellipsis="1" :key="index"
-							 :title="item.name+'('+item.code+')'" :note="noteLable(item)" clickable @click="navTo(item.id,item.name,item.code,item.symbol)"></uni-list-item>
-						</uni-list>
+						<template v-if="tab.id==='guanzhu'">
+							<view v-for="(plan,index) in tab.data">
+								<uni-section :title="plan.label" type="line"></uni-section>
+								<uni-list :border="true">
+									<uni-list-item v-for="(item,index) in plan.data" class="list-item" :ellipsis="1" :key="index"
+									 :title="item.name+'('+item.code+')'" :note="noteLable(item)" clickable @click="navTo(item.id,item.name,item.code,item.symbol)"></uni-list-item>
+								</uni-list>
+							</view>
+						</template>
+						<view v-if="tab.id !=='guanzhu'">
+							<uni-list :border="true">
+								<uni-list-item v-for="(item,index) in tab.data" class="list-item" :showArrow="true" :ellipsis="1" :key="index"
+								 :title="item.name+'('+item.code+')'" :note="noteLable(item)" clickable @click="navTo(item.id,item.name,item.code,item.symbol)"></uni-list-item>
+							</uni-list>
+						</view>
 					</cell>
 					<cell class="loading-more" v-if="tab.isLoading || tab.data.length > 4">
 						<text class="loading-more-text">{{tab.loadingText}}</text>
@@ -44,16 +54,6 @@
 	const MAX_CACHE_DATA = 100;
 	// 缓存页签数量
 	const MAX_CACHE_PAGE = 3;
-
-	const newsData = {
-		data0: {
-			"datetime": "40分钟前",
-			"article_type": 0,
-			"title": "uni-app行业峰会频频亮相，开发者反响热烈!",
-			"source": "DCloud",
-			"comment_count": 639
-		}
-	};
 
 	export default {
 		// #ifndef MP
@@ -91,6 +91,10 @@
 				showTips: false,
 				navigateFlag: false,
 				pulling: false,
+				page: {
+					num: 1, // 页码, 默认从1开始
+					size: 10 // 页长, 默认每页10条
+				},
 				refreshIcon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAB5QTFRFcHBw3Nzct7e39vb2ycnJioqK7e3tpqam29vb////D8oK7wAAAAp0Uk5T////////////ALLMLM8AAABxSURBVHja7JVBDoAgDASrjqj//7CJBi90iyYeOHTPMwmFZrHjYyyFYYUy1bwUZqtJIYVxhf1a6u0R7iUvWsCcrEtwJHp8MwMdvh2amHduiZD3rpWId9+BgPd7Cc2LIkPyqvlQvKxKBJ//Qwq/CacAAwDUv0a0YuKhzgAAAABJRU5ErkJggg=="
 			}
 		},
@@ -99,6 +103,7 @@
 				this.tabBars.forEach((tabBar) => {
 					this.plan_list.push({
 						data: [],
+						id: tabBar.id,
 						isLoading: false,
 						refreshText: "",
 						loadingText: '加载更多...'
@@ -111,12 +116,49 @@
 			...mapActions('Trading', ['getPlanList']),
 			async getList(index) {
 				let activeTab = this.plan_list[index];
+				let offset = 0;
+				let limit = 200;
 				const res = await this.getPlanList({
-						offset:0,
-						limit:100
-					});
+					offset,
+					limit
+				});
 				if (res && res.data) {
-					activeTab.data = activeTab.data.concat(res.data.rows);
+					let mfilter = (p) => {
+						let label = '耐心等待';
+						if (p === 0) label = '耐心等待';
+						if (p === 1) label = '等待';
+						if (p === 2) label = '一般';
+						if (p === 3) label = '高';
+
+						return {
+							label,
+							data: res.data.rows.filter(x => {
+								return x.priority == p && x.trading_details.length == 0;
+							})
+						};
+					};
+
+					if (activeTab.id === 'guanzhu') {
+						let list = [];
+						//['耐心等待', '等待', '一般', '高'] 0,1,2,3
+						for (let index of [3, 2, 1, 0]) {
+							const d = mfilter(index);
+							if(d.data.length > 0){
+								list.push(d);
+							}
+						}
+						activeTab.data = list;
+					} else if (activeTab.id === 'chicang') {
+						let list = res.data.rows.filter(x => {
+							return x.trading_details.length > 0 && x.status == 1;
+						});
+						activeTab.data = list;
+					} else {
+						let list = res.data.rows.filter(x => {
+							return x.status != 1;
+						});
+						activeTab.data = list;
+					}
 				}
 			},
 			navTo(id, name, code, symbol) {
@@ -141,35 +183,9 @@
 					return '0.00'
 				}
 			},
-			getDate(type) {
-				const date = new Date();
-				let year = date.getFullYear();
-				let month = date.getMonth() + 1;
-				let day = date.getDate();
-			
-				if (type === 'start') {
-					year = year - 60;
-				} else if (type === 'end') {
-					year = year + 2;
-				}
-				month = month > 9 ? month : '0' + month;;
-				day = day > 9 ? day : '0' + day;
-				return `${year}-${month}-${day}`;
-			},
-			goDetail(e) {
-				if (this.navigateFlag) {
-					return;
-				}
-				this.navigateFlag = true;
-				uni.navigateTo({
-					url: './detail/detail?title=' + e.title
-				});
-				setTimeout(() => {
-					this.navigateFlag = false;
-				}, 200)
-			},
 			loadMore(e) {
 				setTimeout(() => {
+					this.page.num = this.page.num+1;
 					this.getList(this.tabIndex);
 				}, 500)
 			},
@@ -183,6 +199,7 @@
 			},
 			switchTab(index) {
 				if (this.plan_list[index].data.length === 0) {
+					this.page.num = 1;
 					this.getList(index);
 				}
 
@@ -207,14 +224,16 @@
 					let cacheIndex = this.cacheTab[0];
 					this.clearTabData(cacheIndex);
 					this.cacheTab.splice(0, 1);
-					//console.log("remove cache index:: " + cacheIndex);
 				}
 			},
 			clearTabData(e) {
 				this.plan_list[e].data.length = 0;
 				this.plan_list[e].loadingText = "加载更多...";
 			},
-			refreshData() {},
+			refreshData(index) {
+				this.page.num = 1;
+				this.getList(index);
+			},
 			onrefresh(e) {
 				var tab = this.plan_list[this.tabIndex];
 				if (!tab.refreshFlag) {
@@ -224,12 +243,12 @@
 				tab.refreshText = "正在刷新...";
 
 				setTimeout(() => {
-					this.refreshData();
+					this.refreshData(this.tabIndex);
 					this.pulling = true;
 					tab.refreshing = false;
 					tab.refreshFlag = false;
 					tab.refreshText = "已刷新";
-					setTimeout(() => { // TODO fix ios和Android 动画时间相反问题
+					setTimeout(() => {
 						this.pulling = false;
 					}, 500);
 				}, 2000);
@@ -247,12 +266,6 @@
 					tab.refreshText = "下拉可以刷新";
 				}
 			},
-			newGuid() {
-				let s4 = function() {
-					return (65536 * (1 + Math.random()) | 0).toString(16).substring(1);
-				}
-				return (s4() + s4() + "-" + s4() + "-4" + s4().substr(0, 3) + "-" + s4() + "-" + s4() + s4() + s4()).toUpperCase();
-			}
 		}
 	}
 </script>

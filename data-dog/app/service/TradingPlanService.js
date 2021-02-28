@@ -5,7 +5,7 @@ const moment = require('moment');
 const { Op } = require('sequelize');
 
 class TradingService extends Service {
-  async list({ offset = 0, limit = 10, status, start, end }) {
+  async list({ offset = 0, limit = 10, type = 0, status, start, end }) {
 
     const options = {
       offset,
@@ -39,7 +39,11 @@ class TradingService extends Service {
         status,
       };
     }
-    return this.ctx.model.TradingPlan.findAndCountAll(options);
+    const data = this.ctx.model.TradingPlan.findAndCountAll(options);
+    if (data && type === 0) {
+
+    }
+    return data;
   }
 
   async create(trading) {
