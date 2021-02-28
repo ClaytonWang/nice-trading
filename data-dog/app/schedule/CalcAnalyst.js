@@ -33,6 +33,7 @@ class CalcAnalyst extends Subscription {
   async subscribe() {
     const ids = await this.ctx.model.query(sqlstr2, { type: this.app.Sequelize.QueryTypes.SELECT });
     const dataPlans = await this.ctx.model.query(sqlstr1, { type: this.app.Sequelize.QueryTypes.SELECT });
+    console.log(ids);
     if (ids && ids.length > 0) {
       for (const idItem of ids) {
 
@@ -79,6 +80,7 @@ class CalcAnalyst extends Subscription {
           start_date,
           end_date,
         };
+
         await this.ctx.service.analysisReportService.create(model);
 
       }

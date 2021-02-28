@@ -41,4 +41,6 @@ module.exports = app => {
 
   router.get('/user/info', controller.userController.info);
 
+  router.delete('/api/delByPlan', controller.analysisReportController.delByPlan);
+
 };

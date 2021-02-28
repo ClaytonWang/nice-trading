@@ -48,6 +48,13 @@ class AnalysisReportController extends Controller {
     ctx.status = 200;
   }
 
+  async delByPlan() {
+    const ctx = this.ctx;
+    const id = ctx.helper.parseInt(ctx.query.id);
+    await ctx.service.analysisReportService.delByPlanId(id);
+    ctx.status = 200;
+  }
+
 }
 
 module.exports = AnalysisReportController;

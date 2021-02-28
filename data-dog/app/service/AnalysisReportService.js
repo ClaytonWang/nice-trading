@@ -16,7 +16,7 @@ class AnalysisReportService extends Service {
       order: [[ 'plan_id', 'asc' ]],
       attributes: [ 'id', 'total_amount', 'total_volume', 'profit', 'start_date', 'end_date' ],
       include: [{
-        attributes: [ 'name', 'code', 'risk' ],
+        attributes: [ 'id', 'name', 'code', 'risk' ],
         model: this.ctx.model.TradingPlan,
         include: [{
           attributes: [ 'title' ],
