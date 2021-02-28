@@ -30,12 +30,10 @@
 		commonMixin
 	} from '@/common/mixin/mixin.js';
 	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
-	import PlanItem from '@/components/plan-list-item.vue';
 	import moment from 'moment';
 	export default {
 		mixins: [commonMixin, MescrollMixin],
 		components: {
-			PlanItem,
 		},
 		data() {
 			const currentDate = this.getDate({
