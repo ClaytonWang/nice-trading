@@ -29,7 +29,7 @@
 						</template>
 						<view v-if="tab.id !=='guanzhu'">
 							<uni-list :border="true">
-								<uni-list-item v-for="(item,index) in tab.data" class="list-item" :showArrow="true" :ellipsis="1" :key="index"
+								<uni-list-item v-for="(item,index) in tab.data" class="list-item" :ellipsis="1" :key="index"
 								 :title="item.name+'('+item.code+')'" :note="noteLable(item)" clickable @click="navTo(item.id,item.name,item.code,item.symbol)"></uni-list-item>
 							</uni-list>
 						</view>
