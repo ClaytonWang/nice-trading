@@ -53,6 +53,10 @@ class TradingDetailService extends Service {
     };
     const data = await ctx.model.Comment.create(coment);
     newDetail.comment = data;
+
+    const plan = await ctx.model.TradingPlan.findByPk(model.trading_plan_id);
+    plan.status = 0;
+    await ctx.model.TradingPlan.update(plan);
     return newDetail;
   }
 

@@ -40,9 +40,6 @@ class TradingService extends Service {
       };
     }
     const data = this.ctx.model.TradingPlan.findAndCountAll(options);
-    if (data && type === 0) {
-
-    }
     return data;
   }
 

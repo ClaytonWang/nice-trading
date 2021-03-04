@@ -1,5 +1,7 @@
+/*
+定时任务，每1分钟跑一次，把清仓了的票，统计出来。自动的标记为清仓
+*/
 'use strict';
-
 const Subscription = require('egg').Subscription;
 
 const sqlstr1 = `
@@ -25,7 +27,7 @@ ORDER BY t.id DESC;`;
 class CalcAnalyst extends Subscription {
   static get schedule() {
     return {
-      interval: '60m', // 任务的间隔时间, 这个定义的10秒执行一次
+      interval: '1m', // 任务的间隔时间, 这个定义的1分钟执行一次
       type: 'worker', // 指定所有的 worker都需要执行
       immediate: true, // 项目启动就执行一次定时任务
     };
@@ -82,6 +84,10 @@ class CalcAnalyst extends Subscription {
         };
 
         await this.ctx.service.analysisReportService.create(model);
+        // 把清仓的票，状态修改掉。
+        const plan = await this.ctx.service.tradingPlanService.find(model.plan_id);
+        plan.status = 0;
+        await this.ctx.service.tradingPlanService.update(plan);
 
       }
     }

@@ -16,7 +16,7 @@ module.exports = app => {
     exec_start_date: { type: DATE, allowNull: true },
     exec_end_date: { type: DATE, allowNull: true },
     priority: { type: INTEGER, defaultValue: 0, allowNull: false }, // 优先级
-    status: { type: INTEGER, defaultValue: 1, allowNull: false }, // 激活或者作废
+    status: { type: INTEGER, defaultValue: 1, allowNull: false }, // 持仓 1 还是 清仓 0
     created_at: { type: DATE, defaultValue: moment().utc().format(), allowNull: false },
     updated_at: { type: DATE, defaultValue: moment().utc().format(), allowNull: false },
   });
