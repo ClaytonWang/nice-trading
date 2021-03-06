@@ -11,7 +11,7 @@
 			</view>
 			<view class="operat">
 				<view class="col">
-					<image src="../../static/icon-deposit-history.png" mode="widthFix"></image>
+					<image src="../../static/icon-deposit-history.png" mode="widthFix" @click="navT('pages/trading-plan/plan-list')"></image>
 					<text>交易计划</text>
 				</view>
 				<view class="col">
@@ -227,6 +227,11 @@
 			navTo(id, name, code, symbol) {
 				uni.navigateTo({
 					url: `/pages/trading-detail/detail-list?plan_id=${id}&name=${name}&code=${code}&symbol=${symbol}`
+				})
+			},
+			navT(url){
+				uni.navigateTo({
+					url:url
 				})
 			},
 			filter(time, strategy) {
@@ -446,7 +451,7 @@
 
 	.ing-box {
 		width: 100%;
-		padding: 50upx 15upx 0 15upx;
+		padding: 50upx 15upx 15upx 15upx;
 
 		.title {
 			font-size: $font-lg;

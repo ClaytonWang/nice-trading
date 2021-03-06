@@ -16,6 +16,9 @@ docker run --name mysql -p 3306:3306 -e ALLOW_EMPTY_PASSWORD=yes -e MYSQL_USER=n
     -e USERNAME=root \
     -e PASSWORD=Password1 \
     database_mysql-auto-backup
+	
+	#修改文件权限
+	sudo chown -R azureuser:azureuser ./data/backup/daily
 
 ```
 

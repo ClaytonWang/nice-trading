@@ -54,9 +54,13 @@ class TradingDetailService extends Service {
     const data = await ctx.model.Comment.create(coment);
     newDetail.comment = data;
 
-    const plan = await ctx.model.TradingPlan.findByPk(model.trading_plan_id);
-    plan.status = 0;
-    await ctx.model.TradingPlan.update(plan);
+    // 删除报表 表里面的数据如果有的话
+    const report = await ctx.model.AnalysisReport.findAll({
+      where: {
+        plan_id: model.trading_plan_id,
+      },
+    });
+    if (report && report.length > 0) report[0].destroy();
     return newDetail;
   }
 

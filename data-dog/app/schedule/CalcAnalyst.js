@@ -24,18 +24,20 @@ INNER JOIN strategy s on t.strategy_id = s.id
 where t.id not in (select plan_id FROM analysis_report)
 ORDER BY t.id DESC;`;
 
+
 class CalcAnalyst extends Subscription {
   static get schedule() {
     return {
-      interval: '1m', // 任务的间隔时间, 这个定义的1分钟执行一次
+      interval: '30s', // 任务的间隔时间, 这个定义的30s执行一次
       type: 'worker', // 指定所有的 worker都需要执行
       immediate: true, // 项目启动就执行一次定时任务
     };
   }
+
   async subscribe() {
     const ids = await this.ctx.model.query(sqlstr2, { type: this.app.Sequelize.QueryTypes.SELECT });
     const dataPlans = await this.ctx.model.query(sqlstr1, { type: this.app.Sequelize.QueryTypes.SELECT });
-    console.log(ids);
+
     if (ids && ids.length > 0) {
       for (const idItem of ids) {
 
@@ -86,8 +88,7 @@ class CalcAnalyst extends Subscription {
         await this.ctx.service.analysisReportService.create(model);
         // 把清仓的票，状态修改掉。
         const plan = await this.ctx.service.tradingPlanService.find(model.plan_id);
-        plan.status = 0;
-        await this.ctx.service.tradingPlanService.update(plan);
+        await plan.update({ status: 0 });
 
       }
     }
