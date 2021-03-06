@@ -3,7 +3,24 @@
 		{
 			"path": "pages/main/main",
 			"style": {
-				"navigationBarTitleText": "统计报表"
+				"navigationBarTitleText": "统计报表",
+				"navigationBarBackgroundColor": "#5E7EEE",
+				"navigationBarTextStyle": "white",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"bounce": "none",
+					"titleNView": {
+						"buttons": [{
+								"fontSrc": "/static/font/font_1078604_w4kpxh0rafi.ttf",
+								"text": "\ue7ce",
+								"fontSize": "24",
+								"color": "#ffffff",
+								"width": "40px",
+								"background": "rgba(0,0,0,0)"
+							}
+						]
+					}
+				}
 			}
 		}, {
 			"path": "pages/login/login",
@@ -192,16 +209,16 @@
 				"selectedIconPath": "static/img/homeHL.png"
 			},
 			{
-				"pagePath": "pages/notepad/note-list",
-				"text": "笔记本",
-				"iconPath": "static/tabbar/tab-news.png",
-				"selectedIconPath": "static/tabbar/tab-news-active.png"
-			}, 
-			{
 				"pagePath": "pages/trading-plan/plan-list",
 				"text": "交易计划",
 				"iconPath": "static/tabbar/tab-wallet.png",
 				"selectedIconPath": "static/tabbar/tab-wallet-active.png"
+			},
+			{
+				"pagePath": "pages/notepad/note-list",
+				"text": "笔记本",
+				"iconPath": "static/tabbar/tab-news.png",
+				"selectedIconPath": "static/tabbar/tab-news-active.png"
 			},
 			{
 				"pagePath": "pages/user/user",

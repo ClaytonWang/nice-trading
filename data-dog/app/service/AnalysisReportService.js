@@ -4,10 +4,9 @@ const Service = require('egg').Service;
 const moment = require('moment');
 const { Op } = require('sequelize');
 
-const sqlstr2 = '';
 class AnalysisReportService extends Service {
 
-  async list({ offset = 0, limit = 10, start, end }) {
+  async list({ offset = 0, limit = 10, strategyid, start, end }) {
 
     const options = {
       offset,
@@ -16,11 +15,14 @@ class AnalysisReportService extends Service {
       order: [[ 'plan_id', 'asc' ]],
       attributes: [ 'id', 'total_amount', 'total_volume', 'profit', 'start_date', 'end_date' ],
       include: [{
-        attributes: [ 'id', 'name', 'code', 'risk' ],
+        attributes: [ 'id', 'name', 'code', 'risk', 'symbol' ],
         model: this.ctx.model.TradingPlan,
         include: [{
           attributes: [ 'title' ],
           model: this.ctx.model.Strategy,
+          where: {
+            id: strategyid,
+          },
         }, {
           attributes: [ 'comment' ],
           model: this.ctx.model.Comment,
