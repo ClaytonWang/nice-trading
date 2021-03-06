@@ -73,6 +73,7 @@
 			})
 			return {
 				stockLable:'',
+				setting:null,
 				form: {
 					trading_plan_id: undefined,
 					trading_price: undefined,
@@ -98,6 +99,11 @@
 					this.stockLable = this.form.trading_plan.name+'('+this.form.trading_plan.code+')';
 				}
 			}
+			const st = await this.getSetting(1);
+			if(st && st.data){
+				this.setting = st.data;
+				console.log(this.setting)
+			}
 		},
 		onUnload() {
 
@@ -115,8 +121,8 @@
 					trading_volume
 				} = this.form;
 				if (trading_price && trading_volume) {
-					let v = trading_price * trading_volume * 0.00025;
-					if (v <= 5) return 5;
+					let v = trading_price * trading_volume * 0.00015;
+					if (v <= 0.5) return 0.5;
 					return v.toFixed(2);
 				} else {
 					return 0;
@@ -128,7 +134,7 @@
 					trading_volume
 				} = this.form;
 				if (trading_price && trading_volume) {
-					return (trading_price * trading_volume * 0.001);
+					return (trading_price * trading_volume * parseFloat(this.setting.fee_rate));
 					return v.toFixed(2);
 				} else {
 					return 0;
@@ -136,9 +142,7 @@
 			}
 		},
 		methods: {
-			...mapActions('Trading', ['addDetail','getDetail']),
-			search() {},
-			select() {},
+			...mapActions('Trading', ['addDetail','getDetail','getSetting']),
 			selectSide(value) {
 				this.form.trading_type = value.target.value;
 			},

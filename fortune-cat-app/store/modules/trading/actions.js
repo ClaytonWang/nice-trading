@@ -104,7 +104,7 @@ export default {
 	
 	async addUpdateSetting({commit},data){
 		try{
-			data.commission_rate = data.commission_rate/10000;
+			data.commission_rate = data.commission_rate / 10000;
 			data.fee_rate = data.fee_rate / 1000;
 			if(data.id){
 				return await setting.update(data);

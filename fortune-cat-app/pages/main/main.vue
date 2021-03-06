@@ -152,6 +152,7 @@
 				query: {
 					offset: 0,
 					limit: 1000,
+					strategyid:'',
 					start: moment().subtract(1, "weeks").format("YYYY-MM-DD"),
 					end: moment().endOf('week').format('YYYY-MM-DD')
 				},
@@ -262,6 +263,7 @@
 				}
 				if (strategy) {
 					this.page.strategyFilter = strategy
+					this.query.strategyid=strategy.id;
 				}
 			},
 			reset() {

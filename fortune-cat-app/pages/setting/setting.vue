@@ -42,7 +42,7 @@
 					total_amount: "",
 					total_risk: "",
 					single_risk: "",
-					commission_rate: 2.5,
+					commission_rate: 1.5,
 					fee_rate: 1,
 				}
 			}
@@ -51,8 +51,8 @@
 			const res = await this.getSetting(1);
 			if (res && res.data) {
 				this.form = res.data;
-				this.form.commission_rate = (res.data.commission_rate * 10000).toFixed(2);
-				this.form.fee_rate = (res.data.fee_rate * 1000).toFixed(2);
+				this.form.commission_rate = (res.data.commission_rate * 10000);
+				this.form.fee_rate = (res.data.fee_rate * 1000);
 			}
 		},
 		methods: {
