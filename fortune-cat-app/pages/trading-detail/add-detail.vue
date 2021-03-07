@@ -121,7 +121,7 @@
 					trading_volume
 				} = this.form;
 				if (trading_price && trading_volume) {
-					let v = trading_price * trading_volume * 0.00015;
+					let v = trading_price * trading_volume *  parseFloat(this.setting.commission_rate);
 					if (v <= 0.5) return 0.5;
 					return v.toFixed(2);
 				} else {

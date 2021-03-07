@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<mescroll-body ref="mescrollRef" @init="mescrollInit" @up="upCallback" @down="downCallback">
+		<mescroll-body ref="mescrollRef" :down="downOption" :up="upOption" @init="mescrollInit" @up="upCallback" @down="downCallback">
 			<uni-list :border="true">
 			    <uni-list-item 
 					v-for="(item,index) in note_list" 
@@ -27,6 +27,21 @@
 	  data () {
 	    return {
 			note_list: [],
+			downOption:{
+				auto:true
+			},
+			upOption:{
+				auto:false, // 不自动加载
+				noMoreSize: 5, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看; 默认5
+				isBounce: true,
+				page: {
+					num: 0, // 当前页码,默认0,回调之前会加1,即callback(page)会从1开始
+					size: 15 // 每页数据的数量
+				},
+				empty:{
+					tip: '~ 空空如也 ~'
+				}
+			},
 	    }
 	  },
 	  // #ifndef MP
