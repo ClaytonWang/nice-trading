@@ -5,15 +5,15 @@
 			<input v-model="form.total_amount" type="number" class="cell-input" placeholder="请输入" />
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
-			<text class="cell-tit">总风险额</text>
+			<text class="cell-tit">总风险额%</text>
 			<input v-model="form.total_risk" type="number" class="cell-input" placeholder="请输入" />
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
-			<text class="cell-tit">单支险额</text>
+			<text class="cell-tit">单支风险额%</text>
 			<input v-model="form.single_risk" type="number" class="cell-input" placeholder="请输入" />
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
-			<text class="cell-tit">佣金℅</text>
+			<text class="cell-tit">佣金‰</text>
 			<input v-model="form.commission_rate" type="number" class="cell-input" placeholder="请输入" />
 		</view>
 		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
@@ -51,8 +51,11 @@
 			const res = await this.getSetting(1);
 			if (res && res.data) {
 				this.form = res.data;
-				this.form.commission_rate = (res.data.commission_rate * 10000);
-				this.form.fee_rate = (res.data.fee_rate * 1000);
+				this.form.total_amount = parseFloat(res.data.total_amount).toFixed(2);
+				this.form.total_risk = (res.data.total_risk * 100).toFixed(2);
+				this.form.single_risk = (res.data.single_risk * 100).toFixed(2);
+				this.form.commission_rate = (res.data.commission_rate * 1000);
+				this.form.fee_rate = (res.data.fee_rate * 1000).toFixed(2);
 			}
 		},
 		methods: {

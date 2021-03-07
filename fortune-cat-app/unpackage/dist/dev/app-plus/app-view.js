@@ -10822,7 +10822,7 @@ var render = function() {
           _c(
             "v-uni-text",
             { staticClass: _vm._$g(5, "sc"), attrs: { _i: 5 } },
-            [_vm._v("总风险额")]
+            [_vm._v("总风险额%")]
           ),
           _c("v-uni-input", {
             staticClass: _vm._$g(6, "sc"),
@@ -10848,7 +10848,7 @@ var render = function() {
           _c(
             "v-uni-text",
             { staticClass: _vm._$g(8, "sc"), attrs: { _i: 8 } },
-            [_vm._v("单支险额")]
+            [_vm._v("单支风险额%")]
           ),
           _c("v-uni-input", {
             staticClass: _vm._$g(9, "sc"),
@@ -10874,7 +10874,7 @@ var render = function() {
           _c(
             "v-uni-text",
             { staticClass: _vm._$g(11, "sc"), attrs: { _i: 11 } },
-            [_vm._v("佣金℅")]
+            [_vm._v("佣金‰")]
           ),
           _c("v-uni-input", {
             staticClass: _vm._$g(12, "sc"),

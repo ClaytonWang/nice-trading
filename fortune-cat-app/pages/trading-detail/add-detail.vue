@@ -121,7 +121,11 @@
 					trading_volume
 				} = this.form;
 				if (trading_price && trading_volume) {
-					let v = trading_price * trading_volume *  parseFloat(this.setting.commission_rate);
+					let rate = 0.00015;
+					if(rate){
+						rate = this.setting && this.setting.commission_rate;
+					}
+					let v = trading_price * trading_volume * parseFloat(rate);
 					if (v <= 0.5) return 0.5;
 					return v.toFixed(2);
 				} else {
@@ -134,7 +138,11 @@
 					trading_volume
 				} = this.form;
 				if (trading_price && trading_volume) {
-					return (trading_price * trading_volume * parseFloat(this.setting.fee_rate));
+					let rate = 0.001;
+					if(rate){
+						rate = this.setting && this.setting.fee_rate;
+					}
+					return (trading_price * trading_volume * parseFloat(rate));
 					return v.toFixed(2);
 				} else {
 					return 0;

@@ -30,7 +30,7 @@
 				没有数据
 			</view>
 			<view class="list-item" v-for="(item, i) in contents" :ket="i"
-				@click="navTo(item.id,item.name,item.code,item.symbol)">
+				@click="navTo(item.plan_id,item.name,item.code,item.symbol)">
 				<view class="title little-line">
 					<view class="tl">
 						<text class="name">{{item.name}}</text>
@@ -296,6 +296,7 @@
 								name: item.trading_plan.name,
 								code: item.trading_plan.code,
 								symbol: item.trading_plan.symbol,
+								plan_id:item.trading_plan.id,
 								strategy_title: item.trading_plan.strategy.title
 							}
 						});
