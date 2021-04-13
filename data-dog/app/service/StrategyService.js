@@ -5,7 +5,7 @@ const moment = require('moment');
 
 class StrategyService extends Service {
 
-  async list({ offset = 0, limit = 10 }) {
+  async list({ offset = 0, limit = 20 }) {
 
     const options = {
       offset,
