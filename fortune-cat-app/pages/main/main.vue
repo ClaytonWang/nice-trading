@@ -153,7 +153,7 @@
 					offset: 0,
 					limit: 1000,
 					strategyid:'',
-					start: moment().subtract(1, "weeks").format("YYYY-MM-DD"),
+					start: moment().week(moment().week() - 1).endOf('week').format("YYYY-MM-DD"),
 					end: moment().endOf('week').format('YYYY-MM-DD')
 				},
 				empty: false,
@@ -240,7 +240,7 @@
 					this.page.timeFilter = time
 					switch (time.id) {
 						case '0day':
-							this.query.start = moment().subtract(1, "weeks").format("YYYY-MM-DD");
+							this.query.start = moment().week(moment().week() - 1).endOf('week').format("YYYY-MM-DD");
 							this.query.end = moment().endOf('week').format('YYYY-MM-DD');
 							break;
 						case '7day':
@@ -286,6 +286,7 @@
 				console.log(this.query);
 				try{
 					const res = await this.getAnalysisReport(this.query);
+					console.log(res)
 					uni.stopPullDownRefresh();
 					this.empty = (res.data.count == 0)
 					if (res.data && res.data.count > 0) {

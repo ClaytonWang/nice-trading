@@ -29,7 +29,7 @@ class CalcAnalyst extends Subscription {
   static get schedule() {
     return {
       interval: '30s', // 任务的间隔时间, 这个定义的30s执行一次
-      type: 'worker', // 指定所有的 worker都需要执行
+      type: 'worker', // all:指定所有的 worker都需要执行. worker:每台机器上只有一个 worker 会执行这个定时任务，每次执行定时任务的 worker 的选择是随机的
       immediate: true, // 项目启动就执行一次定时任务
     };
   }
