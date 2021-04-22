@@ -11,16 +11,16 @@
 			</view>
 			<view class="operat">
 				<view class="col">
-					<image src="../../static/icon-deposit-history.png" mode="widthFix" @click="navT('pages/trading-plan/plan-list')"></image>
-					<text>交易计划</text>
-				</view>
-				<view class="col">
 					<image src="../../static/icon-deposit-ing.png" mode="widthFix"></image>
 					<text>反思笔记</text>
 				</view>
 				<view class="col">
 					<image src="../../static/icon-deposit-draw.png" mode="widthFix"></image>
 					<text>战法策略</text>
+				</view>
+				<view class="col" @click="navT('/pages/charts/index')">
+					<image src="../../static/iconmonstr-chart-6-128.png" mode="widthFix"></image>
+					<text>盈亏图表</text>
 				</view>
 			</view>
 		</view>
@@ -232,7 +232,7 @@
 			},
 			navT(url){
 				uni.navigateTo({
-					url:url
+					url
 				})
 			},
 			filter(time, strategy) {
@@ -283,7 +283,6 @@
 				this.$refs.popup.close();
 			},
 			async loadData() {
-				console.log(this.query);
 				try{
 					const res = await this.getAnalysisReport(this.query);
 					console.log(res)

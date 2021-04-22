@@ -22,7 +22,31 @@
 					}
 				}
 			}
-		}, {
+		},
+		{
+			"path": "pages/charts/index",
+			"style": {
+				"navigationBarTitleText": "统计报表",
+				"navigationBarBackgroundColor": "#5E7EEE",
+				"navigationBarTextStyle": "white",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"bounce": "none",
+					"titleNView": {
+						"buttons": [{
+								"fontSrc": "/static/font/font_1078604_w4kpxh0rafi.ttf",
+								"text": "\ue7ce",
+								"fontSize": "24",
+								"color": "#ffffff",
+								"width": "40px",
+								"background": "rgba(0,0,0,0)"
+							}
+						]
+					}
+				}
+			}
+		}, 
+		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "登录"
@@ -84,14 +108,16 @@
 					}
 				}
 			}
-		}, {
+		}, 
+		{
 			"path": "pages/trading-plan/add-plan",
 			"style": {
 				"navigationBarTitleText": "添加交易计划",
 				"enablePullDownRefresh": false
 			}
 
-		}, {
+		}, 
+		{
 			"path": "pages/trading-detail/detail-list",
 			"style": {
 				"navigationBarTitleText": "交易详情",
@@ -110,7 +136,8 @@
 				}
 			}
 
-		}, {
+		}, 
+		{
 			"path": "pages/trading-detail/add-detail",
 			"style": {
 				"navigationBarTitleText": "添加交易详情",
