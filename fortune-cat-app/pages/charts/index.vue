@@ -1,5 +1,20 @@
 <template>
 	<view class="container">
+		<view class="info">
+			<view class="col">
+				<text class="sub">交易次数</text>
+				<text class="t">{{total_count }}次</text>
+			</view>
+			<view class="col">
+				<text class="sub">胜率</text>
+				<text class="t">{{winRate | fixed(2,'%') }}</text>
+			</view>
+			<view class="col">
+				<text class="sub">盈亏比</text>
+				<text class="t">{{ profitRate | fixed }}</text>
+			</view>
+		</view>
+		<br/>
 		<echarts :option="option" style="height: 600px; width: 100%;"></echarts>
 	</view>
 </template>
@@ -18,6 +33,9 @@
 		mixins: [commonMixin],
 		data() {
 			return {
+				total_count:0,
+				winRate:0.0,
+				profitRate:0.0,
 				empty: false,
 				query: {
 					offset: 0,
@@ -31,6 +49,15 @@
 		},
 		components: {
 			Echarts,
+		},
+		filters: {
+			formatRate(v) {
+				if (v <= 0) {
+					return 'green'
+				} else {
+					return 'red';
+				}
+			}
 		},
 		async onShow() {
 			this.list = []
@@ -61,11 +88,18 @@
 						const xAxis = [];
 						const seriesData = [];
 						const riskData = [];
+						let failCount = 0;
+						let lostProfit = 0.0;
+						let winProfit = 0.0;
 						res.data.rows.map(item => {
 							let barBorderRadius = [0, 0, 0, 0];
 							let color = "red";
 							if(parseFloat(item.profit) < 0){
 								color="green";
+								failCount = failCount + 1;
+								lostProfit = lostProfit + Math.abs(parseFloat(item.profit));
+							}else{
+								winProfit = winProfit + parseFloat(item.profit);
 							}
 							xAxis.push(item.trading_plan.name);
 							seriesData.push({
@@ -80,6 +114,9 @@
 							riskData.push(-(item.trading_plan.risk));
 						});
 						console.log(xAxis,seriesData,riskData);
+						this.total_count = xAxis.length;
+						this.winRate = this.rate((this.total_count-failCount) ,this.total_count);
+						this.profitRate = this.rate(winProfit,lostProfit) / 100;
 						this.option = this.createOpition(xAxis,seriesData,riskData);
 					} else {
 						this.$msg(data.errMsg);
@@ -88,6 +125,11 @@
 					uni.stopPullDownRefresh();
 					console.log(e);
 				}
+			},
+			rate(profit, total) {
+				if (!profit) return 0;
+				if (!total) return 0;
+				return parseFloat(profit) / parseFloat(total) * 100;
 			},
 			createOpition(xData,seriseData,riskData){
 				return {
@@ -157,5 +199,26 @@
 		margin: 0;
 		background: #EEF2F5;
 		height: 100%;
+	}
+	.info {
+		display: flex;
+		justify-content: space-between;
+		padding: 5upx 20upx 5upx 20upx;
+	
+		.col {
+			display: flex;
+			flex-direction: column;
+	
+			.t {
+				display: block;
+				height: 50upx;
+				line-height: 50upx;
+			}
+	
+			.rate {
+				font-size: $font-xl;
+				color: $font-color-red;
+			}
+		}
 	}
 </style>

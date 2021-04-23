@@ -222,7 +222,7 @@
 			...mapActions('Trading', ['getStrategy', 'getAnalysisReport']),
 			rate(profit, total) {
 				if (!profit) return 0;
-				if (!total) return0;
+				if (!total) return 0;
 				return parseFloat(profit) / parseFloat(total) * 100;
 			},
 			navTo(id, name, code, symbol) {
