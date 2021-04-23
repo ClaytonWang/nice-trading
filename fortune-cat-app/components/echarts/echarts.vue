@@ -157,7 +157,12 @@
 						}
 						let value = '--'
 						if (params[i].data !== null) {
-							value = params[i].data
+							if(params[i].data && params[i].data.hasOwnProperty('value')){
+								value = params[i].data.value
+							}else{
+								value = params[i].data
+							}
+							
 							// 保留两位小数
 							if (formatFloat2) {
 								value = this.formatFloat2(value)

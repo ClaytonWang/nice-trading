@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<echarts :option="option" style="height: 300px;"></echarts>
+		<echarts :option="option" style="height: 600px; width: 100%;"></echarts>
 	</view>
 </template>
 
@@ -18,7 +18,6 @@
 		mixins: [commonMixin],
 		data() {
 			return {
-				contents: [],
 				empty: false,
 				query: {
 					offset: 0,
@@ -27,84 +26,7 @@
 					start: moment().startOf('year').format('YYYY-MM-DD'),
 					end: moment().format('YYYY-MM-DD')
 				},
-				option: {
-					notMerge: true,
-					tooltip: {
-						trigger: 'axis',
-						positionStatus: true,
-						formatterStatus: true, // 自定义变量：是否格式化tooltip，设置为false时下面三项均不起作用
-						formatterUnit: '元', // 自定义变量：数值后面的单位
-						formatFloat2: true, // 自定义变量：是否格式化为两位小数
-						formatThousands: true // 自定义变量：是否添加千分位
-					},
-					legend: {
-						data: ['盈利'],
-						left: '10%'
-					},
-					grid: {
-						left: '3%',
-						right: '5%',
-						bottom: '3%',
-						containLabel: true
-					},
-					xAxis: [{
-						type: 'category',
-						data: ['周一', '周二', '周三', '周四', '周五'],
-						axisLine: {
-							onZero: true
-						},
-						splitLine: {
-							show: false
-						},
-						splitArea: {
-							show: false
-						}
-					}],
-					yAxis: [{
-						type: 'value',
-						axisLabel: {
-							formatter: '{value}￥'
-						}
-					}],
-					series: [{
-							type: 'line',
-							data: [220, 182, 191, -234, 290],
-							yAxisIndex: 0,
-						},
-						{
-							name: '盈利',
-							type: 'bar',
-							data: [{
-									value: 220,
-									itemStyle: {
-										normal: {
-											barBorderRadius: [3, 3, 0, 0],
-											color: "red"
-										},
-									},
-								},
-								{
-									value: 182,
-									itemStyle: {
-										normal: {
-											barBorderRadius: [3, 3, 0, 0],
-											color: "blue"
-										},
-									},
-								},
-								{
-									value: -234,
-									itemStyle: {
-										normal: {
-											barBorderRadius: [0, 0, 3, 3],
-											color: "green"
-										},
-									},
-								}
-							],
-						}
-					]
-				}
+				option:{}
 			};
 		},
 		components: {
@@ -136,25 +58,85 @@
 					uni.stopPullDownRefresh();
 					this.empty = (res.data.count == 0)
 					if (res.data && res.data.count > 0) {
-						this.contents = res.data.rows.map(item => {
-							return {
-								...item,
-								risk: item.trading_plan.risk,
-								name: item.trading_plan.name,
-								code: item.trading_plan.code,
-								symbol: item.trading_plan.symbol,
-								plan_id: item.trading_plan.id,
-								strategy_title: item.trading_plan.strategy.title
+						const xAxis = [];
+						const seriesData = [];
+						const riskData = [];
+						res.data.rows.map(item => {
+							let barBorderRadius = [0, 0, 0, 0];
+							let color = "red";
+							if(parseFloat(item.profit) < 0){
+								color="green";
 							}
+							xAxis.push(item.trading_plan.name);
+							seriesData.push({
+									value: parseFloat(item.profit),
+									itemStyle: {
+										normal: {
+											barBorderRadius,
+											color
+										},
+									},
+								});
+							riskData.push(-(item.trading_plan.risk));
 						});
-						console.log(this.contents)
+						console.log(xAxis,seriesData,riskData);
+						this.option = this.createOpition(xAxis,seriesData,riskData);
 					} else {
 						this.$msg(data.errMsg);
-						this.contents = [];
 					}
 				} catch (e) {
 					uni.stopPullDownRefresh();
 					console.log(e);
+				}
+			},
+			createOpition(xData,seriseData,riskData){
+				return {
+					notMerge: true,
+					tooltip: {
+						trigger: 'axis',
+						positionStatus: true,
+						formatterStatus: true, // 自定义变量：是否格式化tooltip，设置为false时下面三项均不起作用
+						formatterUnit: '￥', // 自定义变量：数值后面的单位
+						formatFloat2: true, // 自定义变量：是否格式化为两位小数
+						formatThousands: true // 自定义变量：是否添加千分位
+					},
+					legend: {
+						data: ['盈利','风险额'],
+						left: '10%'
+					},
+					grid: {
+						left: '3%',
+						right: '5%',
+						bottom: '3%',
+						containLabel: true
+					},
+					xAxis: [{
+						type: 'category',
+						data: xData,
+						axisLabel : {
+						          show: true,
+								  rotate: 90
+						      },
+					}],
+					yAxis: [{
+						type: 'value',
+						axisLabel: {
+							formatter: '{value}￥'
+						}
+					}],
+					series: [{
+							name: '盈利',
+							type: 'bar',
+							data: seriseData,
+							yAxisIndex: 0,
+						},
+						{
+							name: '风险额',
+							type: 'line',
+							data: riskData,
+							yAxisIndex: 0,
+						}
+					]
 				}
 			}
 		}
