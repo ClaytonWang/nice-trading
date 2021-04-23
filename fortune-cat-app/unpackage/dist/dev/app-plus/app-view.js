@@ -2640,7 +2640,7 @@ var render = function() {
               _c(
                 "v-uni-text",
                 { staticClass: _vm._$g(4, "sc"), attrs: { _i: 4 } },
-                [_vm._v(_vm._$g(4, "t0-0") + "次")]
+                [_vm._v(_vm._$g(4, "t0-0"))]
               )
             ],
             1
@@ -2652,12 +2652,29 @@ var render = function() {
               _c(
                 "v-uni-text",
                 { staticClass: _vm._$g(6, "sc"), attrs: { _i: 6 } },
-                [_vm._v("胜率")]
+                [
+                  _vm._v(
+                    "胜:" +
+                      _vm._$g(6, "t0-0") +
+                      "  | 平:" +
+                      _vm._$g(6, "t0-1") +
+                      "  | 负:" +
+                      _vm._$g(6, "t0-2")
+                  )
+                ]
               ),
               _c(
                 "v-uni-text",
                 { staticClass: _vm._$g(7, "sc"), attrs: { _i: 7 } },
-                [_vm._v(_vm._$g(7, "t0-0"))]
+                [
+                  _vm._v(
+                    _vm._$g(7, "t0-0") +
+                      " | " +
+                      _vm._$g(7, "t0-1") +
+                      " | " +
+                      _vm._$g(7, "t0-2")
+                  )
+                ]
               )
             ],
             1

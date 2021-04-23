@@ -3,18 +3,18 @@
 		<view class="info">
 			<view class="col">
 				<text class="sub">交易次数</text>
-				<text class="t">{{total_count }}次</text>
+				<text class="t">{{total_count }}</text>
 			</view>
 			<view class="col">
-				<text class="sub">胜率</text>
-				<text class="t">{{winRate | fixed(2,'%') }}</text>
+				<text class="sub">胜:{{winCount}}  | 平:{{drawCount}}  | 负:{{failCount}} </text>
+				<text class="t">{{winRate | fixed(2,'%') }} | {{drawRate | fixed(2,'%') }} | {{failRate | fixed(2,'%')}}</text>
 			</view>
 			<view class="col">
 				<text class="sub">盈亏比</text>
 				<text class="t">{{ profitRate | fixed }}</text>
 			</view>
 		</view>
-		<br/>
+		<br>
 		<echarts :option="option" style="height: 600px; width: 100%;"></echarts>
 	</view>
 </template>
@@ -35,6 +35,11 @@
 			return {
 				total_count:0,
 				winRate:0.0,
+				drawRate:0.0,
+				failRate:0.0,
+				winCount:0,
+				failCount:0,
+				drawCount:0,
 				profitRate:0.0,
 				empty: false,
 				query: {
@@ -89,17 +94,26 @@
 						const seriesData = [];
 						const riskData = [];
 						let failCount = 0;
+						let drwCount = 0;
 						let lostProfit = 0.0;
 						let winProfit = 0.0;
 						res.data.rows.map(item => {
 							let barBorderRadius = [0, 0, 0, 0];
 							let color = "red";
 							if(parseFloat(item.profit) < 0){
+								let v = Math.abs(parseFloat(item.profit));
 								color="green";
-								failCount = failCount + 1;
-								lostProfit = lostProfit + Math.abs(parseFloat(item.profit));
+								lostProfit = lostProfit + v;
+								if(v < 100){
+									drwCount = drwCount +1;
+								}else{
+									failCount = failCount + 1;
+								}
 							}else{
 								winProfit = winProfit + parseFloat(item.profit);
+								if(item.profit < 100){
+									drwCount = drwCount +1;
+								}
 							}
 							xAxis.push(item.trading_plan.name);
 							seriesData.push({
@@ -113,9 +127,15 @@
 								});
 							riskData.push(-(item.trading_plan.risk));
 						});
-						console.log(xAxis,seriesData,riskData);
 						this.total_count = xAxis.length;
-						this.winRate = this.rate((this.total_count-failCount) ,this.total_count);
+						this.failCount = failCount;
+						this.drawCount = drwCount;
+						this.winCount = this.total_count - failCount - drwCount;
+						
+						this.winRate = this.rate(this.winCount, this.total_count);
+						this.drawRate = this.rate(drwCount, this.total_count);
+						this.failRate = this.rate(failCount, this.total_count);
+						
 						this.profitRate = this.rate(winProfit,lostProfit) / 100;
 						this.option = this.createOpition(xAxis,seriesData,riskData);
 					} else {
