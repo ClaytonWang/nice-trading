@@ -91,6 +91,7 @@
 			async getPlanInfo(id) {
 				const res = await this.getPlan(id);
 				if (res && res.data) {
+					console.log(res)
 					this.planInfo = res.data;
 					if(this.planInfo.images && this.planInfo.images.length > 0){
 						this.imageList = this.planInfo.images.map((i)=>{

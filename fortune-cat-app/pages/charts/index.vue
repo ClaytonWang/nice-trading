@@ -35,7 +35,7 @@
 			return {
 				total_count:0,
 				winRate:0.0,
-				drawRate:0.0,
+				drawRate:0.0,//平盘
 				failRate:0.0,
 				winCount:0,
 				failCount:0,
@@ -104,14 +104,14 @@
 								let v = Math.abs(parseFloat(item.profit));
 								color="green";
 								lostProfit = lostProfit + v;
-								if(v < 100){
+								if(v < 50){
 									drwCount = drwCount +1;
 								}else{
 									failCount = failCount + 1;
 								}
 							}else{
 								winProfit = winProfit + parseFloat(item.profit);
-								if(item.profit < 100){
+								if(item.profit < 50){
 									drwCount = drwCount +1;
 								}
 							}

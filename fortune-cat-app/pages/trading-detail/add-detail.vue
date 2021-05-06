@@ -143,7 +143,6 @@
 						rate = this.setting && this.setting.fee_rate;
 					}
 					return (trading_price * trading_volume * parseFloat(rate));
-					return v.toFixed(2);
 				} else {
 					return 0;
 				}
@@ -174,9 +173,7 @@
 					this.$msg('请输备注');
 					return ;}
 				this.form.commission = this.commission;
-				if(this.form.trading_type==='SELL'){
-					this.form.stamp_tax = this.stamp_tax;
-				}
+				this.form.stamp_tax = this.stamp_tax;
 				this.$refs.loading.showLoading();
 				const res = await this.addDetail(this.form);
 				this.$refs.loading.hideLoading();

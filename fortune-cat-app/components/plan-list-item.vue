@@ -4,8 +4,10 @@
 			<view class="stock">{{item.name}} ({{item.code}})</view>
 			<uni-icons v-if="!item.isSHowOp" type="list" size="22" @click="showOpration(item)"></uni-icons>
 			<view class="opt" v-show="item.isSHowOp">
-				<uni-icons type="trash" color="red" style="margin-right: 30upx;" size="22" @click="del(item.id,item.name)"></uni-icons>
-				<switch :checked="Boolean(item.status)" style="transform:scale(0.7);" @change="changeStatus($event,item)" />
+				<uni-icons type="trash" color="red" style="margin-right: 30upx;" size="22"
+					@click="del(item.id,item.name)"></uni-icons>
+				<switch :checked="Boolean(item.status)" style="transform:scale(0.7);"
+					@change="changeStatus($event,item)" />
 				<uni-icons type="compose" style="margin-left: 30upx;" size="22" @click="editPlan(item.id)"></uni-icons>
 				<uni-icons type="redo" size="22" style="margin-left: 40upx;" @click="showOpration(item)"></uni-icons>
 			</view>
@@ -19,7 +21,8 @@
 			<view class="s-row row-amount">
 				<view class="col">
 					{{item.plan_price | fixed}}/{{actual_price(item.trading_details) | fixed}}<br />
-					<i :class="slide_point(item.plan_price,actual_price(item.trading_details))>=0?'take_profit':'stop_loss'">{{slide_point(item.plan_price,actual_price(item.trading_details)) | fixed(2,'%')}}</i>
+					<i
+						:class="slide_point(item.plan_price,actual_price(item.trading_details))>=0?'take_profit':'stop_loss'">{{slide_point(item.plan_price,actual_price(item.trading_details)) | fixed(2,'%')}}</i>
 				</view>
 				<view class="col">
 					{{item.stop_loss | fixed}}<br />
@@ -36,7 +39,9 @@
 				<view class="col">风险额</view>
 			</view>
 			<view class="s-row row-amount">
-				<view class="col">{{plan_totoal(item.plan_price,item.plan_volume) | fixed }}/{{item.plan_volume | fixed}}</view>
+				<view class="col">
+					{{plan_totoal(item.plan_price,item.plan_volume) | fixed }}/{{item.plan_volume | fixed}}
+				</view>
 				<view class="col red">{{profitLostRate(item) | fixed(2,'%')}}</view>
 				<view class="col">{{item.risk | fixed}}</view>
 			</view>
@@ -46,7 +51,8 @@
 				<view class="col">关注时间</view>
 			</view>
 			<view class="s-row row-amount">
-				<view class="col">{{item.exec_start_date | moment("MM/DD")}} - {{item.exec_end_date | moment("MM/DD")}}</view>
+				<view class="col">{{item.exec_start_date | moment("MM/DD")}} - {{item.exec_end_date | moment("MM/DD")}}
+				</view>
 				<view class="col">{{item.priority | formatPriority}}</view>
 				<view class="col">{{item.created_at | moment("MM/DD HH:mm")}}</view>
 			</view>
@@ -61,10 +67,11 @@
 			<view class="s-row row-title">
 				<view class="col">
 					备注
-					<uni-icons type="plusempty" color="blue" size="20" @click="addComment(item.id)" style="margin-left: 15px;"></uni-icons>
+					<uni-icons type="plusempty" color="blue" size="20" @click="addComment(item.id)"
+						style="margin-left: 15px;"></uni-icons>
 				</view>
 			</view>
-			
+
 			<template v-for="(cItem,cIndex) in item.comments">
 				<view class="s-row row-title" :key="cIndex">
 					<view class="col">
@@ -73,10 +80,12 @@
 					<view class="col" v-show="item.isSHowOp">
 						<view class="s-row row-title">
 							<view class="col">
-								<uni-icons type="trash" color="blue" size="20" @click="delComment(cItem.id)"></uni-icons>
+								<uni-icons type="trash" color="blue" size="20" @click="delComment(cItem.id)">
+								</uni-icons>
 							</view>
 							<view class="col">
-								<uni-icons type="compose" color="blue" size="20" @click="editComment(cItem.id,item.id,cItem.comment)"></uni-icons>
+								<uni-icons type="compose" color="blue" size="20"
+									@click="editComment(cItem.id,item.id,cItem.comment)"></uni-icons>
 							</view>
 						</view>
 					</view>
@@ -112,6 +121,7 @@
 		props: ['item'],
 		data() {
 			return {
+				setting: null,
 				plan_list: [],
 			}
 		},
@@ -153,7 +163,6 @@
 		// #endif
 		methods: {
 			...mapActions('Trading', ['delPlanItem', 'updatePlan', 'deleteComment']),
-
 			actual_price(trading_details) {
 				if (trading_details && trading_details.length > 0) {
 					let totalAmount = 0,
@@ -172,7 +181,8 @@
 							item.commission = 0;
 						}
 						if (item.trading_type === 'BUY') {
-							totalAmount = totalAmount + parseFloat(item.trading_price) * parseFloat(item.trading_volume) + parseFloat(item.commission) +
+							totalAmount = totalAmount + parseFloat(item.trading_price) * parseFloat(item.trading_volume) +
+								parseFloat(item.commission) +
 								parseFloat(item.stamp_tax);
 							totalVol = totalVol + parseFloat(item.trading_volume);
 						}
@@ -201,10 +211,10 @@
 							const resp = await this.deleteComment(id);
 							if (resp && resp.data) {
 								this.$msg('删除成功！');
-								let index = this.item.comments.findIndex((i)=>{
-									return i.id==id;
+								let index = this.item.comments.findIndex((i) => {
+									return i.id == id;
 								});
-								this.item.comments.splice(index,1);
+								this.item.comments.splice(index, 1);
 							} else {
 								this.$msg(resp.errMsg);
 							}
@@ -267,7 +277,7 @@
 					return (Math.abs(take_profit - plan_price) / Math.abs(plan_price - stop_loss) * 100).toFixed(2);
 				}
 			},
-			plan_totoal(plan_price,plan_volume) {
+			plan_totoal(plan_price, plan_volume) {
 				if (plan_price && plan_volume) {
 					return (plan_price * plan_volume).toFixed(2);
 				}
@@ -291,7 +301,7 @@
 							const resp = await this.delPlanItem(id);
 							if (resp && resp.data) {
 								this.$msg('删除成功！');
-								this.$emit('delPlan',id);
+								this.$emit('delPlan', id);
 							} else {
 								this.$msg(resp.errMsg);
 							}
@@ -300,19 +310,19 @@
 				});
 			},
 			addComment(id) {
-				this.$refs.cmts.$emit('open',{
-					cmt_id:'',
-					trading_plan_id:id
+				this.$refs.cmts.$emit('open', {
+					cmt_id: '',
+					trading_plan_id: id
 				});
 			},
 			editComment(id, trading_plan_id, comment) {
-				this.$refs.cmts.$emit('open',{
-					cmt_id:id,
+				this.$refs.cmts.$emit('open', {
+					cmt_id: id,
 					comment,
 					trading_plan_id
 				});
 			},
-			addedCmt(cmt){
+			addedCmt(cmt) {
 				this.item.comments.push(cmt)
 			}
 		}
